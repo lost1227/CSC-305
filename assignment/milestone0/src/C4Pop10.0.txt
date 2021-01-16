@@ -1,0 +1,108 @@
+showBoard
+/*
+. . . . . . .
+. . . . . . .
+. . . . . . .
+. . . . . . .
+. . . . . . .
+. . . . . . .
+-------------
+A B C D E F G
+
+R
+*/
+doMove Place D # R
+doMove Place C # Y
+doMove Place C # R
+doMove Place B # Y
+doMove Place E # R
+showBoard
+/*
+. . . . . . .
+. . . . . . .
+. . . . . . .
+. . . . . . .
+. . R . . . .
+. Y Y R R . .
+-------------
+A B C D E F G
+
+Y
+*/
+doMove Place A # Y
+doMove Place B # R
+doMove Place F # Y
+doMove Place A # R
+showBoard
+/*
+. . . . . . .
+. . . . . . .
+. . . . . . .
+. . . . . . .
+R R R . . . .
+Y Y Y R R Y .
+-------------
+A B C D E F G
+
+Y
+*/
+doMove Place F # Y
+doMove Place G # R
+doMove Place F # Y
+showBoard
+/*
+. . . . . . .
+. . . . . . .
+. . . . . . .
+. . . . . Y .
+R R R . . Y .
+Y Y Y R R Y R
+-------------
+A B C D E F G
+
+Y
+*/
+doMove Place D # R
+showBoard
+/*
+. . . . . . .
+. . . . . . .
+. . . . . . .
+. . . . . Y .
+R R R R . Y .
+Y Y Y R R Y R
+-------------
+A B C D E F G
+
+Y
+*/
+undoLastMove 1
+doMove Place E # R
+showBoard
+/*
+. . . . . . .
+. . . . . . .
+. . . . . . .
+. . . . . Y .
+R R R . R Y .
+Y Y Y R R Y R
+-------------
+A B C D E F G
+
+Y
+*/
+doMove Place F # Y
+doMove Place D # R
+showBoard
+/*
+. . . . . . .
+. . . . . . .
+. . . . . Y .
+. . . . . Y .
+R R R R R Y .
+Y Y Y R R Y R
+-------------
+A B C D E F G
+
+Y
+*/

@@ -1,0 +1,10 @@
+Edge cases
+1. Flip 1 tile in all 8 possible ways
+2. Flip 2 tiles in all 8 possible ways
+3. Flip 6 tiles in all 8 possible ways
+4. Pass when no moves are available
+5. Flip 2 tiles at the same time
+6. Flip multiple tiles at the same time
+7. Skip own color disk: b w b w w b -> b b b w w b not b b b b b b
+8. Test no cascades
+9. Test game over: no player can move

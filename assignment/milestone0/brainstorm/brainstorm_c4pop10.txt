@@ -1,0 +1,11 @@
+Edge cases
+1. Take from column A
+2. Take from column G
+3. Place column A
+4. Place column G
+5. Keep from both ends of 4
+6. Keep from middle of 4
+7. Keep from end of 4, against edge
+8. Keep from middle of 4, against edge
+9. Keep from middle of 5
+10. Keep from edge of 5

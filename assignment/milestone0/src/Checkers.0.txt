@@ -1,0 +1,40 @@
+showBoard
+showVal
+
+testPlay 42 10
+doMove C3 -> E5 -> G7 # EC 3
+showBoard
+doMove H8 -> F6
+doMove C1 -> D2
+doMove F8 -> E7
+doMove D6 -> F8
+
+doMove H6 -> G7
+doMove F8 -> H6 # EC 5
+doMove F6 -> E5
+
+showBoard
+showVal
+
+doMove H6 -> F4 -> D6 # EC 8
+
+undoLastMove 4
+showBoard
+showVal
+
+doMove G5 -> F4
+doMove B6 -> C5
+
+showBoard
+doMove H6 -> G5
+doMove F8 -> G7
+doMove F4 -> E3
+doMove D2 -> F4 -> H6 # EC 6
+doMove G3 -> F2
+showBoard
+showVal
+
+undoLastMove 3
+
+doMove G3 -> F2
+doMove G7 -> H8 # EC 4

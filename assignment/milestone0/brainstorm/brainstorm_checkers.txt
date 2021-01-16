@@ -1,0 +1,11 @@
+Edge cases
+~1. Move normal, no jump
+2. Jump once
+~3. Jump multiple
+~4. Move normal to king
+~5. Jump once to king
+~6. Jump multiple to king
+7. Jump multiple, become king during move, make move only king could (move back)
+~8. King move back normal
+9. King jump back once
+10. King jump back multiple
