@@ -94,6 +94,22 @@ enterMove G0 -> d2
 showMove
 enterMove H0 -> d2
 showMove
+enterMove A-1 -> d2
+showMove
+enterMove B-1 -> d2
+showMove
+enterMove D-1 -> d2
+showMove
+enterMove E-1 -> d2
+showMove
+enterMove C-1 -> d2
+showMove
+enterMove F-1 -> d2
+showMove
+enterMove G-1 -> d2
+showMove
+enterMove H-1 -> d2
+showMove
 enterMove c1 -> a0
 showMove
 enterMove c1 -> b0
@@ -109,6 +125,22 @@ showMove
 enterMove c1 -> g0
 showMove
 enterMove c1 -> h0
+showMove
+enterMove c1 -> a-1
+showMove
+enterMove c1 -> b-1
+showMove
+enterMove c1 -> c-1
+showMove
+enterMove c1 -> d-1
+showMove
+enterMove c1 -> e-1
+showMove
+enterMove c1 -> f-1
+showMove
+enterMove c1 -> g-1
+showMove
+enterMove c1 -> h-1
 showMove
 enterMove A9 -> d2
 showMove
@@ -302,6 +334,39 @@ showMove
 enterMove c1 -> `7
 showMove
 enterMove c1 -> `8
+# test move parsing: oob both
+enterMove @0 -> d2
+showMove
+enterMove `0 -> d2
+showMove
+enterMove I0 -> d2
+showMove
+enterMove i0 -> d2
+showMove
+enterMove @9 -> d2
+showMove
+enterMove `9 -> d2
+showMove
+enterMove I9 -> d2
+showMove
+enterMove i9 -> d2
+showMove
+enterMove c1 -> @0
+showMove
+enterMove c1 -> `0
+showMove
+enterMove c1 -> I0
+showMove
+enterMove c1 -> i0
+showMove
+enterMove c1 -> @9
+showMove
+enterMove c1 -> `9
+showMove
+enterMove c1 -> I9
+showMove
+enterMove c1 -> i9
+showMove
 # test move parsing: multijump
 enterMove c1 -> d2 -> e3
 showMove
