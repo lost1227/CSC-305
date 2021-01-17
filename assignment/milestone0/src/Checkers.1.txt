@@ -1,0 +1,304 @@
+# test move parsing: empty
+enterMove
+showMove
+# test move parsing: many spaces
+enterMove                                                                                                     C1                                                                       -> D2
+showMove
+# test move parsing: lowercase
+enterMove c1 -> d2
+showMove
+# test move parsing: mixed case
+enterMove c1 -> D2
+showMove
+enterMove C1 -> d2
+showMove
+# test move parsing: no spaces
+enterMove c1->d2
+showMove
+# test move parsing: spaces inside cells
+enterMove c    1->d    2
+showMove
+enterMove c     1         ->    d             2
+showMove
+# test move parsing: spaces inside delimiter
+enterMove c1 -   > d2
+showMove
+# test move parsing: no delimiter
+enterMove c1 d2
+showMove
+enterMove c1
+showMove
+enterMove c12
+showMove
+# test move parsing: wrong delimiter
+enterMove c1 <- d2
+showMove
+enterMove c1 _> d2
+showMove
+enterMove c1 *> d2
+showMove
+# test move parsing: extra characters
+enterMove c1 -> d2 asldkjjfjalk
+showMove
+enterMove a;lskdfjalk; c1 -> d2
+showMove
+# test move parsing: only one cell
+enterMove c1
+showMove
+# test move parsing: wrong move type
+enterMove [1,2]
+showMove
+enterMove Pass
+showMove
+enterMove Place B
+showMove
+enterMove Keep D
+showMove
+enterMove Take C place E
+showMove
+# test move parsing: multiple rows
+enterMove CC1 -> d2
+showMove
+enterMove Cc1 -> d2
+showMove
+enterMove Ac1 -> d2
+showMove
+enterMove c    c1 -> d2
+showMove
+enterMove c1 -> DD2
+showMove
+enterMove C1 -> Dd2
+showMove
+enterMove c1 -> cD2
+showMove
+enterMove c1 -> d      d2
+showMove
+enterMove 1 -> d2
+showMove
+enterMove c1 -> 2
+showMove
+# test move parsing: oob row
+enterMove A0 -> d2
+showMove
+enterMove B0 -> d2
+showMove
+enterMove D0 -> d2
+showMove
+enterMove E0 -> d2
+showMove
+enterMove C0 -> d2
+showMove
+enterMove F0 -> d2
+showMove
+enterMove G0 -> d2
+showMove
+enterMove H0 -> d2
+showMove
+enterMove c1 -> a0
+showMove
+enterMove c1 -> b0
+showMove
+enterMove c1 -> c0
+showMove
+enterMove c1 -> d0
+showMove
+enterMove c1 -> e0
+showMove
+enterMove c1 -> f0
+showMove
+enterMove c1 -> g0
+showMove
+enterMove c1 -> h0
+showMove
+enterMove A9 -> d2
+showMove
+enterMove B9 -> d2
+showMove
+enterMove D9 -> d2
+showMove
+enterMove E9 -> d2
+showMove
+enterMove C9 -> d2
+showMove
+enterMove F9 -> d2
+showMove
+enterMove G9 -> d2
+showMove
+enterMove H9 -> d2
+showMove
+enterMove c1 -> a9
+showMove
+enterMove c1 -> b9
+showMove
+enterMove c1 -> c9
+showMove
+enterMove c1 -> d9
+showMove
+enterMove c1 -> e9
+showMove
+enterMove c1 -> f9
+showMove
+enterMove c1 -> g9
+showMove
+enterMove c1 -> h9
+showMove
+enterMove A10 -> d2
+showMove
+enterMove B10 -> d2
+showMove
+enterMove D10 -> d2
+showMove
+enterMove E10 -> d2
+showMove
+enterMove C10 -> d2
+showMove
+enterMove F10 -> d2
+showMove
+enterMove G10 -> d2
+showMove
+enterMove H10 -> d2
+showMove
+enterMove c1 -> a10
+showMove
+enterMove c1 -> b10
+showMove
+enterMove c1 -> c10
+showMove
+enterMove c1 -> d10
+showMove
+enterMove c1 -> e10
+showMove
+enterMove c1 -> f10
+showMove
+enterMove c1 -> g10
+showMove
+enterMove c1 -> h10
+showMove
+# test move parsing: oob column
+enterMove I1 -> d2
+showMove
+enterMove I2 -> d2
+showMove
+enterMove I3 -> d2
+showMove
+enterMove I4 -> d2
+showMove
+enterMove I5 -> d2
+showMove
+enterMove I6 -> d2
+showMove
+enterMove I7 -> d2
+showMove
+enterMove I8 -> d2
+showMove
+enterMove c1 -> I1
+showMove
+enterMove c1 -> I2
+showMove
+enterMove c1 -> I3
+showMove
+enterMove c1 -> I4
+showMove
+enterMove c1 -> I5
+showMove
+enterMove c1 -> I6
+showMove
+enterMove c1 -> I7
+showMove
+enterMove c1 -> I8
+showMove
+enterMove i1 -> d2
+showMove
+enterMove i2 -> d2
+showMove
+enterMove i3 -> d2
+showMove
+enterMove i4 -> d2
+showMove
+enterMove i5 -> d2
+showMove
+enterMove i6 -> d2
+showMove
+enterMove i7 -> d2
+showMove
+enterMove i8 -> d2
+showMove
+enterMove c1 -> i1
+showMove
+enterMove c1 -> i2
+showMove
+enterMove c1 -> i3
+showMove
+enterMove c1 -> i4
+showMove
+enterMove c1 -> i5
+showMove
+enterMove c1 -> i6
+showMove
+enterMove c1 -> i7
+showMove
+enterMove c1 -> i8
+showMove
+enterMove @1 -> d2
+showMove
+enterMove @2 -> d2
+showMove
+enterMove @3 -> d2
+showMove
+enterMove @4 -> d2
+showMove
+enterMove @5 -> d2
+showMove
+enterMove @6 -> d2
+showMove
+enterMove @7 -> d2
+showMove
+enterMove @8 -> d2
+showMove
+enterMove c1 -> @1
+showMove
+enterMove c1 -> @2
+showMove
+enterMove c1 -> @3
+showMove
+enterMove c1 -> @4
+showMove
+enterMove c1 -> @5
+showMove
+enterMove c1 -> @6
+showMove
+enterMove c1 -> @7
+showMove
+enterMove c1 -> @8
+showMove
+enterMove `1 -> d2
+showMove
+enterMove `2 -> d2
+showMove
+enterMove `3 -> d2
+showMove
+enterMove `4 -> d2
+showMove
+enterMove `5 -> d2
+showMove
+enterMove `6 -> d2
+showMove
+enterMove `7 -> d2
+showMove
+enterMove `8 -> d2
+showMove
+enterMove c1 -> `1
+showMove
+enterMove c1 -> `2
+showMove
+enterMove c1 -> `3
+showMove
+enterMove c1 -> `4
+showMove
+enterMove c1 -> `5
+showMove
+enterMove c1 -> `6
+showMove
+enterMove c1 -> `7
+showMove
+enterMove c1 -> `8
