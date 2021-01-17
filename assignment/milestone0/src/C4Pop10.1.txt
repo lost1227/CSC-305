@@ -1,0 +1,176 @@
+# test move parsing: empty
+enterMove
+showMove
+# test move parsing: normal
+enterMove Pass
+showMove
+enterMove Place B
+showMove
+enterMove Keep D
+showMove
+enterMove Take C place E
+showMove
+# test move parsing: many spaces
+enterMove                 Pass                       
+showMove
+enterMove                 Place                 B                 
+showMove
+enterMove                 Keep                 D                 
+showMove
+enterMove                 Take                 C                 place                 E
+showMove
+# test move parsing: no spaces
+enterMove PlaceB
+showMove
+enterMove KeepD
+showMove
+enterMove TakeC placeE
+showMove
+enterMove TakeCplaceE
+showMove
+enterMove Take cplace E
+showMove
+# test move parsing: case
+enterMove pass
+showMove
+enterMove pASS
+showMove
+enterMove PaSs
+showMove
+enterMove PASS
+showMove
+enterMove Place b
+showMove
+enterMove place b
+showMove
+enterMove PlAce B
+showMove
+enterMove PLACE B
+showMove
+enterMove Keep d
+showMove
+enterMove keep d
+showMove
+enterMove KeEp D
+showMove
+enterMove KEEP D
+showMove
+enterMove Take c place e
+showMove
+enterMove take C place E
+showMove
+enterMove take c place e
+showMove
+enterMove Take c Place e
+showMove
+enterMove Take C Place E
+showMove
+# test move parsing: extra spaces
+enterMove P ass
+showMove
+enterMove P a s s
+showMove
+enterMove P lace B
+showMove
+enterMove P l a c e B
+showMove
+enterMove K eep D
+showMove
+enterMove K e e p D
+showMove
+enterMove T ake C place E
+showMove
+enterMove Take C p lace E
+showMove
+enterMove T a k e C p l a c e E
+showMove
+# test move parsing: invalid moves
+enterMove al;kbja;lkdjf
+showMove
+enterMove Take al;ksdjf;
+showMove
+enterMove enterMove
+showMove
+# test move parsing: no column
+enterMove Place
+showMove
+enterMove Keep
+showMove
+enterMove Take  place E
+showMove
+enterMove Take C place
+showMove
+# test move parsing: wrong move type
+enterMove [1,2]
+showMove
+enterMove c1 -> d2
+showMove
+enterMove c1 -> d2 -> e3
+showMove
+# test move parsing: wrong order
+enterMove Place E take C
+showMove
+enterMove place E Take C
+showMove
+# test move parsing: too many cols
+enterMove Place B B
+showMove
+enterMove Place BB
+showMove
+enterMove Keep D
+showMove
+enterMove Keep D D
+showMove
+enterMove Take C place E E
+showMove
+enterMove Take C Place EE
+showMove
+enterMove Take C C place E
+showMove
+enterMove Take CC place E
+showMove
+enterMove Take C C place E E
+showMove
+enterMove Take CC place EE
+showMove
+# test move parsing: oob col
+enterMove Place @
+showMove
+enterMove Place `
+showMove
+enterMove Place H
+showMove
+enterMove Keep h
+showMove
+enterMove Keep @
+showMove
+enterMove Keep `
+showMove
+enterMove Keep H
+showMove
+enterMove Keep h
+showMove
+enterMove Take C place @
+showMove
+enterMove Take C place `
+showMove
+enterMove Take C place H
+showMove
+enterMove Take C place h
+showMove
+enterMove Take @ place E
+showMove
+enterMove Take ` place E
+showMove
+enterMove Take H place E
+showMove
+enterMove Take h place E
+showMove
+enterMove Take @ place @
+showMove
+enterMove Take ` place `
+showMove
+enterMove Take H place H
+showMove
+enterMove Take h place h
+showMove
