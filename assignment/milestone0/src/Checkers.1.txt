@@ -302,3 +302,8 @@ showMove
 enterMove c1 -> `7
 showMove
 enterMove c1 -> `8
+# test move parsing: multijump
+enterMove c1 -> d2 -> e3
+showMove
+enterMove c1 -> d2 -> e3 -> f4 -> a1 -> c1
+showMove
