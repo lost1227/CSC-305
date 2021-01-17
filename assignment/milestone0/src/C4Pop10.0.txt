@@ -1,108 +1,98 @@
+showVal
 showBoard
-/*
-. . . . . . .
-. . . . . . .
-. . . . . . .
-. . . . . . .
-. . . . . . .
-. . . . . . .
--------------
-A B C D E F G
+testRun 42 40
 
-R
-*/
-doMove Place D # R
-doMove Place C # Y
-doMove Place C # R
-doMove Place B # Y
-doMove Place E # R
 showBoard
-/*
-. . . . . . .
-. . . . . . .
-. . . . . . .
-. . . . . . .
-. . R . . . .
-. Y Y R R . .
--------------
-A B C D E F G
+showVal
+doMove Place F
 
-Y
-*/
-doMove Place A # Y
-doMove Place B # R
-doMove Place F # Y
-doMove Place A # R
 showBoard
-/*
-. . . . . . .
-. . . . . . .
-. . . . . . .
-. . . . . . .
-R R R . . . .
-Y Y Y R R Y .
--------------
-A B C D E F G
+doMove Place B
+doMove Take D place D
+doMove Keep C
 
-Y
-*/
-doMove Place F # Y
-doMove Place G # R
-doMove Place F # Y
 showBoard
-/*
-. . . . . . .
-. . . . . . .
-. . . . . . .
-. . . . . Y .
-R R R . . Y .
-Y Y Y R R Y R
--------------
-A B C D E F G
+showVal
+doMove Pass
+doMove Take G place G
 
-Y
-*/
-doMove Place D # R
 showBoard
-/*
-. . . . . . .
-. . . . . . .
-. . . . . . .
-. . . . . Y .
-R R R R . Y .
-Y Y Y R R Y R
--------------
-A B C D E F G
+showVal
+doMove Take D place C
 
-Y
-*/
-undoLastMove 1
-doMove Place E # R
+doMove Keep D
+doMove Pass
+doMove Keep D
+doMove Pass
+doMove Keep D
+doMove Pass
+doMove Keep D
+doMove Pass
 showBoard
-/*
-. . . . . . .
-. . . . . . .
-. . . . . . .
-. . . . . Y .
-R R R . R Y .
-Y Y Y R R Y R
--------------
-A B C D E F G
+showVal
 
-Y
-*/
-doMove Place F # Y
-doMove Place D # R
+doMove Take B place D
 showBoard
-/*
-. . . . . . .
-. . . . . . .
-. . . . . Y .
-. . . . . Y .
-R R R R R Y .
-Y Y Y R R Y R
--------------
-A B C D E F G
+showVal
 
-Y
-*/
+doMove Keep A # EC 7
+doMove Pass
+showBoard
+undoLastMove 2
+doMove Keep B # EC 8
+doMove Pass
+showBoard
+undoLastMove 2
+doMove Keep C # EC 8
+doMove Pass
+showBoard
+undoLastMove 2
+doMove Keep D # EC 7
+doMove Pass
+showBoard
+undoLastMove 2
+
+doMove Take G place D
+doMove Take E place G
+showBoard
+
+doMove Keep D
+doMove Pass
+showBoard
+showVal
+undoLastMove 2
+
+doMove Keep A
+doMove Pass
+showBoard
+showVal
+undoLastMove 2
+
+doMove Keep G
+doMove Pass
+showBoard
+showVal
+undoLastMove 2
+
+doMove Keep F
+doMove Pass
+showBoard
+showVal
+
+doMove Keep G
+showBoard
+doMove Pass
+doMove Keep F
+showBoard
+doMove Pass
+doMove Keep E
+showBoard
+doMove Pass
+doMove Keep D
+showBoard
+doMove Pass
+showBoard
+showVal
+doMove Keep C
+showBoard
+doMove Pass
