@@ -1,0 +1,136 @@
+saveBoard init.board
+compareKeys init.board
+
+testPlay 8 150
+showBoard
+showVal
+saveBoard black_king_win.board
+compareKeys black_king_win.board
+undoLastMove 150
+
+testPlay 10 150
+showBoard
+showVal
+saveBoard black_mixed_win.board
+compareKeys black_mixed_win.board
+undoLastMove 150
+
+testPlay 0 150
+showBoard
+showVal
+saveBoard white_mixed_win.board
+compareKeys white_mixed_win.board
+undoLastMove 150
+
+testPlay 1 150
+undoLastMove 5
+showBoard
+showVal
+doMove C1 -> B2
+doMove A1 -> C3
+doMove G7 -> F6
+doMove C3 -> D2
+doMove F6 -> D8
+doMove D2 -> E3
+doMove D8 -> C7
+doMove E3 -> F2
+doMove G1 -> E3
+showBoard
+showVal
+saveBoard white_norm_win.board
+compareKeys white_norm_win.board
+undoLastMove 150
+
+testPlay 3 150
+showBoard
+showVal
+saveBoard white_king_win.board
+compareKeys white_king_win.board
+undoLastMove 150
+
+# init.board
+# black_king_win.board
+# black_mixed_win.board
+# white_mixed_win.board
+# white_norm_win.board
+# white_king_win.board
+
+loadBoard init.board
+compareKeys black_king_win.board
+compareKeys black_mixed_win.board
+compareKeys white_mixed_win.board
+compareKeys white_norm_win.board
+compareKeys white_king_win.board
+showBoard
+showVal
+
+loadBoard black_king_win.board
+compareKeys init.board
+compareKeys black_mixed_win.board
+compareKeys white_mixed_win.board
+compareKeys white_norm_win.board
+compareKeys white_king_win.board
+showBoard
+showVal
+
+loadBoard black_mixed_win.board
+compareKeys black_king_win.board
+compareKeys init.board
+compareKeys white_mixed_win.board
+compareKeys white_norm_win.board
+compareKeys white_king_win.board
+showBoard
+showVal
+
+loadBoard white_mixed_win.board
+compareKeys black_king_win.board
+compareKeys black_mixed_win.board
+compareKeys init.board
+compareKeys white_norm_win.board
+compareKeys white_king_win.board
+showBoard
+showVal
+
+loadBoard white_norm_win.board
+compareKeys black_king_win.board
+compareKeys black_mixed_win.board
+compareKeys white_mixed_win.board
+compareKeys init.board
+compareKeys white_king_win.board
+showBoard
+showVal
+
+loadBoard white_king_win.board
+compareKeys black_king_win.board
+compareKeys black_mixed_win.board
+compareKeys white_mixed_win.board
+compareKeys white_norm_win.board
+compareKeys init.board
+showBoard
+showVal
+
+loadBoard black_mixed_win.board
+undoLastMove 2
+doMove C5 -> B4
+doMove E5 -> F6
+showVal
+saveBoard test_keys_kings.board
+doMove B4 -> A5
+showVal
+compareKeys test_keys_kings.board
+doMove F6 -> E7
+showVal
+compareKeys test_keys_kings.board
+doMove A5 -> B4
+showVal
+compareKeys test_keys_kings.board
+doMove E7 -> F6
+showVal
+compareKeys test_keys_kings.board
+doMove B4 -> A5
+doMove F6 -> G7
+showVal
+compareKeys test_keys_kings.board
+doMove A5 -> B4
+showVal
+compareKeys test_keys_kings.board
