@@ -49,3 +49,5 @@ doMove G7 -> H8 # EC 4
 showBoard
 showMoveHist
 showVal
+
+undoLastMove 1000

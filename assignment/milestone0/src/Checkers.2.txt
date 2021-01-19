@@ -1,3 +1,5 @@
+# Hmm, this identified precisely zero bugs
+
 saveBoard init.board
 compareKeys init.board
 

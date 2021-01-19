@@ -1,1 +1,62 @@
 showBoard
+doMove [2, 3] # EC 1 DN BLK
+showBoard
+doMove [2, 2] # EC 1 DN RGHT WHT
+showBoard
+undoLastMove 2
+doMove [3, 2] # EC 1 RGHT BLK
+showBoard
+undoLastMove 1
+doMove [4, 5] # EC 1 LFT BLK
+showBoard
+undoLastMove 1
+doMove [5, 4] # EC 1 UP BLK
+showBoard 
+doMove [5, 5] # EC 1 UP LFT WHT
+showBoard
+undoLastMove 2
+
+doMove [4,5]
+showBoard
+doMove [4,2]
+showBoard
+doMove [3, 5] # EC 1 DN LFT WHT
+showBoard
+doMove [4,6]
+showBoard
+doMove [5,1] # EC 1 UP RGHT WHT
+showBoard
+doMove [6,5]
+showBoard
+doMove [5,6] # EC 8
+showBoard
+doMove [2,3]
+showBoard
+doMove [4,7] # EC 7
+showBoard
+
+# THE PERFECT GAME
+undoLastMove 1000
+doMove [4,5]
+showBoard
+doMove [5,3]
+showBoard
+doMove [4,2]
+showBoard
+doMove [3,5]
+showBoard
+doMove [2,4]
+showBoard
+doMove [5,5]
+showBoard
+doMove [4,6]
+showBoard
+doMove [5,4]
+showBoard
+doMove [6,4]
+showBoard
+
+doMove Pass # EC 4
+showBoard
+doMove Pass # EC 5
+showBoard
