@@ -16,23 +16,26 @@ doMove [5, 5] # EC 1 UP LFT WHT
 _state
 undoLastMove 2
 
+undoLastMove 1000
 doMove [4,5]
+_state
+doMove [5,3]
 _state
 doMove [4,2]
 _state
-doMove [3, 5] # EC 1 DN LFT WHT
+doMove [3,5] # EC 1 DN LFT WHT
 _state
-doMove [4,6]
+doMove [6,4]
 _state
-doMove [5,1] # EC 1 UP RGHT WHT
+doMove [6,2] # EC 1 UP RGHT WHT
 _state
-doMove [6,5]
+doMove [6,3]
 _state
-doMove [5,6] # EC 8
+doMove [5,1]
 _state
-doMove [2,3]
+doMove [4,1] # EC 7
 _state
-doMove [4,7] # EC 7
+doMove [3,1] # EC 8
 _state
 
 # THE PERFECT GAME
@@ -58,5 +61,5 @@ _state
 
 doMove Pass # EC 4
 _state
-doMove Pass # EC 5
+doMove Pass # EC 9
 _state
