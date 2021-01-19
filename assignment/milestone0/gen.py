@@ -11,7 +11,7 @@ if not out_dir.exists():
     out_dir.mkdir()
 
 substitutions = {
-    "state" : "showBoard\nshowVal\nshowMove\nshowMoveHist",
+    "state" : "showBoard\nshowVal\nshowMove\nshowMoveHist\nkeyMoveCount",
     "pstate": "showMove\nshowMoveHist"
 }
 
