@@ -1,193 +1,193 @@
 # test parsing move: empty
 enterMove
-showMove
+_pstate
 # test move parsing: normal
 enterMove Pass
-showMove
+_pstate
 enterMove [1,2]
-showMove
+_pstate
 # Test move parsing: many spaces
 enterMove             Pass               
-showMove
+_pstate
 enterMove             [             1             ,             2             ]             
-showMove
+_pstate
 # Test move parsing: missing parts
 enterMove Pas
-showMove
+_pstate
 enterMove 1, 2]
-showMove
+_pstate
 enterMove [1, 2
-showMove
+_pstate
 enterMove [ , 2]
-showMove
+_pstate
 enterMove [1 2]
-showMove
+_pstate
 enterMove [1, ]
-showMove
+_pstate
 # Test move parsing: case
 enterMove pass
-showMove
+_pstate
 enterMove PaSS
-showMove
+_pstate
 enterMove pASS
-showMove
+_pstate
 enterMove PASS
-showMove
+_pstate
 # Test move parsing: extra spaces
 enterMove P a s s
-showMove
+_pstate
 enterMove P ass
-showMove
+_pstate
 # Test move parsing: extra characters
 enterMove a;lkjal;djfd [1,2]
-showMove
+_pstate
 enterMove [1,2] asdjfl;kjepioja
-showMove
+_pstate
 enterMove enterMove
-showMove
+_pstate
 # Test move parsing: too many parts
 enterMove [1,2] Pass
-showMove
+_pstate
 enterMove [1,2,3]
-showMove
+_pstate
 enterMove [1,2] [3,4]
-showMove
+_pstate
 # Test move parsing: oob row
 enterMove [-2,0]
-showMove
+_pstate
 enterMove [-2,1]
-showMove
+_pstate
 enterMove [-2,2]
-showMove
+_pstate
 enterMove [-2,3]
-showMove
+_pstate
 enterMove [-2,4]
-showMove
+_pstate
 enterMove [-2,5]
-showMove
+_pstate
 enterMove [-2,6]
-showMove
+_pstate
 enterMove [-2,7]
-showMove
+_pstate
 enterMove [-1,0]
-showMove
+_pstate
 enterMove [-1,1]
-showMove
+_pstate
 enterMove [-1,2]
-showMove
+_pstate
 enterMove [-1,3]
-showMove
+_pstate
 enterMove [-1,4]
-showMove
+_pstate
 enterMove [-1,5]
-showMove
+_pstate
 enterMove [-1,6]
-showMove
+_pstate
 enterMove [-1,7]
-showMove
+_pstate
 enterMove [8,0]
-showMove
+_pstate
 enterMove [8,1]
-showMove
+_pstate
 enterMove [8,2]
-showMove
+_pstate
 enterMove [8,3]
-showMove
+_pstate
 enterMove [8,4]
-showMove
+_pstate
 enterMove [8,5]
-showMove
+_pstate
 enterMove [8,6]
-showMove
+_pstate
 enterMove [8,7]
-showMove
+_pstate
 enterMove [9,0]
-showMove
+_pstate
 enterMove [9,1]
-showMove
+_pstate
 enterMove [9,2]
-showMove
+_pstate
 enterMove [9,3]
-showMove
+_pstate
 enterMove [9,4]
-showMove
+_pstate
 enterMove [9,5]
-showMove
+_pstate
 enterMove [9,6]
-showMove
+_pstate
 enterMove [9,7]
-showMove
+_pstate
 # Test move parsing: oob col
 enterMove [0,-2]
-showMove
+_pstate
 enterMove [1,-2]
-showMove
+_pstate
 enterMove [2,-2]
-showMove
+_pstate
 enterMove [3,-2]
-showMove
+_pstate
 enterMove [4,-2]
-showMove
+_pstate
 enterMove [5,-2]
-showMove
+_pstate
 enterMove [6,-2]
-showMove
+_pstate
 enterMove [7,-2]
-showMove
+_pstate
 enterMove [0,-1]
-showMove
+_pstate
 enterMove [1,-1]
-showMove
+_pstate
 enterMove [2,-1]
-showMove
+_pstate
 enterMove [3,-1]
-showMove
+_pstate
 enterMove [4,-1]
-showMove
+_pstate
 enterMove [5,-1]
-showMove
+_pstate
 enterMove [6,-1]
-showMove
+_pstate
 enterMove [7,-1]
-showMove
+_pstate
 enterMove [0,8]
-showMove
+_pstate
 enterMove [1,8]
-showMove
+_pstate
 enterMove [2,8]
-showMove
+_pstate
 enterMove [3,8]
-showMove
+_pstate
 enterMove [4,8]
-showMove
+_pstate
 enterMove [5,8]
-showMove
+_pstate
 enterMove [6,8]
-showMove
+_pstate
 enterMove [7,8]
-showMove
+_pstate
 enterMove [0,9]
-showMove
+_pstate
 enterMove [1,9]
-showMove
+_pstate
 enterMove [2,9]
-showMove
+_pstate
 enterMove [3,9]
-showMove
+_pstate
 enterMove [4,9]
-showMove
+_pstate
 enterMove [5,9]
-showMove
+_pstate
 enterMove [6,9]
-showMove
+_pstate
 enterMove [7,9]
-showMove
+_pstate
 # Test move parsing: oob both
 enterMove [-1,-1]
-showMove
+_pstate
 enterMove [-1, 8]
-showMove
+_pstate
 enterMove [8, -1]
-showMove
+_pstate
 enterMove [8,8]
-showMove
+_pstate

@@ -1,176 +1,176 @@
 # test move parsing: empty
 enterMove
-showMove
+_pstate
 # test move parsing: normal
 enterMove Pass
-showMove
+_pstate
 enterMove Place B
-showMove
+_pstate
 enterMove Keep D
-showMove
+_pstate
 enterMove Take C place E
-showMove
+_pstate
 # test move parsing: many spaces
 enterMove                 Pass                       
-showMove
+_pstate
 enterMove                 Place                 B                 
-showMove
+_pstate
 enterMove                 Keep                 D                 
-showMove
+_pstate
 enterMove                 Take                 C                 place                 E
-showMove
+_pstate
 # test move parsing: no spaces
 enterMove PlaceB
-showMove
+_pstate
 enterMove KeepD
-showMove
+_pstate
 enterMove TakeC placeE
-showMove
+_pstate
 enterMove TakeCplaceE
-showMove
+_pstate
 enterMove Take cplace E
-showMove
+_pstate
 # test move parsing: case
 enterMove pass
-showMove
+_pstate
 enterMove pASS
-showMove
+_pstate
 enterMove PaSs
-showMove
+_pstate
 enterMove PASS
-showMove
+_pstate
 enterMove Place b
-showMove
+_pstate
 enterMove place b
-showMove
+_pstate
 enterMove PlAce B
-showMove
+_pstate
 enterMove PLACE B
-showMove
+_pstate
 enterMove Keep d
-showMove
+_pstate
 enterMove keep d
-showMove
+_pstate
 enterMove KeEp D
-showMove
+_pstate
 enterMove KEEP D
-showMove
+_pstate
 enterMove Take c place e
-showMove
+_pstate
 enterMove take C place E
-showMove
+_pstate
 enterMove take c place e
-showMove
+_pstate
 enterMove Take c Place e
-showMove
+_pstate
 enterMove Take C Place E
-showMove
+_pstate
 # test move parsing: extra spaces
 enterMove P ass
-showMove
+_pstate
 enterMove P a s s
-showMove
+_pstate
 enterMove P lace B
-showMove
+_pstate
 enterMove P l a c e B
-showMove
+_pstate
 enterMove K eep D
-showMove
+_pstate
 enterMove K e e p D
-showMove
+_pstate
 enterMove T ake C place E
-showMove
+_pstate
 enterMove Take C p lace E
-showMove
+_pstate
 enterMove T a k e C p l a c e E
-showMove
+_pstate
 # test move parsing: invalid moves
 enterMove al;kbja;lkdjf
-showMove
+_pstate
 enterMove Take al;ksdjf;
-showMove
+_pstate
 enterMove enterMove
-showMove
+_pstate
 # test move parsing: no column
 enterMove Place
-showMove
+_pstate
 enterMove Keep
-showMove
+_pstate
 enterMove Take  place E
-showMove
+_pstate
 enterMove Take C place
-showMove
+_pstate
 # test move parsing: wrong move type
 enterMove [1,2]
-showMove
+_pstate
 enterMove c1 -> d2
-showMove
+_pstate
 enterMove c1 -> d2 -> e3
-showMove
+_pstate
 # test move parsing: wrong order
 enterMove Place E take C
-showMove
+_pstate
 enterMove place E Take C
-showMove
+_pstate
 # test move parsing: too many cols
 enterMove Place B B
-showMove
+_pstate
 enterMove Place BB
-showMove
+_pstate
 enterMove Keep D
-showMove
+_pstate
 enterMove Keep D D
-showMove
+_pstate
 enterMove Take C place E E
-showMove
+_pstate
 enterMove Take C Place EE
-showMove
+_pstate
 enterMove Take C C place E
-showMove
+_pstate
 enterMove Take CC place E
-showMove
+_pstate
 enterMove Take C C place E E
-showMove
+_pstate
 enterMove Take CC place EE
-showMove
+_pstate
 # test move parsing: oob col
 enterMove Place @
-showMove
+_pstate
 enterMove Place `
-showMove
+_pstate
 enterMove Place H
-showMove
+_pstate
 enterMove Keep h
-showMove
+_pstate
 enterMove Keep @
-showMove
+_pstate
 enterMove Keep `
-showMove
+_pstate
 enterMove Keep H
-showMove
+_pstate
 enterMove Keep h
-showMove
+_pstate
 enterMove Take C place @
-showMove
+_pstate
 enterMove Take C place `
-showMove
+_pstate
 enterMove Take C place H
-showMove
+_pstate
 enterMove Take C place h
-showMove
+_pstate
 enterMove Take @ place E
-showMove
+_pstate
 enterMove Take ` place E
-showMove
+_pstate
 enterMove Take H place E
-showMove
+_pstate
 enterMove Take h place E
-showMove
+_pstate
 enterMove Take @ place @
-showMove
+_pstate
 enterMove Take ` place `
-showMove
+_pstate
 enterMove Take H place H
-showMove
+_pstate
 enterMove Take h place h
-showMove
+_pstate

@@ -1,12 +1,8 @@
-showBoard
-showMoveHist
-showVal
+_state
 
 testPlay 42 10
 doMove C3 -> E5 -> G7 # EC 3
-showBoard
-showMoveHist
-showVal
+_state
 doMove H8 -> F6
 doMove C1 -> D2
 doMove F8 -> E7
@@ -16,57 +12,39 @@ doMove H6 -> G7
 doMove F8 -> H6 # EC 5
 doMove F6 -> E5
 
-showBoard
-showMoveHist
-showVal
+_state
 
 doMove H6 -> F4 -> D6 # EC 8
 
 undoLastMove 4
-showBoard
-showMoveHist
-showVal
+_state
 
 doMove G5 -> F4
 doMove B6 -> C5
 
-showBoard
-showMoveHist
-showVal
+_state
 doMove H6 -> G5
 doMove F8 -> G7
 doMove F4 -> E3
 doMove D2 -> F4 -> H6 # EC 6
 doMove G3 -> F2
-showBoard
-showMoveHist
-showVal
+_state
 
 undoLastMove 3
 
 doMove G3 -> F2
 doMove G7 -> H8 # EC 4
-showBoard
-showMoveHist
-showVal
+_state
 
 undoLastMove 1000
 doMove C1 -> D2
-showBoard
-showMoveHist
-showVal
+_state
 doMove F6 -> E7
-showBoard
-showMoveHist
-showVal
+_state
 doMove D2 -> E1
-showBoard
-showMoveHist
-showVal
+_state
 doMove G7 -> F6
-showBoard
-showMoveHist
-showVal
+_state
 undoLastMove 1000
 
 
@@ -84,20 +62,14 @@ doMove C3 -> D2
 doMove E3 -> D4
 doMove H6 -> G5
 doMove H8 -> G7
-showBoard
-showMoveHist
-showVal
+_state
 saveBoard multijump.board
 doMove G5 -> E3 -> C5 -> E7 -> G5 # EC 11
-showBoard
-showMoveHist
-showVal
+_state
 saveBoard counterclockwise.board
 undoLastMove 1
 doMove G5 -> E7 -> C5 -> E3 -> G5
-showBoard
-showMoveHist
-showVal
+_state
 saveBoard clockwise.board
 compareKeys multijump.board
 compareKeys clockwise.board

@@ -2,40 +2,40 @@
 
 from pathlib import Path
 
-in_dir = Path("./src")
-out_dir = Path("./build")
+script_dir = Path(__file__).resolve().parent
+
+in_dir = script_dir / "src"
+out_dir = script_dir / "build"
+
+if not out_dir.exists():
+    out_dir.mkdir()
+
+substitutions = {
+    "state" : "showBoard\nshowVal\nshowMove\nshowMoveHist",
+    "pstate": "showMove\nshowMoveHist"
+}
 
 def process_file(in_path):
     out_path = out_dir / in_path.stem
 
     with in_path.open('r') as fin:
         with out_path.open('w') as fout:
-            mode = "normal"
-            char = fin.read(1)
             while True:
-                next_char = fin.read(1)
-                if not char:
+                line = fin.readline()
+                if not line:
                     break
-                
-                if mode == "normal":
-                    if char == "#":
-                        mode = "line_comment"
-                    elif char == "/" and next_char == "*":
-                        mode = "block_comment"
-                    else:
-                        if char != "\n" or next_char != "\n":
-                            fout.write(char)
-                elif mode == "line_comment":
-                    if char == "\n":
-                        mode = "normal"
-                        fout.write(char)
-                elif mode == "block_comment":
-                    if char == "*" and next_char == "/":
-                        next_char = fin.read(1)
-                        mode = "normal"
-                
-                char = next_char
-            fout.write('\n')
+
+                comment_idx = line.find('#')
+                if comment_idx >= 0:
+                    line = line[:comment_idx]
+
+                line = line.strip()
+                if len(line) > 0 and line[0] == '_':
+                    keyword = line[1:]
+                    line = substitutions[keyword]
+
+                if len(line) > 0:
+                    fout.write(line + '\n')
 
 for child in in_dir.iterdir():
     process_file(child)

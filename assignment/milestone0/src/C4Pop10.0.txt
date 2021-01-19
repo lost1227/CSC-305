@@ -1,23 +1,19 @@
-showVal
-showBoard
+_state
 testRun 42 40
 
-showBoard
-showVal
+_state
 doMove Place F
 
-showBoard
+_state
 doMove Place B
 doMove Take D place D
 doMove Keep C
 
-showBoard
-showVal
+_state
 doMove Pass
 doMove Take G place G
 
-showBoard
-showVal
+_state
 doMove Take D place C
 
 doMove Keep D
@@ -28,71 +24,64 @@ doMove Keep D
 doMove Pass
 doMove Keep D
 doMove Pass
-showBoard
-showVal
+_state
 
 doMove Take B place D
-showBoard
-showVal
+_state
 
 doMove Keep A # EC 7
 doMove Pass
-showBoard
+_state
 undoLastMove 2
 doMove Keep B # EC 8
 doMove Pass
-showBoard
+_state
 undoLastMove 2
 doMove Keep C # EC 8
 doMove Pass
-showBoard
+_state
 undoLastMove 2
 doMove Keep D # EC 7
 doMove Pass
-showBoard
+_state
 undoLastMove 2
 
 doMove Take G place D
 doMove Take E place G
-showBoard
+_state
 
 doMove Keep D
 doMove Pass
-showBoard
-showVal
+_state
 undoLastMove 2
 
 doMove Keep A
 doMove Pass
-showBoard
-showVal
+_state
 undoLastMove 2
 
 doMove Keep G
 doMove Pass
-showBoard
-showVal
+_state
 undoLastMove 2
 
 doMove Keep F
 doMove Pass
-showBoard
-showVal
+_state
 
 doMove Keep G
-showBoard
+_state
 doMove Pass
 doMove Keep F
-showBoard
+_state
 doMove Pass
 doMove Keep E
-showBoard
+_state
 doMove Pass
 doMove Keep D
-showBoard
+_state
 doMove Pass
-showBoard
-showVal
+_state
 doMove Keep C
-showBoard
+_state
 doMove Pass

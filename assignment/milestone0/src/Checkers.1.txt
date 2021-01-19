@@ -1,374 +1,374 @@
 # test move parsing: empty
 enterMove
-showMove
+_pstate
 # test move parsing: many spaces
 enterMove                                                                                                     C1                                                                       -> D2
-showMove
+_pstate
 # test move parsing: lowercase
 enterMove c1 -> d2
-showMove
+_pstate
 # test move parsing: mixed case
 enterMove c1 -> D2
-showMove
+_pstate
 enterMove C1 -> d2
-showMove
+_pstate
 # test move parsing: no spaces
 enterMove c1->d2
-showMove
+_pstate
 # test move parsing: spaces inside cells
 enterMove c    1->d    2
-showMove
+_pstate
 enterMove c     1         ->    d             2
-showMove
+_pstate
 # test move parsing: spaces inside delimiter
 enterMove c1 -   > d2
-showMove
+_pstate
 # test move parsing: no delimiter
 enterMove c1 d2
-showMove
+_pstate
 enterMove c1
-showMove
+_pstate
 enterMove c12
-showMove
+_pstate
 # test move parsing: wrong delimiter
 enterMove c1 <- d2
-showMove
+_pstate
 enterMove c1 _> d2
-showMove
+_pstate
 enterMove c1 *> d2
-showMove
+_pstate
 # test move parsing: extra characters
 enterMove c1 -> d2 asldkjjfjalk
-showMove
+_pstate
 enterMove a;lskdfjalk; c1 -> d2
-showMove
+_pstate
 # test move parsing: only one cell
 enterMove c1
-showMove
+_pstate
 # test move parsing: wrong move type
 enterMove [1,2]
-showMove
+_pstate
 enterMove Pass
-showMove
+_pstate
 enterMove Place B
-showMove
+_pstate
 enterMove Keep D
-showMove
+_pstate
 enterMove Take C place E
-showMove
+_pstate
 # test move parsing: multiple rows
 enterMove CC1 -> d2
-showMove
+_pstate
 enterMove Cc1 -> d2
-showMove
+_pstate
 enterMove Ac1 -> d2
-showMove
+_pstate
 enterMove c    c1 -> d2
-showMove
+_pstate
 enterMove c1 -> DD2
-showMove
+_pstate
 enterMove C1 -> Dd2
-showMove
+_pstate
 enterMove c1 -> cD2
-showMove
+_pstate
 enterMove c1 -> d      d2
-showMove
+_pstate
 enterMove 1 -> d2
-showMove
+_pstate
 enterMove c1 -> 2
-showMove
+_pstate
 # test move parsing: oob row
 enterMove A0 -> d2
-showMove
+_pstate
 enterMove B0 -> d2
-showMove
+_pstate
 enterMove D0 -> d2
-showMove
+_pstate
 enterMove E0 -> d2
-showMove
+_pstate
 enterMove C0 -> d2
-showMove
+_pstate
 enterMove F0 -> d2
-showMove
+_pstate
 enterMove G0 -> d2
-showMove
+_pstate
 enterMove H0 -> d2
-showMove
+_pstate
 enterMove A-1 -> d2
-showMove
+_pstate
 enterMove B-1 -> d2
-showMove
+_pstate
 enterMove D-1 -> d2
-showMove
+_pstate
 enterMove E-1 -> d2
-showMove
+_pstate
 enterMove C-1 -> d2
-showMove
+_pstate
 enterMove F-1 -> d2
-showMove
+_pstate
 enterMove G-1 -> d2
-showMove
+_pstate
 enterMove H-1 -> d2
-showMove
+_pstate
 enterMove c1 -> a0
-showMove
+_pstate
 enterMove c1 -> b0
-showMove
+_pstate
 enterMove c1 -> c0
-showMove
+_pstate
 enterMove c1 -> d0
-showMove
+_pstate
 enterMove c1 -> e0
-showMove
+_pstate
 enterMove c1 -> f0
-showMove
+_pstate
 enterMove c1 -> g0
-showMove
+_pstate
 enterMove c1 -> h0
-showMove
+_pstate
 enterMove c1 -> a-1
-showMove
+_pstate
 enterMove c1 -> b-1
-showMove
+_pstate
 enterMove c1 -> c-1
-showMove
+_pstate
 enterMove c1 -> d-1
-showMove
+_pstate
 enterMove c1 -> e-1
-showMove
+_pstate
 enterMove c1 -> f-1
-showMove
+_pstate
 enterMove c1 -> g-1
-showMove
+_pstate
 enterMove c1 -> h-1
-showMove
+_pstate
 enterMove A9 -> d2
-showMove
+_pstate
 enterMove B9 -> d2
-showMove
+_pstate
 enterMove D9 -> d2
-showMove
+_pstate
 enterMove E9 -> d2
-showMove
+_pstate
 enterMove C9 -> d2
-showMove
+_pstate
 enterMove F9 -> d2
-showMove
+_pstate
 enterMove G9 -> d2
-showMove
+_pstate
 enterMove H9 -> d2
-showMove
+_pstate
 enterMove c1 -> a9
-showMove
+_pstate
 enterMove c1 -> b9
-showMove
+_pstate
 enterMove c1 -> c9
-showMove
+_pstate
 enterMove c1 -> d9
-showMove
+_pstate
 enterMove c1 -> e9
-showMove
+_pstate
 enterMove c1 -> f9
-showMove
+_pstate
 enterMove c1 -> g9
-showMove
+_pstate
 enterMove c1 -> h9
-showMove
+_pstate
 enterMove A10 -> d2
-showMove
+_pstate
 enterMove B10 -> d2
-showMove
+_pstate
 enterMove D10 -> d2
-showMove
+_pstate
 enterMove E10 -> d2
-showMove
+_pstate
 enterMove C10 -> d2
-showMove
+_pstate
 enterMove F10 -> d2
-showMove
+_pstate
 enterMove G10 -> d2
-showMove
+_pstate
 enterMove H10 -> d2
-showMove
+_pstate
 enterMove c1 -> a10
-showMove
+_pstate
 enterMove c1 -> b10
-showMove
+_pstate
 enterMove c1 -> c10
-showMove
+_pstate
 enterMove c1 -> d10
-showMove
+_pstate
 enterMove c1 -> e10
-showMove
+_pstate
 enterMove c1 -> f10
-showMove
+_pstate
 enterMove c1 -> g10
-showMove
+_pstate
 enterMove c1 -> h10
-showMove
+_pstate
 # test move parsing: oob column
 enterMove I1 -> d2
-showMove
+_pstate
 enterMove I2 -> d2
-showMove
+_pstate
 enterMove I3 -> d2
-showMove
+_pstate
 enterMove I4 -> d2
-showMove
+_pstate
 enterMove I5 -> d2
-showMove
+_pstate
 enterMove I6 -> d2
-showMove
+_pstate
 enterMove I7 -> d2
-showMove
+_pstate
 enterMove I8 -> d2
-showMove
+_pstate
 enterMove c1 -> I1
-showMove
+_pstate
 enterMove c1 -> I2
-showMove
+_pstate
 enterMove c1 -> I3
-showMove
+_pstate
 enterMove c1 -> I4
-showMove
+_pstate
 enterMove c1 -> I5
-showMove
+_pstate
 enterMove c1 -> I6
-showMove
+_pstate
 enterMove c1 -> I7
-showMove
+_pstate
 enterMove c1 -> I8
-showMove
+_pstate
 enterMove i1 -> d2
-showMove
+_pstate
 enterMove i2 -> d2
-showMove
+_pstate
 enterMove i3 -> d2
-showMove
+_pstate
 enterMove i4 -> d2
-showMove
+_pstate
 enterMove i5 -> d2
-showMove
+_pstate
 enterMove i6 -> d2
-showMove
+_pstate
 enterMove i7 -> d2
-showMove
+_pstate
 enterMove i8 -> d2
-showMove
+_pstate
 enterMove c1 -> i1
-showMove
+_pstate
 enterMove c1 -> i2
-showMove
+_pstate
 enterMove c1 -> i3
-showMove
+_pstate
 enterMove c1 -> i4
-showMove
+_pstate
 enterMove c1 -> i5
-showMove
+_pstate
 enterMove c1 -> i6
-showMove
+_pstate
 enterMove c1 -> i7
-showMove
+_pstate
 enterMove c1 -> i8
-showMove
+_pstate
 enterMove @1 -> d2
-showMove
+_pstate
 enterMove @2 -> d2
-showMove
+_pstate
 enterMove @3 -> d2
-showMove
+_pstate
 enterMove @4 -> d2
-showMove
+_pstate
 enterMove @5 -> d2
-showMove
+_pstate
 enterMove @6 -> d2
-showMove
+_pstate
 enterMove @7 -> d2
-showMove
+_pstate
 enterMove @8 -> d2
-showMove
+_pstate
 enterMove c1 -> @1
-showMove
+_pstate
 enterMove c1 -> @2
-showMove
+_pstate
 enterMove c1 -> @3
-showMove
+_pstate
 enterMove c1 -> @4
-showMove
+_pstate
 enterMove c1 -> @5
-showMove
+_pstate
 enterMove c1 -> @6
-showMove
+_pstate
 enterMove c1 -> @7
-showMove
+_pstate
 enterMove c1 -> @8
-showMove
+_pstate
 enterMove `1 -> d2
-showMove
+_pstate
 enterMove `2 -> d2
-showMove
+_pstate
 enterMove `3 -> d2
-showMove
+_pstate
 enterMove `4 -> d2
-showMove
+_pstate
 enterMove `5 -> d2
-showMove
+_pstate
 enterMove `6 -> d2
-showMove
+_pstate
 enterMove `7 -> d2
-showMove
+_pstate
 enterMove `8 -> d2
-showMove
+_pstate
 enterMove c1 -> `1
-showMove
+_pstate
 enterMove c1 -> `2
-showMove
+_pstate
 enterMove c1 -> `3
-showMove
+_pstate
 enterMove c1 -> `4
-showMove
+_pstate
 enterMove c1 -> `5
-showMove
+_pstate
 enterMove c1 -> `6
-showMove
+_pstate
 enterMove c1 -> `7
-showMove
+_pstate
 enterMove c1 -> `8
 # test move parsing: oob both
 enterMove @0 -> d2
-showMove
+_pstate
 enterMove `0 -> d2
-showMove
+_pstate
 enterMove I0 -> d2
-showMove
+_pstate
 enterMove i0 -> d2
-showMove
+_pstate
 enterMove @9 -> d2
-showMove
+_pstate
 enterMove `9 -> d2
-showMove
+_pstate
 enterMove I9 -> d2
-showMove
+_pstate
 enterMove i9 -> d2
-showMove
+_pstate
 enterMove c1 -> @0
-showMove
+_pstate
 enterMove c1 -> `0
-showMove
+_pstate
 enterMove c1 -> I0
-showMove
+_pstate
 enterMove c1 -> i0
-showMove
+_pstate
 enterMove c1 -> @9
-showMove
+_pstate
 enterMove c1 -> `9
-showMove
+_pstate
 enterMove c1 -> I9
-showMove
+_pstate
 enterMove c1 -> i9
-showMove
+_pstate
 # test move parsing: multijump
 enterMove c1 -> d2 -> e3
-showMove
+_pstate
 enterMove c1 -> d2 -> e3 -> f4 -> a1 -> c1
-showMove
+_pstate

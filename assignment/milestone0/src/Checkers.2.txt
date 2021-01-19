@@ -1,33 +1,27 @@
-# Hmm, this identified precisely zero bugs
-
 saveBoard init.board
 compareKeys init.board
 
 testPlay 8 150
-showBoard
-showVal
+_state
 saveBoard black_king_win.board
 compareKeys black_king_win.board
 undoLastMove 150
 
 testPlay 10 150
-showBoard
-showVal
+_state
 saveBoard black_mixed_win.board
 compareKeys black_mixed_win.board
 undoLastMove 150
 
 testPlay 0 150
-showBoard
-showVal
+_state
 saveBoard white_mixed_win.board
 compareKeys white_mixed_win.board
 undoLastMove 150
 
 testPlay 1 150
 undoLastMove 5
-showBoard
-showVal
+_state
 doMove C1 -> B2
 doMove A1 -> C3
 doMove G7 -> F6
@@ -37,15 +31,13 @@ doMove D2 -> E3
 doMove D8 -> C7
 doMove E3 -> F2
 doMove G1 -> E3
-showBoard
-showVal
+_state
 saveBoard white_norm_win.board
 compareKeys white_norm_win.board
 undoLastMove 150
 
 testPlay 3 150
-showBoard
-showVal
+_state
 saveBoard white_king_win.board
 compareKeys white_king_win.board
 undoLastMove 150
@@ -63,8 +55,7 @@ compareKeys black_mixed_win.board
 compareKeys white_mixed_win.board
 compareKeys white_norm_win.board
 compareKeys white_king_win.board
-showBoard
-showVal
+_state
 
 loadBoard black_king_win.board
 compareKeys init.board
@@ -72,8 +63,7 @@ compareKeys black_mixed_win.board
 compareKeys white_mixed_win.board
 compareKeys white_norm_win.board
 compareKeys white_king_win.board
-showBoard
-showVal
+_state
 
 loadBoard black_mixed_win.board
 compareKeys black_king_win.board
@@ -81,8 +71,7 @@ compareKeys init.board
 compareKeys white_mixed_win.board
 compareKeys white_norm_win.board
 compareKeys white_king_win.board
-showBoard
-showVal
+_state
 
 loadBoard white_mixed_win.board
 compareKeys black_king_win.board
@@ -90,8 +79,7 @@ compareKeys black_mixed_win.board
 compareKeys init.board
 compareKeys white_norm_win.board
 compareKeys white_king_win.board
-showBoard
-showVal
+_state
 
 loadBoard white_norm_win.board
 compareKeys black_king_win.board
@@ -99,8 +87,7 @@ compareKeys black_mixed_win.board
 compareKeys white_mixed_win.board
 compareKeys init.board
 compareKeys white_king_win.board
-showBoard
-showVal
+_state
 
 loadBoard white_king_win.board
 compareKeys black_king_win.board
@@ -108,31 +95,30 @@ compareKeys black_mixed_win.board
 compareKeys white_mixed_win.board
 compareKeys white_norm_win.board
 compareKeys init.board
-showBoard
-showVal
+_state
 
 loadBoard black_mixed_win.board
 undoLastMove 2
 doMove C5 -> B4
 doMove E5 -> F6
-showVal
+_state
 saveBoard test_keys_kings.board
 doMove B4 -> A5
-showVal
+_state
 compareKeys test_keys_kings.board
 doMove F6 -> E7
-showVal
+_state
 compareKeys test_keys_kings.board
 doMove A5 -> B4
-showVal
+_state
 compareKeys test_keys_kings.board
 doMove E7 -> F6
-showVal
+_state
 compareKeys test_keys_kings.board
 doMove B4 -> A5
 doMove F6 -> G7
-showVal
+_state
 compareKeys test_keys_kings.board
 doMove A5 -> B4
-showVal
+_state
 compareKeys test_keys_kings.board
