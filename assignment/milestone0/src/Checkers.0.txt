@@ -51,3 +51,54 @@ showMoveHist
 showVal
 
 undoLastMove 1000
+doMove C1 -> D2
+showBoard
+showMoveHist
+showVal
+doMove F6 -> E7
+showBoard
+showMoveHist
+showVal
+doMove D2 -> E1
+showBoard
+showMoveHist
+showVal
+doMove G7 -> F6
+showBoard
+showMoveHist
+showVal
+undoLastMove 1000
+
+
+testPlay 6 31
+doMove G7 -> F6
+doMove G5 -> H6
+doMove G1 -> F2
+doMove D8 -> E7
+doMove F8 -> D6
+doMove A3 -> B4
+doMove F2 -> E3
+doMove B4 -> C3
+doMove G3 -> F4
+doMove C3 -> D2
+doMove E3 -> D4
+doMove H6 -> G5
+doMove H8 -> G7
+showBoard
+showMoveHist
+showVal
+saveBoard multijump.board
+doMove G5 -> E3 -> C5 -> E7 -> G5 # EC 11
+showBoard
+showMoveHist
+showVal
+saveBoard counterclockwise.board
+undoLastMove 1
+doMove G5 -> E7 -> C5 -> E3 -> G5
+showBoard
+showMoveHist
+showVal
+saveBoard clockwise.board
+compareKeys multijump.board
+compareKeys clockwise.board
+
