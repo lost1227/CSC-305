@@ -12,7 +12,8 @@ if not out_dir.exists():
 
 substitutions = {
     "state" : "showBoard\nshowVal\nshowMove\nshowMoveHist\nkeyMoveCount",
-    "pstate": "showMove\nshowMoveHist"
+    "pstate": "showMove\nshowMoveHist",
+    "vstate": "showVal\nkeyMoveCount"
 }
 
 def process_file(in_path):
