@@ -1,0 +1,244 @@
+setOptions
+n
+
+_vstate
+
+setOptions
+y
+# king weight
+-10 
+1010
+300
+# back-row weight
+-10
+1010
+100
+# move weight
+-10
+110
+20
+
+_vstate
+setOptions
+y
+0
+0
+0
+_state
+doMove C1 -> D2
+_state
+doMove F8 -> E7
+_vstate
+doMove B2 -> C1
+_vstate
+doMove G7 -> F8
+_vstate
+doMove D2 -> E3
+_vstate
+doMove F2 -> D4 -> B2 # Remove pieces
+_state
+doMove A1 -> C3 # Remove pieces, remove from home
+_state
+doMove G1 -> F2
+_vstate
+doMove C3 -> D2
+_vstate
+doMove F2 -> E3
+_vstate
+doMove A3 -> B2
+_vstate
+doMove H2 -> G1
+_vstate
+doMove B4 -> C3
+_vstate
+doMove F4 -> E5
+_vstate
+doMove D2 -> F4 -> H2 # Remove pieces, make king
+_state
+testPlay 6 20
+_state
+testPlay 6 20
+_state
+testPlay 6 20
+_state
+undoLastMove 1000
+
+
+_vstate
+setOptions
+y
+1000 # king
+0 # home
+0 # turn
+_state
+doMove C1 -> D2
+_state
+doMove F8 -> E7
+_vstate
+doMove B2 -> C1
+_vstate
+doMove G7 -> F8
+_vstate
+doMove D2 -> E3
+_vstate
+doMove F2 -> D4 -> B2 # Remove pieces
+_state
+doMove A1 -> C3 # Remove pieces, remove from home
+_state
+doMove G1 -> F2
+_vstate
+doMove C3 -> D2
+_vstate
+doMove F2 -> E3
+_vstate
+doMove A3 -> B2
+_vstate
+doMove H2 -> G1
+_vstate
+doMove B4 -> C3
+_vstate
+doMove F4 -> E5
+_vstate
+doMove D2 -> F4 -> H2 # Remove pieces, make king
+_state
+testPlay 6 20
+_state
+testPlay 6 20
+_state
+testPlay 6 20
+_state
+undoLastMove 1000
+
+_vstate
+setOptions
+y
+0 # king
+1000 # home
+0 # turn
+_state
+doMove C1 -> D2
+_state
+doMove F8 -> E7
+_vstate
+doMove B2 -> C1
+_vstate
+doMove G7 -> F8
+_vstate
+doMove D2 -> E3
+_vstate
+doMove F2 -> D4 -> B2 # Remove pieces
+_state
+doMove A1 -> C3 # Remove pieces, remove from home
+_state
+doMove G1 -> F2
+_vstate
+doMove C3 -> D2
+_vstate
+doMove F2 -> E3
+_vstate
+doMove A3 -> B2
+_vstate
+doMove H2 -> G1
+_vstate
+doMove B4 -> C3
+_vstate
+doMove F4 -> E5
+_vstate
+doMove D2 -> F4 -> H2 # Remove pieces, make king
+_state
+testPlay 6 20
+_state
+testPlay 6 20
+_state
+testPlay 6 20
+_state
+undoLastMove 1000
+
+_vstate
+setOptions
+y
+0 # king
+0 # home
+100 # turn
+_state
+doMove C1 -> D2
+_state
+doMove F8 -> E7
+_vstate
+doMove B2 -> C1
+_vstate
+doMove G7 -> F8
+_vstate
+doMove D2 -> E3
+_vstate
+doMove F2 -> D4 -> B2 # Remove pieces
+_state
+doMove A1 -> C3 # Remove pieces, remove from home
+_state
+doMove G1 -> F2
+_vstate
+doMove C3 -> D2
+_vstate
+doMove F2 -> E3
+_vstate
+doMove A3 -> B2
+_vstate
+doMove H2 -> G1
+_vstate
+doMove B4 -> C3
+_vstate
+doMove F4 -> E5
+_vstate
+doMove D2 -> F4 -> H2 # Remove pieces, make king
+_state
+testPlay 6 20
+_state
+testPlay 6 20
+_state
+testPlay 6 20
+_state
+undoLastMove 1000
+
+_vstate
+setOptions
+y
+1000 # king
+1000 # home
+100 # turn
+_state
+doMove C1 -> D2
+_state
+doMove F8 -> E7
+_vstate
+doMove B2 -> C1
+_vstate
+doMove G7 -> F8
+_vstate
+doMove D2 -> E3
+_vstate
+doMove F2 -> D4 -> B2 # Remove pieces
+_state
+doMove A1 -> C3 # Remove pieces, remove from home
+_state
+doMove G1 -> F2
+_vstate
+doMove C3 -> D2
+_vstate
+doMove F2 -> E3
+_vstate
+doMove A3 -> B2
+_vstate
+doMove H2 -> G1
+_vstate
+doMove B4 -> C3
+_vstate
+doMove F4 -> E5
+_vstate
+doMove D2 -> F4 -> H2 # Remove pieces, make king
+_state
+testPlay 6 20
+_state
+testPlay 6 20
+_state
+testPlay 6 20
+_state
