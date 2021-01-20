@@ -1,0 +1,473 @@
+setOptions
+n
+
+_state
+
+setOptions
+y
+# Safe disc
+-10
+510
+100
+# Kept disc
+-10
+1010
+120
+# Threats
+-10
+210
+50
+# Move
+-10
+210
+50
+
+_state
+setOptions
+y
+1
+1
+1
+1
+_state
+doMove Place D
+_vstate
+doMove Place D
+_vstate
+doMove Place E
+_vstate
+doMove Place E
+_vstate
+doMove Place C
+_vstate
+doMove Place C
+_vstate
+doMove Place E
+_vstate
+doMove Place B
+_vstate
+doMove Place B
+_vstate
+doMove Place A
+_vstate
+doMove Place A
+_vstate
+doMove Place F
+_vstate
+doMove Place F
+_vstate
+doMove Place D
+_vstate
+doMove Place G
+_vstate
+doMove Place E # R Threat
+_state
+doMove Place G
+_vstate
+doMove Place D
+_vstate
+doMove Place G
+_vstate
+doMove Place D
+_vstate
+doMove Place G # Y safe
+_state
+doMove Place D
+_vstate
+doMove Place G
+_vstate
+doMove Place F
+_vstate
+doMove Place G
+_vstate
+testPlay 8 16
+_state
+doMove Place A
+_state
+doMove Keep G
+_state
+doMove Pass
+_vstate
+doMove Keep G
+_vstate
+doMove Pass
+_vstate
+doMove Keep G
+_vstate
+doMove Pass
+_state
+doMove Take G place G
+_state
+doMove Keep B
+_state
+doMove Pass
+_vstate
+doMove Keep A
+_vstate
+doMove Pass
+_vstate
+doMove Keep F
+_vstate
+doMove Pass
+_state
+# At this point, we cannot move. Possible bug in BoardTest.
+
+undoLastMove 1000
+_state
+setOptions
+y
+500
+1
+1
+1
+_state
+doMove Place D
+_vstate
+doMove Place D
+_vstate
+doMove Place E
+_vstate
+doMove Place E
+_vstate
+doMove Place C
+_vstate
+doMove Place C
+_vstate
+doMove Place E
+_vstate
+doMove Place B
+_vstate
+doMove Place B
+_vstate
+doMove Place A
+_vstate
+doMove Place A
+_vstate
+doMove Place F
+_vstate
+doMove Place F
+_vstate
+doMove Place D
+_vstate
+doMove Place G
+_vstate
+doMove Place E # R Threat
+_state
+doMove Place G
+_vstate
+doMove Place D
+_vstate
+doMove Place G
+_vstate
+doMove Place D
+_vstate
+doMove Place G # Y safe
+_state
+doMove Place D
+_vstate
+doMove Place G
+_vstate
+doMove Place F
+_vstate
+doMove Place G
+_vstate
+testPlay 8 16
+_state
+doMove Place A
+_state
+doMove Keep G
+_state
+doMove Pass
+_vstate
+doMove Keep G
+_vstate
+doMove Pass
+_vstate
+doMove Keep G
+_vstate
+doMove Pass
+_state
+doMove Take G place G
+_state
+doMove Keep B
+_state
+doMove Pass
+_vstate
+doMove Keep A
+_vstate
+doMove Pass
+_vstate
+doMove Keep F
+_vstate
+doMove Pass
+_state
+
+undoLastMove 1000
+_state
+setOptions
+y
+1
+1000
+1
+1
+_state
+doMove Place D
+_vstate
+doMove Place D
+_vstate
+doMove Place E
+_vstate
+doMove Place E
+_vstate
+doMove Place C
+_vstate
+doMove Place C
+_vstate
+doMove Place E
+_vstate
+doMove Place B
+_vstate
+doMove Place B
+_vstate
+doMove Place A
+_vstate
+doMove Place A
+_vstate
+doMove Place F
+_vstate
+doMove Place F
+_vstate
+doMove Place D
+_vstate
+doMove Place G
+_vstate
+doMove Place E # R Threat
+_state
+doMove Place G
+_vstate
+doMove Place D
+_vstate
+doMove Place G
+_vstate
+doMove Place D
+_vstate
+doMove Place G # Y safe
+_state
+doMove Place D
+_vstate
+doMove Place G
+_vstate
+doMove Place F
+_vstate
+doMove Place G
+_vstate
+testPlay 8 16
+_state
+doMove Place A
+_state
+doMove Keep G
+_state
+doMove Pass
+_vstate
+doMove Keep G
+_vstate
+doMove Pass
+_vstate
+doMove Keep G
+_vstate
+doMove Pass
+_state
+doMove Take G place G
+_state
+doMove Keep B
+_state
+doMove Pass
+_vstate
+doMove Keep A
+_vstate
+doMove Pass
+_vstate
+doMove Keep F
+_vstate
+doMove Pass
+_state
+
+undoLastMove 1000
+_state
+setOptions
+y
+1
+1
+200
+1
+_state
+doMove Place D
+_vstate
+doMove Place D
+_vstate
+doMove Place E
+_vstate
+doMove Place E
+_vstate
+doMove Place C
+_vstate
+doMove Place C
+_vstate
+doMove Place E
+_vstate
+doMove Place B
+_vstate
+doMove Place B
+_vstate
+doMove Place A
+_vstate
+doMove Place A
+_vstate
+doMove Place F
+_vstate
+doMove Place F
+_vstate
+doMove Place D
+_vstate
+doMove Place G
+_vstate
+doMove Place E # R Threat
+_state
+doMove Place G
+_vstate
+doMove Place D
+_vstate
+doMove Place G
+_vstate
+doMove Place D
+_vstate
+doMove Place G # Y safe
+_state
+doMove Place D
+_vstate
+doMove Place G
+_vstate
+doMove Place F
+_vstate
+doMove Place G
+_vstate
+testPlay 8 16
+_state
+doMove Place A
+_state
+doMove Keep G
+_state
+doMove Pass
+_vstate
+doMove Keep G
+_vstate
+doMove Pass
+_vstate
+doMove Keep G
+_vstate
+doMove Pass
+_state
+doMove Take G place G
+_state
+doMove Keep B
+_state
+doMove Pass
+_vstate
+doMove Keep A
+_vstate
+doMove Pass
+_vstate
+doMove Keep F
+_vstate
+doMove Pass
+_state
+
+undoLastMove 1000
+_state
+setOptions
+y
+1
+1
+1
+200
+_state
+doMove Place D
+_vstate
+doMove Place D
+_vstate
+doMove Place E
+_vstate
+doMove Place E
+_vstate
+doMove Place C
+_vstate
+doMove Place C
+_vstate
+doMove Place E
+_vstate
+doMove Place B
+_vstate
+doMove Place B
+_vstate
+doMove Place A
+_vstate
+doMove Place A
+_vstate
+doMove Place F
+_vstate
+doMove Place F
+_vstate
+doMove Place D
+_vstate
+doMove Place G
+_vstate
+doMove Place E # R Threat
+_state
+doMove Place G
+_vstate
+doMove Place D
+_vstate
+doMove Place G
+_vstate
+doMove Place D
+_vstate
+doMove Place G # Y safe
+_state
+doMove Place D
+_vstate
+doMove Place G
+_vstate
+doMove Place F
+_vstate
+doMove Place G
+_vstate
+testPlay 8 16
+_state
+doMove Place A
+_state
+doMove Keep G
+_state
+doMove Pass
+_vstate
+doMove Keep G
+_vstate
+doMove Pass
+_vstate
+doMove Keep G
+_vstate
+doMove Pass
+_state
+doMove Take G place G
+_state
+doMove Keep B
+_state
+doMove Pass
+_vstate
+doMove Keep A
+_vstate
+doMove Pass
+_vstate
+doMove Keep F
+_vstate
+doMove Pass
+_state
