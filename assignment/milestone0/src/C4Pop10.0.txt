@@ -1,4 +1,17 @@
 _state
+
+testPlay 2 42
+_state
+doMove Keep F
+doMove Pass
+_state
+undoLastMove 1 # Fixed undo bug?
+_state
+doMove Pass 
+_state # Fixed avoid-same-column bug?
+undoLastMove 1000
+
+_state
 testRun 42 40
 
 _state

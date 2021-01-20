@@ -109,8 +109,8 @@ _vstate
 doMove Keep F
 _vstate
 doMove Pass
+doMove Pass # Fixed Pass when no moves bug?
 _state
-# At this point, we cannot move. Possible bug in BoardTest.
 
 undoLastMove 1000
 _state
