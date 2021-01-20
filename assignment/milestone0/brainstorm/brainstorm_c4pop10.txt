@@ -5,7 +5,43 @@ Edge cases
 4. Place column G
 5. Keep from both ends of 4
 6. Keep from middle of 4
-7. Keep from end of 4, against edge
-8. Keep from middle of 4, against edge
+~7. Keep from end of 4, against edge
+~8. Keep from middle of 4, against edge
 9. Keep from middle of 5
 10. Keep from edge of 5
+11. Take and replace self. E.g., column G contains only one disc and Take G place G.
+
+Board Value Calculation (.2)
+- Safe disks: If n(>=4) disks in a row on the bottom, vertically or horizontally, then n-3 disks are safe
+    > 4 safe disks horizontally
+    > 5 safe disks horizontally
+    > 6 safe disks horizontally
+    > 4 safe disks vertically
+    > 5 safe disks vertically
+    > 6 safe disks vertically
+    > 4 safe disks horizontally and vertically
+    > 5 safe disks horizontally and vertically
+- Threat weight: If n(>=4) disks of other color in a row diagonally, with one on the bottom, then n-1 disks are threats
+    Threats are disks that, if not addressed on this move, allow the opponent to keep a disk.
+    > 4 threats, end at edge
+    > 5 threats, start at edge
+- Kept disks
+- Turn
+
+Board Value Calculation
+- Clint says that this was particularly difficult
+- Block of 4x4: many, many points
+
+Testing advice
+- Don't rely on random testing. It helps, but it's not likely to
+uncover the more interesting/complicated bugs
+- Quality of test is much more important than volume of test
+- Ask yourself: What's going to be hard to code?
+- Move formatting: test the regex.
+- Don't test BoardTest's blocking invalid moves. Instead, use showBoard
+to test the game's list of 
+1. Don't test randomly
+2. Think carefully about unusual cases
+3. Carefully test aspects that you think would be hard to code
+4. Read the spec carefully
+- We can miss up to 7 bugs

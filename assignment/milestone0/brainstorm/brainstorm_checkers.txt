@@ -1,4 +1,4 @@
-Edge cases
+Game Logic (.0)
 ~1. Move normal, no jump
 2. Jump once
 ~3. Jump multiple
@@ -9,3 +9,32 @@ Edge cases
 ~8. King move back normal
 9. King jump back once
 10. King jump back multiple
+11. Return to original location after move
+12. King jumps itself
+
+Parsing (.1)
+1. Squares may be identified using upper or lower case letters
+2. Spaces may appear anywhere in the move except between the - and >
+3. Rows go from A to H
+4. Columns go from 1 to 8
+
+Board Key Comparison (x)
+Equality
+- Starting Board
+- Only one color left
+    - Multiple pieces
+    - One piece: regular, king
+- next player to move is the same
+
+Board Value Calculation (.2)
+- Piece count
+    > No pieces
+- Home row count
+    > All on home row
+    > None on home row
+- Who's turn is it
+    > White's turn
+    > Black's turn
+- King pieces
+    > No kings
+    > All kings
