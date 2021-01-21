@@ -1,0 +1,824 @@
+setOptions
+n
+setOptions
+y
+# Edge weight
+-10
+110
+0
+# Near edge weight
+-10
+110
+0
+# Corner weight
+-10
+110
+0
+# Inner weight
+-10
+110
+0
+doMove [5, 4]
+_vstate
+doMove [5, 3]
+_vstate
+doMove [5, 2]
+_vstate
+doMove [6, 3] # near edge
+_state
+doMove [2, 2]
+_vstate
+doMove [6, 5]
+_vstate
+doMove [7, 4] # edge
+_state
+doMove [4, 5]
+_vstate
+doMove [6, 4]
+_vstate
+doMove [7, 2]
+_vstate
+doMove [6, 2]
+_vstate
+doMove [2, 4]
+_vstate
+doMove [1, 4]
+_vstate
+doMove [6, 1]
+_vstate
+doMove [7, 1]
+_vstate
+doMove [2, 3]
+_vstate
+doMove [3, 6]
+_vstate
+doMove [5, 6]
+_vstate
+doMove [7, 6]
+_vstate
+doMove [0, 4]
+_vstate
+doMove [4, 2]
+_vstate
+doMove [3, 2]
+_vstate
+doMove [5, 1]
+_vstate
+doMove [1, 2]
+_vstate
+doMove [7, 3]
+_vstate
+doMove [6, 6]
+_vstate
+doMove [3, 1]
+_vstate
+doMove [4, 0]
+_vstate
+doMove [2, 0]
+_vstate
+doMove [2, 7]
+_vstate
+doMove [5, 5]
+_vstate
+doMove [6, 0]
+_vstate
+doMove [1, 1]
+_vstate
+doMove [3, 0]
+_vstate
+doMove [0, 2]
+_vstate
+doMove [0, 1]
+_vstate
+doMove [2, 1]
+_vstate
+doMove [4, 1]
+_vstate
+doMove [3, 5]
+_vstate
+doMove [0, 3]
+_vstate
+doMove [5, 7]
+_vstate
+doMove [0, 0] # corner
+_state
+doMove [3, 7]
+_vstate
+doMove [6, 7]
+_vstate
+doMove [4, 6]
+_vstate
+doMove [2, 5]
+_vstate
+doMove [1, 7]
+_vstate
+doMove [7, 5]
+_vstate
+doMove [1, 3]
+_vstate
+doMove [4, 7]
+_vstate
+doMove [1, 5]
+_vstate
+doMove [0, 5]
+_vstate
+doMove [7, 0] # corner
+_vstate
+doMove [1, 0]
+_vstate
+doMove [1, 6]
+_vstate
+doMove [0, 7] # corner
+_vstate
+doMove [5, 0]
+_vstate
+doMove [0, 6]
+_vstate
+doMove [2, 6]
+_vstate
+doMove [7, 7] # corner
+_vstate
+doMove Pass
+_vstate
+doMove Pass
+_state
+undoLastMove 1000
+
+setOptions
+y
+# Edge weight
+100
+# Near edge weight
+100
+# Corner weight
+100
+# Inner weight
+100
+doMove [5, 4]
+_vstate
+doMove [5, 3]
+_vstate
+doMove [5, 2]
+_vstate
+doMove [6, 3] # near edge
+_state
+doMove [2, 2]
+_vstate
+doMove [6, 5]
+_vstate
+doMove [7, 4] # edge
+_state
+doMove [4, 5]
+_vstate
+doMove [6, 4]
+_vstate
+doMove [7, 2]
+_vstate
+doMove [6, 2]
+_vstate
+doMove [2, 4]
+_vstate
+doMove [1, 4]
+_vstate
+doMove [6, 1]
+_vstate
+doMove [7, 1]
+_vstate
+doMove [2, 3]
+_vstate
+doMove [3, 6]
+_vstate
+doMove [5, 6]
+_vstate
+doMove [7, 6]
+_vstate
+doMove [0, 4]
+_vstate
+doMove [4, 2]
+_vstate
+doMove [3, 2]
+_vstate
+doMove [5, 1]
+_vstate
+doMove [1, 2]
+_vstate
+doMove [7, 3]
+_vstate
+doMove [6, 6]
+_vstate
+doMove [3, 1]
+_vstate
+doMove [4, 0]
+_vstate
+doMove [2, 0]
+_vstate
+doMove [2, 7]
+_vstate
+doMove [5, 5]
+_vstate
+doMove [6, 0]
+_vstate
+doMove [1, 1]
+_vstate
+doMove [3, 0]
+_vstate
+doMove [0, 2]
+_vstate
+doMove [0, 1]
+_vstate
+doMove [2, 1]
+_vstate
+doMove [4, 1]
+_vstate
+doMove [3, 5]
+_vstate
+doMove [0, 3]
+_vstate
+doMove [5, 7]
+_vstate
+doMove [0, 0] # corner
+_state
+doMove [3, 7]
+_vstate
+doMove [6, 7]
+_vstate
+doMove [4, 6]
+_vstate
+doMove [2, 5]
+_vstate
+doMove [1, 7]
+_vstate
+doMove [7, 5]
+_vstate
+doMove [1, 3]
+_vstate
+doMove [4, 7]
+_vstate
+doMove [1, 5]
+_vstate
+doMove [0, 5]
+_vstate
+doMove [7, 0] # corner
+_vstate
+doMove [1, 0]
+_vstate
+doMove [1, 6]
+_vstate
+doMove [0, 7] # corner
+_vstate
+doMove [5, 0]
+_vstate
+doMove [0, 6]
+_vstate
+doMove [2, 6]
+_vstate
+doMove [7, 7] # corner
+_vstate
+doMove Pass
+_vstate
+doMove Pass
+_state
+undoLastMove 1000
+
+setOptions
+y
+# Edge weight
+100
+# Near edge weight
+0
+# Corner weight
+0
+# Inner weight
+0
+doMove [5, 4]
+_vstate
+doMove [5, 3]
+_vstate
+doMove [5, 2]
+_vstate
+doMove [6, 3] # near edge
+_state
+doMove [2, 2]
+_vstate
+doMove [6, 5]
+_vstate
+doMove [7, 4] # edge
+_state
+doMove [4, 5]
+_vstate
+doMove [6, 4]
+_vstate
+doMove [7, 2]
+_vstate
+doMove [6, 2]
+_vstate
+doMove [2, 4]
+_vstate
+doMove [1, 4]
+_vstate
+doMove [6, 1]
+_vstate
+doMove [7, 1]
+_vstate
+doMove [2, 3]
+_vstate
+doMove [3, 6]
+_vstate
+doMove [5, 6]
+_vstate
+doMove [7, 6]
+_vstate
+doMove [0, 4]
+_vstate
+doMove [4, 2]
+_vstate
+doMove [3, 2]
+_vstate
+doMove [5, 1]
+_vstate
+doMove [1, 2]
+_vstate
+doMove [7, 3]
+_vstate
+doMove [6, 6]
+_vstate
+doMove [3, 1]
+_vstate
+doMove [4, 0]
+_vstate
+doMove [2, 0]
+_vstate
+doMove [2, 7]
+_vstate
+doMove [5, 5]
+_vstate
+doMove [6, 0]
+_vstate
+doMove [1, 1]
+_vstate
+doMove [3, 0]
+_vstate
+doMove [0, 2]
+_vstate
+doMove [0, 1]
+_vstate
+doMove [2, 1]
+_vstate
+doMove [4, 1]
+_vstate
+doMove [3, 5]
+_vstate
+doMove [0, 3]
+_vstate
+doMove [5, 7]
+_vstate
+doMove [0, 0] # corner
+_state
+doMove [3, 7]
+_vstate
+doMove [6, 7]
+_vstate
+doMove [4, 6]
+_vstate
+doMove [2, 5]
+_vstate
+doMove [1, 7]
+_vstate
+doMove [7, 5]
+_vstate
+doMove [1, 3]
+_vstate
+doMove [4, 7]
+_vstate
+doMove [1, 5]
+_vstate
+doMove [0, 5]
+_vstate
+doMove [7, 0] # corner
+_vstate
+doMove [1, 0]
+_vstate
+doMove [1, 6]
+_vstate
+doMove [0, 7] # corner
+_vstate
+doMove [5, 0]
+_vstate
+doMove [0, 6]
+_vstate
+doMove [2, 6]
+_vstate
+doMove [7, 7] # corner
+_vstate
+doMove Pass
+_vstate
+doMove Pass
+_state
+undoLastMove 1000
+
+setOptions
+y
+# Edge weight
+0
+# Near edge weight
+0
+# Corner weight
+0
+# Inner weight
+100
+doMove [5, 4]
+_vstate
+doMove [5, 3]
+_vstate
+doMove [5, 2]
+_vstate
+doMove [6, 3] # near edge
+_state
+doMove [2, 2]
+_vstate
+doMove [6, 5]
+_vstate
+doMove [7, 4] # edge
+_state
+doMove [4, 5]
+_vstate
+doMove [6, 4]
+_vstate
+doMove [7, 2]
+_vstate
+doMove [6, 2]
+_vstate
+doMove [2, 4]
+_vstate
+doMove [1, 4]
+_vstate
+doMove [6, 1]
+_vstate
+doMove [7, 1]
+_vstate
+doMove [2, 3]
+_vstate
+doMove [3, 6]
+_vstate
+doMove [5, 6]
+_vstate
+doMove [7, 6]
+_vstate
+doMove [0, 4]
+_vstate
+doMove [4, 2]
+_vstate
+doMove [3, 2]
+_vstate
+doMove [5, 1]
+_vstate
+doMove [1, 2]
+_vstate
+doMove [7, 3]
+_vstate
+doMove [6, 6]
+_vstate
+doMove [3, 1]
+_vstate
+doMove [4, 0]
+_vstate
+doMove [2, 0]
+_vstate
+doMove [2, 7]
+_vstate
+doMove [5, 5]
+_vstate
+doMove [6, 0]
+_vstate
+doMove [1, 1]
+_vstate
+doMove [3, 0]
+_vstate
+doMove [0, 2]
+_vstate
+doMove [0, 1]
+_vstate
+doMove [2, 1]
+_vstate
+doMove [4, 1]
+_vstate
+doMove [3, 5]
+_vstate
+doMove [0, 3]
+_vstate
+doMove [5, 7]
+_vstate
+doMove [0, 0] # corner
+_state
+doMove [3, 7]
+_vstate
+doMove [6, 7]
+_vstate
+doMove [4, 6]
+_vstate
+doMove [2, 5]
+_vstate
+doMove [1, 7]
+_vstate
+doMove [7, 5]
+_vstate
+doMove [1, 3]
+_vstate
+doMove [4, 7]
+_vstate
+doMove [1, 5]
+_vstate
+doMove [0, 5]
+_vstate
+doMove [7, 0] # corner
+_vstate
+doMove [1, 0]
+_vstate
+doMove [1, 6]
+_vstate
+doMove [0, 7] # corner
+_vstate
+doMove [5, 0]
+_vstate
+doMove [0, 6]
+_vstate
+doMove [2, 6]
+_vstate
+doMove [7, 7] # corner
+_vstate
+doMove Pass
+_vstate
+doMove Pass
+_state
+undoLastMove 1000
+
+setOptions
+y
+# Edge weight
+0
+# Near edge weight
+0
+# Corner weight
+100
+# Inner weight
+0
+doMove [5, 4]
+_vstate
+doMove [5, 3]
+_vstate
+doMove [5, 2]
+_vstate
+doMove [6, 3] # near edge
+_state
+doMove [2, 2]
+_vstate
+doMove [6, 5]
+_vstate
+doMove [7, 4] # edge
+_state
+doMove [4, 5]
+_vstate
+doMove [6, 4]
+_vstate
+doMove [7, 2]
+_vstate
+doMove [6, 2]
+_vstate
+doMove [2, 4]
+_vstate
+doMove [1, 4]
+_vstate
+doMove [6, 1]
+_vstate
+doMove [7, 1]
+_vstate
+doMove [2, 3]
+_vstate
+doMove [3, 6]
+_vstate
+doMove [5, 6]
+_vstate
+doMove [7, 6]
+_vstate
+doMove [0, 4]
+_vstate
+doMove [4, 2]
+_vstate
+doMove [3, 2]
+_vstate
+doMove [5, 1]
+_vstate
+doMove [1, 2]
+_vstate
+doMove [7, 3]
+_vstate
+doMove [6, 6]
+_vstate
+doMove [3, 1]
+_vstate
+doMove [4, 0]
+_vstate
+doMove [2, 0]
+_vstate
+doMove [2, 7]
+_vstate
+doMove [5, 5]
+_vstate
+doMove [6, 0]
+_vstate
+doMove [1, 1]
+_vstate
+doMove [3, 0]
+_vstate
+doMove [0, 2]
+_vstate
+doMove [0, 1]
+_vstate
+doMove [2, 1]
+_vstate
+doMove [4, 1]
+_vstate
+doMove [3, 5]
+_vstate
+doMove [0, 3]
+_vstate
+doMove [5, 7]
+_vstate
+doMove [0, 0] # corner
+_state
+doMove [3, 7]
+_vstate
+doMove [6, 7]
+_vstate
+doMove [4, 6]
+_vstate
+doMove [2, 5]
+_vstate
+doMove [1, 7]
+_vstate
+doMove [7, 5]
+_vstate
+doMove [1, 3]
+_vstate
+doMove [4, 7]
+_vstate
+doMove [1, 5]
+_vstate
+doMove [0, 5]
+_vstate
+doMove [7, 0] # corner
+_vstate
+doMove [1, 0]
+_vstate
+doMove [1, 6]
+_vstate
+doMove [0, 7] # corner
+_vstate
+doMove [5, 0]
+_vstate
+doMove [0, 6]
+_vstate
+doMove [2, 6]
+_vstate
+doMove [7, 7] # corner
+_vstate
+doMove Pass
+_vstate
+doMove Pass
+_state
+undoLastMove 1000
+
+setOptions
+y
+# Edge weight
+100
+# Near edge weight
+100
+# Corner weight
+100
+# Inner weight
+100
+doMove [5, 4]
+_vstate
+doMove [5, 3]
+_vstate
+doMove [5, 2]
+_vstate
+doMove [6, 3] # near edge
+_state
+doMove [2, 2]
+_vstate
+doMove [6, 5]
+_vstate
+doMove [7, 4] # edge
+_state
+doMove [4, 5]
+_vstate
+doMove [6, 4]
+_vstate
+doMove [7, 2]
+_vstate
+doMove [6, 2]
+_vstate
+doMove [2, 4]
+_vstate
+doMove [1, 4]
+_vstate
+doMove [6, 1]
+_vstate
+doMove [7, 1]
+_vstate
+doMove [2, 3]
+_vstate
+doMove [3, 6]
+_vstate
+doMove [5, 6]
+_vstate
+doMove [7, 6]
+_vstate
+doMove [0, 4]
+_vstate
+doMove [4, 2]
+_vstate
+doMove [3, 2]
+_vstate
+doMove [5, 1]
+_vstate
+doMove [1, 2]
+_vstate
+doMove [7, 3]
+_vstate
+doMove [6, 6]
+_vstate
+doMove [3, 1]
+_vstate
+doMove [4, 0]
+_vstate
+doMove [2, 0]
+_vstate
+doMove [2, 7]
+_vstate
+doMove [5, 5]
+_vstate
+doMove [6, 0]
+_vstate
+doMove [1, 1]
+_vstate
+doMove [3, 0]
+_vstate
+doMove [0, 2]
+_vstate
+doMove [0, 1]
+_vstate
+doMove [2, 1]
+_vstate
+doMove [4, 1]
+_vstate
+doMove [3, 5]
+_vstate
+doMove [0, 3]
+_vstate
+doMove [5, 7]
+_vstate
+doMove [0, 0] # corner
+_state
+doMove [3, 7]
+_vstate
+doMove [6, 7]
+_vstate
+doMove [4, 6]
+_vstate
+doMove [2, 5]
+_vstate
+doMove [1, 7]
+_vstate
+doMove [7, 5]
+_vstate
+doMove [1, 3]
+_vstate
+doMove [4, 7]
+_vstate
+doMove [1, 5]
+_vstate
+doMove [0, 5]
+_vstate
+doMove [7, 0] # corner
+_vstate
+doMove [1, 0]
+_vstate
+doMove [1, 6]
+_vstate
+doMove [0, 7] # corner
+_vstate
+doMove [5, 0]
+_vstate
+doMove [0, 6]
+_vstate
+doMove [2, 6]
+_vstate
+doMove [7, 7] # corner
+_vstate
+doMove Pass
+_vstate
+doMove Pass
+_state

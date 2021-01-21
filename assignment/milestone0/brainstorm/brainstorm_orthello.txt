@@ -8,3 +8,14 @@ Edge cases
 7. Skip own color disk: b w b w w b -> b b b w w b not b b b b b b
 8. Test no cascades
 9. Test game over: no player can move
+10. Test pass and continue
+
+Board value calculations (.2)
+- Points per normal piece
+- points per edge
+- Points per corner
+- Points per edge-1
+
+1. Test all 4 corners
+2. Test all Edges
+3. Test 1 away from edge
