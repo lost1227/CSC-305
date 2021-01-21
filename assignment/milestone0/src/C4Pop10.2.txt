@@ -109,7 +109,54 @@ _vstate
 doMove Keep F
 _vstate
 doMove Pass
+_vstate
 doMove Pass # Fixed Pass when no moves bug?
+_state
+doMove Keep F
+_vstate
+doMove Pass
+_vstate
+doMove Keep A
+doMove Pass
+_vstate
+doMove Keep B
+doMove Pass
+_vstate
+doMove Take A place G
+_vstate
+doMove Keep A
+_vstate
+doMove Pass
+_vstate
+doMove Keep B
+doMove Pass
+_vstate
+doMove Keep B
+doMove Pass
+_vstate
+doMove Keep F
+_vstate
+doMove Pass
+_vstate
+doMove Pass
+_vstate
+doMove Keep D
+doMove Pass
+_vstate
+doMove Keep G
+_vstate
+doMove Pass
+_vstate
+doMove Take A place G
+_vstate
+doMove Keep D
+doMove Pass
+showVal
+doMove Keep A
+_vstate
+doMove Pass
+_vstate
+doMove Keep D # Game over!
 _state
 
 undoLastMove 1000
@@ -200,6 +247,54 @@ _vstate
 doMove Keep F
 _vstate
 doMove Pass
+_vstate
+doMove Pass # Fixed Pass when no moves bug?
+_state
+doMove Keep F
+_vstate
+doMove Pass
+_vstate
+doMove Keep A
+doMove Pass
+_vstate
+doMove Keep B
+doMove Pass
+_vstate
+doMove Take A place G
+_vstate
+doMove Keep A
+_vstate
+doMove Pass
+_vstate
+doMove Keep B
+doMove Pass
+_vstate
+doMove Keep B
+doMove Pass
+_vstate
+doMove Keep F
+_vstate
+doMove Pass
+_vstate
+doMove Pass
+_vstate
+doMove Keep D
+doMove Pass
+_vstate
+doMove Keep G
+_vstate
+doMove Pass
+_vstate
+doMove Take A place G
+_vstate
+doMove Keep D
+doMove Pass
+showVal
+doMove Keep A
+_vstate
+doMove Pass
+_vstate
+doMove Keep D # Game over!
 _state
 
 undoLastMove 1000
@@ -210,7 +305,6 @@ y
 1000
 1
 1
-_state
 doMove Place D
 _vstate
 doMove Place D
@@ -290,6 +384,54 @@ _vstate
 doMove Keep F
 _vstate
 doMove Pass
+_vstate
+doMove Pass # Fixed Pass when no moves bug?
+_state
+doMove Keep F
+_vstate
+doMove Pass
+_vstate
+doMove Keep A
+doMove Pass
+_vstate
+doMove Keep B
+doMove Pass
+_vstate
+doMove Take A place G
+_vstate
+doMove Keep A
+_vstate
+doMove Pass
+_vstate
+doMove Keep B
+doMove Pass
+_vstate
+doMove Keep B
+doMove Pass
+_vstate
+doMove Keep F
+_vstate
+doMove Pass
+_vstate
+doMove Pass
+_vstate
+doMove Keep D
+doMove Pass
+_vstate
+doMove Keep G
+_vstate
+doMove Pass
+_vstate
+doMove Take A place G
+_vstate
+doMove Keep D
+doMove Pass
+showVal
+doMove Keep A
+_vstate
+doMove Pass
+_vstate
+doMove Keep D # Game over!
 _state
 
 undoLastMove 1000
@@ -300,7 +442,6 @@ y
 1
 200
 1
-_state
 doMove Place D
 _vstate
 doMove Place D
@@ -380,6 +521,54 @@ _vstate
 doMove Keep F
 _vstate
 doMove Pass
+_vstate
+doMove Pass # Fixed Pass when no moves bug?
+_state
+doMove Keep F
+_vstate
+doMove Pass
+_vstate
+doMove Keep A
+doMove Pass
+_vstate
+doMove Keep B
+doMove Pass
+_vstate
+doMove Take A place G
+_vstate
+doMove Keep A
+_vstate
+doMove Pass
+_vstate
+doMove Keep B
+doMove Pass
+_vstate
+doMove Keep B
+doMove Pass
+_vstate
+doMove Keep F
+_vstate
+doMove Pass
+_vstate
+doMove Pass
+_vstate
+doMove Keep D
+doMove Pass
+_vstate
+doMove Keep G
+_vstate
+doMove Pass
+_vstate
+doMove Take A place G
+_vstate
+doMove Keep D
+doMove Pass
+showVal
+doMove Keep A
+_vstate
+doMove Pass
+_vstate
+doMove Keep D # Game over!
 _state
 
 undoLastMove 1000
@@ -390,7 +579,6 @@ y
 1
 1
 200
-_state
 doMove Place D
 _vstate
 doMove Place D
@@ -470,4 +658,52 @@ _vstate
 doMove Keep F
 _vstate
 doMove Pass
+_vstate
+doMove Pass # Fixed Pass when no moves bug?
+_state
+doMove Keep F
+_vstate
+doMove Pass
+_vstate
+doMove Keep A
+doMove Pass
+_vstate
+doMove Keep B
+doMove Pass
+_vstate
+doMove Take A place G
+_vstate
+doMove Keep A
+_vstate
+doMove Pass
+_vstate
+doMove Keep B
+doMove Pass
+_vstate
+doMove Keep B
+doMove Pass
+_vstate
+doMove Keep F
+_vstate
+doMove Pass
+_vstate
+doMove Pass
+_vstate
+doMove Keep D
+doMove Pass
+_vstate
+doMove Keep G
+_vstate
+doMove Pass
+_vstate
+doMove Take A place G
+_vstate
+doMove Keep D
+doMove Pass
+showVal
+doMove Keep A
+_vstate
+doMove Pass
+_vstate
+doMove Keep D # Game over!
 _state
