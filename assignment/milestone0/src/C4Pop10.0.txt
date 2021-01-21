@@ -24,10 +24,10 @@ doMove Keep C
 
 _state
 doMove Pass
-doMove Take G place G
+doMove Take G place C
 
 _state
-doMove Take D place C
+doMove Take D place G
 
 doMove Keep D
 doMove Pass
