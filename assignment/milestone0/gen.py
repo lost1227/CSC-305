@@ -51,6 +51,8 @@ usersys_re = re.compile("(\\d+)\\.(\\d{2})(?:user|system)")
 def check_limits(file):
     boardName = file.stem + "Board"
     with file.open("r") as f:
+        status = "Success"
+        message = ""
         completion = subprocess.run([
             "time",
             boardTest,
@@ -61,6 +63,10 @@ def check_limits(file):
         stderr=subprocess.PIPE)
         
         output_size = len(completion.stdout)
+        output = completion.stdout.decode()
+        if output.find("Invalid move being applied") > -1:
+            status = "WARN"
+            message += "  inputs contained invalid moves\n"
 
         times = completion.stderr.decode().split(' ')[:3]
 
@@ -76,26 +82,31 @@ def check_limits(file):
         system_t = int(system_m.group(1)) + (int(system_m.group(2)) / 100)
         real_t = (int(real_m.group(1)) * 60) + int(real_m.group(2)) + (int(real_m.group(3)) / 100)
 
-        success = True
-
         if output_size >= max_outsize:
-            print("FAILURE! {}".format(file))
-            print("  output is {} bytes ({:.1f}kB)".format(output_size, output_size / 1000))
-            success = False
+            status = "FAILURE"
+            message += "  output is {} bytes ({:.1f}kB)\n".format(output_size, output_size / 1000)
         
         if real_t > max_outtime:
-            if success:
-                print("FAILURE! {}".format(file))
-            print("  execution took {:.2f} seconds".format(real_t))
+            status = "FAILURE"
+            message += "  execution took {:.2f} seconds\n".format(real_t)
         
-        return success
+        if status != "Success":
+            print("{}! {}".format(status,file))
+            print(message, end='')
+
+        return status != "FAILURE"
+
+rc = 0
 
 for child in in_dir.iterdir():
     process_file(child)
 
 for child in out_dir.iterdir():
     if not check_limits(child):
-        exit(1)
+        rc = 1
+        break
 
 for child in Path(".").glob("*.board"):
     child.unlink()
+
+exit(rc)
