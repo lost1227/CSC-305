@@ -1,0 +1,119 @@
+# Move key tests
+keyMoveCount
+
+enterMove Pass
+compareMove Pass
+
+enterMove [4,5]
+compareMove [4,5]
+compareMove [3,5]
+compareMove [5,5]
+compareMove [0,5]
+compareMove [7,5]
+compareMove [3,7]
+compareMove [0,7]
+compareMove [5,0]
+compareMove [7,0]
+compareMove [4,4]
+compareMove [4,6]
+compareMove [4,0]
+compareMove [4,7]
+compareMove [0,0]
+compareMove [7,7]
+compareMove Pass
+applyMove
+_state
+
+enterMove [5,3]
+compareMove [5,3]
+compareMove [4,3]
+compareMove [6,3]
+compareMove [0,3]
+compareMove [7,3]
+compareMove [4,0]
+compareMove [6,0]
+compareMove [0,0]
+compareMove [7,0]
+compareMove [4,7]
+compareMove [6,7]
+compareMove [0,7]
+compareMove [7,7]
+compareMove [5,2]
+compareMove [5,4]
+compareMove [5,0]
+compareMove [5,7]
+compareMove Pass
+applyMove
+_state
+
+enterMove Pass
+compareMove [5,3]
+compareMove [4,3]
+compareMove [6,3]
+compareMove [0,3]
+compareMove [7,3]
+compareMove [4,0]
+compareMove [6,0]
+compareMove [0,0]
+compareMove [7,0]
+compareMove [4,7]
+compareMove [6,7]
+compareMove [0,7]
+compareMove [7,7]
+compareMove [5,2]
+compareMove [5,4]
+compareMove [5,0]
+compareMove [5,7]
+_state
+undoLastMove 1000
+
+# Board key tests
+# Test: identical boards with different move histories
+_state
+doMove [2, 3]
+doMove [2, 2]
+doMove [3, 2]
+_state
+saveBoard equal.board
+undoLastMove 3
+_state
+doMove [3, 2]
+doMove [2, 2]
+doMove [2, 3]
+_state
+compareKeys equal.board
+
+# Test that loading board sets options
+setOptions
+y
+10
+20
+30
+40
+
+compareKeys equal.board
+setOptions
+n
+
+undoLastMove 1000
+
+doMove [4,5]
+doMove [5,3]
+doMove [4,2]
+doMove [3,5]
+doMove [2,4]
+doMove [5,5]
+doMove [4,6]
+doMove [5,4]
+doMove [6,4]
+
+saveBoard equal2.board
+_state
+compareKeys equal2.board
+_state
+doMove Pass
+compareKeys equal2.board
+_state
+doMove Pass
+compareKeys equal2.board
+_state

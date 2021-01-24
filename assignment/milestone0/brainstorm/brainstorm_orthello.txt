@@ -19,3 +19,15 @@ Board value calculations (.2)
 1. Test all 4 corners
 2. Test all Edges
 3. Test 1 away from edge
+
+Board and Move Keys (.3)
+
+Moves A and B
+- A == B when (A.row == B.row && A.col == b.col) || (A == "Pass" && B == "Pass")
+- A < B when
+    A.row < B.row
+    IF A.row == B.row, THEN A.col < B.col
+    IF A == "Pass" and B != "Pass"
+
+Boards A and B
+- A == B if foreach(A[i,j] == B[i,j]) && A.next_player == B.next_player
