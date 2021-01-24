@@ -68,9 +68,63 @@ doMove G5 -> E3 -> C5 -> E7 -> G5 # EC 11
 _state
 saveBoard counterclockwise.board
 undoLastMove 1
-doMove G5 -> E7 -> C5 -> E3 -> G5
+enterMove G5 -> E7 -> C5 -> E3 -> G5
+compareMove G5 -> E3 -> C5 -> E7 -> G5
+applyMove
 _state
 saveBoard clockwise.board
 compareKeys multijump.board
 compareKeys clockwise.board
 
+undoLastMove 1000
+
+doMove C1 -> D2
+doMove F2 -> E1
+doMove B2 -> C1
+doMove F4 -> E3
+doMove D2 -> F4
+doMove G3 -> E5
+doMove A1 -> B2
+doMove E1 -> D2
+doMove C1 -> E3
+doMove E5 -> D4
+doMove C3 -> E5
+doMove F6 -> D4
+doMove B2 -> C1
+doMove D4 -> C3
+doMove B4 -> D2
+doMove F8 -> E7
+doMove A3 -> B2
+doMove E7 -> D6
+doMove C5 -> E7
+doMove G1 -> F2
+doMove E3 -> G1
+doMove G5 -> F4
+doMove A5 -> B4
+doMove F4 -> E3
+doMove D2 -> F4
+doMove G7 -> F6
+doMove E7 -> G5
+doMove H4 -> F6
+doMove B2 -> C3
+doMove F6 -> E5
+doMove B4 -> C5
+doMove E5 -> D4
+doMove C3 -> E5
+doMove H2 -> G3
+doMove F4 -> H2
+doMove H6 -> G5
+doMove C1 -> D2
+doMove G5 -> F4
+doMove E5 -> G3
+doMove H8 -> G7
+doMove C5 -> D4
+doMove G7 -> F6
+doMove B6 -> C5
+doMove F6 -> E7
+doMove A7 -> B6
+_state
+doMove E7 -> D8
+_state
+doMove C5 -> D6 # EC 13
+_state

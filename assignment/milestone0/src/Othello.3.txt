@@ -1,5 +1,5 @@
 # Move key tests
-keyMoveCount
+_state
 
 enterMove Pass
 compareMove Pass

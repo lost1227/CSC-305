@@ -1,0 +1,97 @@
+_state
+enterMove C3 -> E5
+compareMove B2 -> D4
+compareMove B3 -> D4
+compareMove B4 -> D4
+compareMove C2 -> D4
+compareMove C3 -> D4
+compareMove C4 -> D4
+compareMove D2 -> D4
+compareMove D3 -> D4
+compareMove D4 -> D4
+compareMove B2 -> D5
+compareMove B3 -> D5
+compareMove B4 -> D5
+compareMove C2 -> D5
+compareMove C3 -> D5
+compareMove C4 -> D5
+compareMove D2 -> D5
+compareMove D3 -> D5
+compareMove D4 -> D5
+compareMove B2 -> D6
+compareMove B3 -> D6
+compareMove B4 -> D6
+compareMove C2 -> D6
+compareMove C3 -> D6
+compareMove C4 -> D6
+compareMove D2 -> D6
+compareMove D3 -> D6
+compareMove D4 -> D6
+compareMove B2 -> E4
+compareMove B3 -> E4
+compareMove B4 -> E4
+compareMove C2 -> E4
+compareMove C3 -> E4
+compareMove C4 -> E4
+compareMove D2 -> E4
+compareMove D3 -> E4
+compareMove D4 -> E4
+compareMove B2 -> E5
+compareMove B3 -> E5
+compareMove B4 -> E5
+compareMove C2 -> E5
+compareMove C3 -> E5
+compareMove C4 -> E5
+compareMove D2 -> E5
+compareMove D3 -> E5
+compareMove D4 -> E5
+compareMove B2 -> E6
+compareMove B3 -> E6
+compareMove B4 -> E6
+compareMove C2 -> E6
+compareMove C3 -> E6
+compareMove C4 -> E6
+compareMove D2 -> E6
+compareMove D3 -> E6
+compareMove D4 -> E6
+compareMove B2 -> F4
+compareMove B3 -> F4
+compareMove B4 -> F4
+compareMove C2 -> F4
+compareMove C3 -> F4
+compareMove C4 -> F4
+compareMove D2 -> F4
+compareMove D3 -> F4
+compareMove D4 -> F4
+compareMove B2 -> F5
+compareMove B3 -> F5
+compareMove B4 -> F5
+compareMove C2 -> F5
+compareMove C3 -> F5
+compareMove C4 -> F5
+compareMove D2 -> F5
+compareMove D3 -> F5
+compareMove D4 -> F5
+compareMove B2 -> F6
+compareMove B3 -> F6
+compareMove B4 -> F6
+compareMove C2 -> F6
+compareMove C3 -> F6
+compareMove C4 -> F6
+compareMove D2 -> F6
+compareMove D3 -> F6
+compareMove D4 -> F6
+
+_state
+
+compareMove C0 -> E5
+compareMove C9 -> E5
+compareMove C3 -> E0
+compareMove C3 -> E9
+
+_state
+
+compareMove C3 -> E5 -> G6
+compareMove C3 -> E5 -> G3
+
+_state
