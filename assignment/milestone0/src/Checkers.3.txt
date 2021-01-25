@@ -95,3 +95,37 @@ compareMove C3 -> E5 -> G6
 compareMove C3 -> E5 -> G3
 
 _state
+
+undoLastMove 1000
+testPlay 10 16
+doMove C7 -> E5
+doMove F6 -> D4
+doMove C3 -> E5
+doMove E1 -> C3
+doMove B2 -> D4
+doMove G7 -> F6
+doMove E5 -> G7
+doMove H8 -> F6
+doMove C5 -> D6
+doMove H6 -> G5
+doMove F8 -> G7
+doMove F2 -> E1
+doMove A3 -> B4
+doMove G1 -> F2
+doMove D4 -> E5
+doMove F6 -> D4
+doMove A1 -> B2
+doMove G3 -> F4
+doMove B2 -> C3
+doMove D4 -> B2
+_state
+saveBoard no_kings.board
+compareKeys no_kings.board
+doMove G7 -> H8
+doMove B2 -> A1
+_state
+compareKeys no_kings.board
+doMove H8 -> G7
+doMove A1 -> B2
+_state
+compareKeys no_kings.board

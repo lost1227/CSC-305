@@ -64,7 +64,9 @@ doMove H6 -> G5
 doMove H8 -> G7
 _state
 saveBoard multijump.board
-doMove G5 -> E3 -> C5 -> E7 -> G5 # EC 11
+enterMove G5 -> E3 -> C5 -> E7 -> G5 # EC 11
+compareMove G5 -> E7 -> C5 -> E3 -> G5
+applyMove
 _state
 saveBoard counterclockwise.board
 undoLastMove 1

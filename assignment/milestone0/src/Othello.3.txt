@@ -64,6 +64,7 @@ compareMove [5,2]
 compareMove [5,4]
 compareMove [5,0]
 compareMove [5,7]
+compareMove Pass
 _state
 undoLastMove 1000
 

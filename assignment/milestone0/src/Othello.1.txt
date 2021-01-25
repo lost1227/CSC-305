@@ -1,3 +1,28 @@
+setOptions
+sure
+setOption
+ny
+setOptions
+  yn
+8
+0
+16
+1
+setOptions
+
+yes
+8 0 16 1
+8 testabc
+
+
+8
+
+    16    
+
+1 testabc
+
+1
+
 # test parsing move: empty
 enterMove
 _pstate

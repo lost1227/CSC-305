@@ -61,5 +61,13 @@ _state
 
 doMove Pass # EC 4
 _state
+undoLastMove 1
+_state
+doMove Pass
+_state
 doMove Pass # EC 9
+_state
+undoLastMove 1
+_state
+doMove Pass
 _state
