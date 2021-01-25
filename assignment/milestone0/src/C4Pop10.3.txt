@@ -1,0 +1,100 @@
+_state
+
+# Test order: (Pass, Place, Keep, TakePlace)
+enterMove Take C place D
+compareMove Take A place B
+compareMove Keep B
+compareMove Place B
+compareMove Pass
+
+enterMove Keep C
+compareMove Take A place B
+compareMove Keep B
+compareMove Place B
+compareMove Pass
+
+enterMove Place C
+compareMove Take A place B
+compareMove Keep B
+compareMove Place B
+compareMove Pass
+
+enterMove Pass
+compareMove Take A place B
+compareMove Keep B
+compareMove Place B
+compareMove Pass
+
+# Test TakePlace move
+enterMove Take C place D
+compareMove Take A place A
+compareMove Take A place B
+compareMove Take A place C
+compareMove Take A place D
+compareMove Take A place E
+compareMove Take B place A
+compareMove Take B place B
+compareMove Take B place C
+compareMove Take B place D
+compareMove Take B place E
+compareMove Take C place A
+compareMove Take C place B
+compareMove Take C place C
+compareMove Take C place D
+compareMove Take C place E
+compareMove Take D place A
+compareMove Take D place B
+compareMove Take D place C
+compareMove Take D place D
+compareMove Take D place E
+compareMove Take E place A
+compareMove Take E place B
+compareMove Take E place C
+compareMove Take E place D
+compareMove Take E place E
+
+# Test Keep move
+enterMove Keep C
+compareMove Keep A
+compareMove Keep B
+compareMove Keep C
+compareMove Keep D
+compareMove Keep E
+
+# Test Place move
+enterMove Place C
+compareMove Place A
+compareMove Place B
+compareMove Place C
+compareMove Place D
+compareMove Place E
+
+# Test Pass Move
+enterMove Pass
+compareMove Pass
+
+_state
+# Test Board Keys
+testPlay 10 42
+_state
+saveBoard before_take.board
+compareKeys before_take.board
+doMove Keep F
+compareKeys before_take.board
+saveBoard after_take.board
+compareKeys after_take.board
+doMove Pass
+compare_keys before_take.board
+compare_keys after_take.board
+
+_state
+setOptions
+y
+300
+150
+75
+80
+
+_state
+compareKeys after_take.board
+_state
