@@ -12,19 +12,13 @@ Game Logic (.0)
 11. Return to original location after move
 12. King jumps itself
 
+13. Game over: no player has lost all pieces, but no moves are possible
+
 Parsing (.1)
 1. Squares may be identified using upper or lower case letters
 2. Spaces may appear anywhere in the move except between the - and >
 3. Rows go from A to H
 4. Columns go from 1 to 8
-
-Board Key Comparison (x)
-Equality
-- Starting Board
-- Only one color left
-    - Multiple pieces
-    - One piece: regular, king
-- next player to move is the same
 
 Board Value Calculation (.2)
 - Piece count
@@ -38,3 +32,7 @@ Board Value Calculation (.2)
 - King pieces
     > No kings
     > All kings
+
+Board and Move Keys (.3)
+
+Moves A and B

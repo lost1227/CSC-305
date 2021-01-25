@@ -45,3 +45,21 @@ to test the game's list of
 3. Carefully test aspects that you think would be hard to code
 4. Read the spec carefully
 - We can miss up to 7 bugs
+
+Board and Move Keys (.3)
+
+Moves A and B
+A == B if
+    A.type == B.type
+    AND A.col == B.col
+
+A > B if
+    A.type > B.type (Pass, Place, Keep, TakePlace)
+    OR A.col > B.col
+    OR (if type == TakePlace) A.place_col > B.place_col
+
+Boards A and B
+A == B if foreach(A.square == B.square) AND A.next_player == B.next_player
+
+A < B if
+    OR foreach square in row-major order, A.first_diff < B.first_diff (empty, black, white)
