@@ -96,6 +96,14 @@ compareMove C3 -> E5 -> G3
 
 _state
 
+enterMove G5 -> E3 -> C5 -> E7 -> G5
+compareMove G5 -> E3 -> C5 -> E7 -> G5
+compareMove G5 -> E7 -> C5 -> E3 -> G5
+
+enterMove G5 -> E7 -> C5 -> E3 -> G5
+compareMove G5 -> E7 -> C5 -> E3 -> G5
+compareMove G5 -> E3 -> C5 -> E7 -> G5
+
 undoLastMove 1000
 testPlay 10 16
 doMove C7 -> E5

@@ -84,8 +84,8 @@ compareKeys before_take.board
 saveBoard after_take.board
 compareKeys after_take.board
 doMove Pass
-compare_keys before_take.board
-compare_keys after_take.board
+compareKeys before_take.board
+compareKeys after_take.board
 
 _state
 setOptions

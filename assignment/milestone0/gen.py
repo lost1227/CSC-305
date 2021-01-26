@@ -67,6 +67,10 @@ def check_limits(file):
         if output.find("Invalid move being applied") > -1:
             status = "WARN"
             message += "  inputs contained invalid moves\n"
+        
+        if output.find("Unknown command") > -1:
+            status = "WARN"
+            message += "  inputs contained invalid commands\n"
 
         times = completion.stderr.decode().split(' ')[:3]
 

@@ -58,6 +58,13 @@ doMove [5,4]
 _state
 doMove [6,4]
 _state
+doMove Pass
+_state
+doMove Pass
+_state
+
+undoLastMove 2
+_state
 
 doMove Pass # EC 4
 _state
