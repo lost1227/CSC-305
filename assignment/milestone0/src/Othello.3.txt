@@ -1,6 +1,8 @@
 # Move key tests
 _state
 
+\# Test comment # A test comment
+
 enterMove Pass
 compareMove Pass
 

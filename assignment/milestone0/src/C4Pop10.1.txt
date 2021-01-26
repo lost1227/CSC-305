@@ -113,6 +113,7 @@ _pstate
 enterMove place E Take C
 _pstate
 # test move parsing: too many cols
+\# A test comment
 enterMove Place B B
 _pstate
 enterMove Place BB

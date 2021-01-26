@@ -32,10 +32,13 @@ def process_file(in_path):
                 line = fin.readline()
                 if not line:
                     break
-
                 comment_idx = line.find('#')
+                while comment_idx > 0 and line[comment_idx - 1] == '\\':
+                    line = line[:comment_idx-1] + line[comment_idx:]
+                    comment_idx = line.find('#', comment_idx)
                 if comment_idx >= 0:
                     line = line[:comment_idx]
+                
 
                 line = line.strip()
                 if len(line) > 0 and line[0] == '_':
