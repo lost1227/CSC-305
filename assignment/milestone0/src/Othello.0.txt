@@ -78,3 +78,40 @@ undoLastMove 1
 _state
 doMove Pass
 _state
+
+undoLastMove 1000
+doMove [2, 3]
+doMove [2, 2]
+doMove [2, 1]
+doMove [1, 1]
+doMove [4, 5]
+doMove [2, 0]
+doMove [0, 0]
+_state
+doMove [0, 2]
+saveBoard same_but_different.board
+compareKeys same_but_different.board
+_state
+doMove Pass
+_state
+compareKeys same_but_different.board
+
+testPlay 10 100
+_state
+
+undoLastMove 1000
+doMove [2, 3]
+doMove [2, 4]
+doMove [1, 5]
+doMove [3, 2]
+doMove [4, 1]
+doMove [5, 3]
+doMove [6, 3]
+doMove [4, 2]
+_state
+doMove [4, 5]
+_state
+doMove Pass
+_state
+doMove Pass
+_state

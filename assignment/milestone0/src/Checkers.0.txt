@@ -200,3 +200,37 @@ doMove D4 -> C5
 _state
 doMove f2 -> h4 -> f6
 _state
+
+undoLastMove 1000
+doMove C7 -> D8
+doMove F2 -> E1
+doMove C5 -> D6
+doMove G1 -> F2
+doMove C3 -> D4
+doMove F6 -> E7
+doMove D8 -> F6
+_state
+doMove G7 -> E5 -> C3
+_state
+undoLastMove 1
+doMove G5 -> E7 -> C5
+_state
+undoLastMove 1
+doMove G7 -> E5 -> C7
+_state
+
+testPlay 10 36
+_state
+doMove C1 -> E3
+_state
+undoLastMove 40
+
+doMove H2 -> G1
+doMove B4 -> C5
+doMove F6 -> E7
+doMove D8 -> F6
+_state
+doMove G5 -> E7
+_state
+testPlay 20 50
+_state

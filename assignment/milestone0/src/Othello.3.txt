@@ -120,3 +120,38 @@ _state
 doMove Pass
 compareKeys equal2.board
 _state
+
+undoLastMove 1000
+saveBoard testKeys0.board
+doMove [2,3]
+doMove [4,2]
+_state
+saveBoard testKeys1.board
+compareKeys testKeys0.board
+compareKeys testKeys1.board
+undoLastMove 2
+doMove [5,4]
+doMove [3,5]
+_state
+saveBoard testKeys2.board
+compareKeys testKeys0.board
+compareKeys testKeys1.board
+compareKeys testKeys2.board
+undoLastMove 2
+_state
+compareKeys testKeys0.board
+compareKeys testKeys1.board
+compareKeys testKeys2.board
+
+setOptions
+y
+0
+0
+0
+0
+_state
+compareKeys testKeys1.board
+compareKeys testKeys2.board
+setOptions
+n
+_state
