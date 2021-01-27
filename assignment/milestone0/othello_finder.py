@@ -1,77 +1,107 @@
 import subprocess
 import re
-
-# This file was used to find two different sequences of moves that lead to the same othello board
-# Using a brute-force algorithm, it can find such sequences
+import sys
+import random
+import queue
+import time
 
 class BoardTest:
     def __init__(self):
         self.run = subprocess.Popen(['./BoardTest', 'OthelloBoard'], stdin=subprocess.PIPE, stdout=subprocess.PIPE, universal_newlines=True, bufsize=1)
-        self._movepattern = re.compile("\\[(\\d), (\\d)\\]")
-        self.leafs = []
+        self._movepattern = re.compile("(?:\\[[0-7], [0-7]\\]|Pass)")
 
     def _parseState(self):
         self._current_moves = []
-        self.run.stdin.write("showBoard\n")
-        doubleline = 0
+        self.write("showBoard\n")
         self._board = ""
-        while True:
-            line = self.run.stdout.readline()
-            if len(line.strip()) == 0:
-                break
+        for i in range(8):
+            line = self.readline()
             self._board += line
-        
-        allmoves = self.run.stdout.readline().strip()
+        assert len(self._board) == 72
+        turn = self.readline().strip()
+        self.turn = "white" if turn[0] == "W" else "black"
+        self.readline().strip()
         while True:
-            line = self.run.stdout.readline().strip()
+            line = self.readline().strip()
             if len(line) == 0:
                 break
             for match in self._movepattern.finditer(line):
-                self._current_moves.append("[{}, {}]".format(match.group(1), match.group(2)))
+                self._current_moves.append(match.group(0))
+
+    def write(self, text):
+        self.run.stdin.write(text)
+
+    def readline(self):
+        line = self.run.stdout.readline()
+        return line
 
     def _doMove(self, move):
-        print("doMove " + move.strip())
-        self.run.stdin.write("doMove " + move.strip() + "\n")
-        self.run.stdout.readline()
+        # print("doMove " + move.strip())
+        self.write("doMove " + move.strip() + "\n")
+        line = self.readline()
+        assert len(line) == 1
+    
+    def _doCmd(self, cmd):
+        self.write(cmd + "\n")
+        line = self.readline()
+        # print(cmd, "->", line)
+        assert len(line) == 1
     
     def _undoMove(self):
-        self.run.stdin.write("undoLastMove 1\n")
-        self.run.stdout.readline()
+        self.write("undoLastMove 1\n")
+        self.readline()
 
-    def go(self, num, prev=[]):
+    def go(self, prev=[]):
+        # print("  " * len(prev), prev)
+
+        moveQueue = queue.SimpleQueue()
+
         self._parseState()
-        if num == 0:
-            self.leafs.append((prev, self._board))
-            return
         moves = self._current_moves
 
         for move in moves:
-            self._doMove(move)
-            self.go(num - 1, prev + [move])
-            self._undoMove()
+            moveQueue.put((move, []))
+
+        depth = 0
+
+        while not moveQueue.empty():
+            move, prev = moveQueue.get()
+
+            prev = prev + [move]
+
+            if len(prev) > depth:
+                depth = len(prev)
+                print("Depth:", depth)
+
+            for p in prev:
+                self._doMove(p)
+
+            self._parseState()
+            moves = self._current_moves
+
+            if len(moves) == 1 and moves[0] == "Pass":
+                print("found one!")
+                print(self._board)
+                print(prev)
+
+            for m in moves:
+                moveQueue.put((m, prev))
+
+            self._doCmd("undoLastMove 1000")
 
     def print_leafs(self):
         for leaf in self.leafs:
-            movestr = ""
-            for move in leaf[0]:
-                movestr += move + ","
-            movestr = movestr[:-1]
-            print(movestr)
+            #for move in leaf[0]:
+            #    print("doMove", move)
+            print(leaf[0])
             print(leaf[1])
             print()
-    
-    def find_equal(self):
-        for i in range(len(self.leafs)):
-            for j in range(i+1, len(self.leafs)):
-                if self.leafs[i][1] == self.leafs[j][1]:
-                    print(self.leafs[i][0])
-                    print(self.leafs[j][0])
-                    print(self.leafs[i][1])
+
                 
         
 
 test = BoardTest()
 
-test.go(3)
+test.go(8)
 
-test.find_equal()
+print("No results :(")

@@ -2,12 +2,14 @@ import subprocess
 import re
 import sys
 import random
+import queue
+import time
 
 class BoardTest:
     def __init__(self):
         self.run = subprocess.Popen(['./BoardTest', 'CheckersBoard'], stdin=subprocess.PIPE, stdout=subprocess.PIPE, universal_newlines=True, bufsize=1)
         self._movepattern = re.compile("[A-H][1-8](?: -> [A-H][1-8])+")
-        self.leafs = []
+        self.boards = {}
 
     def _parseState(self):
         self._current_moves = []
@@ -18,7 +20,8 @@ class BoardTest:
             line = self.readline()
             self._board += line
         assert len(self._board) == 300
-        self.readline().strip()
+        turn = self.readline().strip()
+        self.turn = "white" if turn.lower().find("white") > 0 else "black"
         self.readline().strip()
         while True:
             line = self.readline().strip()
@@ -37,7 +40,8 @@ class BoardTest:
     def _doMove(self, move):
         # print("doMove " + move.strip())
         self.write("doMove " + move.strip() + "\n")
-        self.readline()
+        line = self.readline()
+        assert len(line) == 1
     
     def _doCmd(self, cmd):
         self.write(cmd + "\n")
@@ -56,27 +60,69 @@ class BoardTest:
             out += line[2:].strip() + "\n"
         return out
 
-    def go(self, depth, prev=[]):
+    def board_key(self):
+        real = self.real_board()
+        pieces = real.split()
+        key = 0
+        for i in range(len(pieces)):
+            piece = pieces[i]
+            if piece == ".":
+                val = 0
+            elif piece == "b":
+                val = 1
+            elif piece == "w":
+                val = 1
+            elif piece == "B":
+                val = 2
+            elif piece == "W":
+                val = 3
+            else:
+                print("Invalid piece ", piece)
+                assert False
+            key += val * (4 ** i)
+        return key
+
+    def go(self, prev=[]):
         # print("  " * len(prev), prev)
-        if depth <= 0:
-            return
+
+        moveQueue = queue.SimpleQueue()
+
         self._parseState()
         moves = self._current_moves
-        if len(self._current_moves) == 0:
-            board = self.real_board().lower()
-            white_count = board.count("w")
-            black_count = board.count("b")
-            if white_count == black_count:
-                self.leafs.append((prev, self._board))
-            return
-
-        if len(self.leafs) > 0:
-            return
 
         for move in moves:
-            self._doMove(move)
-            self.go(depth - 1, prev + [move])
-            self._undoMove()
+            moveQueue.put((move, []))
+
+        while not moveQueue.empty():
+            move, prev = moveQueue.get()
+
+            prev = prev + [move]
+
+            for p in prev:
+                self._doMove(p)
+
+            self._parseState()
+            moves = self._current_moves
+
+            if len(moves) == 0:
+                board_lower = self.real_board().lower()
+                if board_lower.count("w") > 0 and board_lower.count("b") > 0:
+                    print("found one!")
+                    print(prev)
+                    print(self._board)
+            
+            key = self.board_key()
+            if key in self.boards:
+                print("found one!")
+                print(prev)
+                print(self.boards[key])
+            else:
+                self.boards[key] = prev
+
+            for m in moves:
+                moveQueue.put((m, prev))
+
+            self._doCmd("undoLastMove 1000")
 
     def print_leafs(self):
         for leaf in self.leafs:
@@ -115,10 +161,6 @@ prev_tests = {}
     #test._doCmd(testPlay)
 
     #print(testPlay)
-test.go(14)
+test.go(8)
 
-    
-
-test.print_leafs()
-
-print(testPlay)
+print("No results :(")
