@@ -5,18 +5,20 @@ Game Logic (.0)
 ~4. Move normal to king
 ~5. Jump once to king
 ~6. Jump multiple to king
-7. Jump multiple, become king during move, make move only king could (move back)
+!7. Jump multiple, become king during move, make move only king could (move back)
 ~8. King move back normal
 9. King jump back once
 10. King jump back multiple
 11. Return to original location after move
-12. King jumps itself
-
+!12. King jumps itself
 13. Game over: no player has lost all pieces, but no moves are possible
+14. King jump blocked by other player or own player
+15. King multijump touches opponent's home
 
 Parsing (.1)
 1. Squares may be identified using upper or lower case letters
 2. Spaces may appear anywhere in the move except between the - and >
+2a. Spaces may not appear between the - and >
 3. Rows go from A to H
 4. Columns go from 1 to 8
 
@@ -34,5 +36,6 @@ Board Value Calculation (.2)
     > All kings
 
 Board and Move Keys (.3)
-
-Moves A and B
+1. Multijump differ on 2nd jump
+2. Multijump differ on 3rd jump
+3. Different move histories but the same board layout

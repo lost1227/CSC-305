@@ -63,3 +63,13 @@ A == B if foreach(A.square == B.square) AND A.next_player == B.next_player
 
 A < B if
     OR foreach square in row-major order, A.first_diff < B.first_diff (empty, black, white)
+
+
+# CURRENT TESTS STATE
+C4Pop10 + Checkers + Othello = 16
+C4Pop10 + Checkers = 11
+Checkers + Othello = 10
+
+C4Pop10: 6
+Checkers: 5
+Othello: 5

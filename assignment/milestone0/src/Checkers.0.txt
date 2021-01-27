@@ -127,3 +127,76 @@ doMove E7 -> D8
 _state
 doMove C5 -> D6 # EC 13
 _state
+
+
+undoLastMove 1000
+doMove C1 -> D2
+doMove F8 -> E7
+doMove D2 -> E1
+doMove E7 -> D8
+doMove C3 -> D2
+doMove F6 -> E7
+doMove D2 -> E3
+doMove F2 -> D4
+doMove C5 -> E3
+doMove F4 -> D2
+doMove B2 -> C1
+doMove D2 -> C3
+doMove B4 -> D2
+doMove G1 -> F2
+doMove D2 -> E3
+doMove F2 -> D4
+doMove C7 -> D6
+doMove E7 -> C5
+doMove B8 -> C7
+doMove G3 -> F4
+doMove C1 -> D2
+doMove H2 -> G3
+doMove C7 -> D6
+doMove F4 -> E5
+doMove D6 -> F4 -> H2
+doMove D4 -> C3
+doMove B6 -> D4
+doMove D8 -> C7
+_state
+doMove A3 -> B4
+_state
+doMove G7 -> F6
+_state
+doMove A1 -> B2
+doMove C3 -> A1
+doMove H2 -> G1
+doMove A1 -> B2
+doMove G1 -> F2
+doMove B2 -> C3
+doMove F2 -> E3
+doMove C3 -> E5
+doMove B4 -> C5
+_state
+doMove E5 -> D4
+_state
+doMove a7 -> b6
+_state
+doMove d4 -> f2
+_state
+doMove B6 -> D8
+doMove F2 -> G3
+doMove C5 -> D6
+doMove G3 -> F4
+doMove E1 -> F2
+doMove F6 -> E5
+doMove F2 -> G1
+doMove E5 -> C7
+doMove G1 -> H2
+doMove F4 -> E5
+doMove H2 -> G1
+doMove H4 -> G3
+doMove D2 -> E1
+doMove E5 -> D4
+_state
+doMove G1 -> F2
+_state
+doMove D4 -> C5
+_state
+doMove f2 -> h4 -> f6
+_state

@@ -45,6 +45,12 @@ _pstate
 # test move parsing: only one cell
 enterMove c1
 _pstate
+# test move parsing: wrong row/col order
+enterMove 1c -> d2
+_pstate
+enterMove c1 -> 2d
+_pstate
+enterMove 1c -> 2d
 # test move parsing: wrong move type
 enterMove [1,2]
 _pstate

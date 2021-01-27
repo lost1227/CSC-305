@@ -94,6 +94,30 @@ _state
 compareMove C3 -> E5 -> G6
 compareMove C3 -> E5 -> G3
 
+
+enterMove C3 -> E5 -> G6 -> B2
+compareMove C3 -> E5 -> G6 -> B2
+compareMove C3 -> E5 -> G6
+compareMove C3 -> E5
+compareMove C3 -> E5 -> G6 -> B1
+compareMove C3 -> E5 -> G6 -> B3
+compareMove C3 -> E5 -> G6 -> A2
+compareMove C3 -> E5 -> G6 -> C2
+compareMove C3 -> E5 -> G5 -> B2
+compareMove C3 -> E5 -> G7 -> B2
+compareMove C3 -> E5 -> F6 -> B2
+compareMove C3 -> E5 -> H6 -> B2
+compareMove C3 -> E4 -> G6 -> B2
+compareMove C3 -> E6 -> G6 -> B2
+compareMove C3 -> D5 -> G6 -> B2
+compareMove C3 -> F5 -> G6 -> B2
+compareMove C4 -> E5 -> G6 -> B2
+compareMove C2 -> E5 -> G6 -> B2
+compareMove D3 -> E5 -> G6 -> B2
+compareMove B3 -> E5 -> G6 -> B2
+compareMove c3 -> e5 -> g6 -> b2
+compareMove C3 -> E5 -> g6 -> B2
+compareMove c3 -> E5 -> G6 -> B2
 _state
 
 enterMove G5 -> E3 -> C5 -> E7 -> G5
@@ -137,3 +161,18 @@ doMove H8 -> G7
 doMove A1 -> B2
 _state
 compareKeys no_kings.board
+
+undoLastMove 1000
+doMove C5 -> D6
+doMove F2 -> E1
+doMove B6 -> C5
+doMove F8 -> E7
+_state
+saveBoard sameBoard.board
+undoLastMove 4
+doMove C7 -> D6
+doMove F2 -> E1
+doMove B6 -> C7
+doMove F6 -> E7
+_state
+compareKeys sameBoard.board
