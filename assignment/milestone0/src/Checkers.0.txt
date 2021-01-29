@@ -234,3 +234,45 @@ doMove G5 -> E7
 _state
 testPlay 20 50
 _state
+
+undoLastMove 1000
+doMove C1 -> D2
+doMove F8 -> E7
+doMove D2 -> E1
+doMove E7 -> D8
+doMove C3 -> D2
+doMove G7 -> F8
+doMove B2 -> C1
+doMove F2 -> E3
+doMove A3 -> B2
+doMove G3 -> F2
+doMove E1 -> G3
+doMove H4 -> F2
+doMove C7 -> D6
+doMove H2 -> G3
+doMove B8 -> C7
+doMove F4 -> E5
+doMove D2 -> F4 -> H2
+doMove F2 -> E3
+doMove D6 -> F4
+doMove F6 -> E5
+doMove F4 -> G3
+doMove F8 -> E7
+doMove G3 -> H4
+doMove G5 -> F6
+doMove H2 -> G3
+doMove H6 -> G5
+doMove G3 -> F4
+doMove H8 -> G7
+_state
+doMove F4 -> D2
+_state
+undoLastMove 1
+doMove F4 -> D6 -> F8 -> H6 -> F4 -> D2
+_state
+undoLastMove 1
+doMove F4 -> H6 -> F8 -> D6 -> F4 -> D2
+_state
+
+testPlay 30 100
+_state
