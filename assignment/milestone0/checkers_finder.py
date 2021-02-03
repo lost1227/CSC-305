@@ -38,9 +38,11 @@ class BoardTest:
         return line
 
     def _doMove(self, move):
-        # print("doMove " + move.strip())
+        #print("doMove " + move.strip())
         self.write("doMove " + move.strip() + "\n")
         line = self.readline()
+        if len(line) != 1:
+            print(line)
         assert len(line) == 1
     
     def _doCmd(self, cmd):
@@ -96,6 +98,7 @@ class BoardTest:
         while not moveQueue.empty():
             move, prev = moveQueue.get()
 
+
             prev = prev + [move]
 
             for p in prev:
@@ -103,26 +106,19 @@ class BoardTest:
 
             self._parseState()
             moves = self._current_moves
-
-            if len(moves) == 0:
-                board_lower = self.real_board().lower()
-                if board_lower.count("w") > 0 and board_lower.count("b") > 0:
-                    print("found one!")
-                    print(prev)
-                    print(self._board)
             
-            key = self.board_key()
-            if key in self.boards:
-                print("found one!")
-                print(prev)
-                print(self.boards[key])
-            else:
-                self.boards[key] = prev
+            parts = move.split(' -> ')
+            for i, part in enumerate(parts):
+                if part in parts[i+1:-1]:
+                    print("Found one!")
+                    print(self._board)
+                    print(prev)
 
             for m in moves:
                 moveQueue.put((m, prev))
 
-            self._doCmd("undoLastMove 1000")
+            #self._doCmd("undoLastMove 1000")
+            self._doCmd("loadBoard init.board")
 
     def print_leafs(self):
         for leaf in self.leafs:
@@ -161,6 +157,34 @@ prev_tests = {}
     #test._doCmd(testPlay)
 
     #print(testPlay)
+
+preMoves = [
+"C1 -> D2",
+"F8 -> E7",      
+"D2 -> E1",
+"E7 -> D8",
+"C3 -> D2",
+"G7 -> F8",
+"B2 -> C1",      
+"F2 -> E3",
+"A3 -> B2",
+"G3 -> F2",
+"E1 -> G3",
+"H4 -> F2",      
+"C7 -> D6",
+"H2 -> G3",
+"B8 -> C7",
+"F4 -> E5",
+"D2 -> F4 -> H2",
+"F2 -> E3",
+"D6 -> F4",
+"F6 -> E5"
+]
+for move in preMoves:
+    test._doMove(move)
+
+test._doCmd("saveBoard init.board")
+
 test.go(8)
 
 print("No results :(")

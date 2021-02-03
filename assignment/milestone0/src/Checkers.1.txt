@@ -3,9 +3,12 @@ enterMove
 _pstate
 # test move parsing: many spaces
 enterMove                                                                                                     C1                                                                       -> D2
+saveMove manySpacesCheckers.move
 _pstate
 # test move parsing: lowercase
 enterMove c1 -> d2
+_pstate
+loadMove manySpacesCheckers.move
 _pstate
 # test move parsing: mixed case
 enterMove c1 -> D2
@@ -379,6 +382,11 @@ _pstate
 enterMove c1 -> d2 -> e3 -> f4 -> a1 -> c1
 _pstate
 enterMove A1 -> A2 -> A3 -> A4 -> A5 -> A6 -> A7 -> A8 -> B1 -> B2 -> B3 -> B4 -> B5 -> B6 -> B7 -> B8 -> C1 -> C2 -> C3 -> C4 -> C5 -> C6 -> C7 -> C8 -> D1 -> D2 -> D3 -> D4 -> D5 -> D6 -> D7 -> D8 -> E1
+saveMove longCheckers.move
+enterMove c1 -> d2 -> e3 -> f4 -> a1 -> c1
+_pstate
+loadMove longCheckers.move
+_pstate
 
 setOptions
 sure

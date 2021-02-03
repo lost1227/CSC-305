@@ -12,12 +12,21 @@ enterMove Take C place E
 _pstate
 # test move parsing: many spaces
 enterMove                 Pass                       
+saveMove passC4Pop10.move
 _pstate
 enterMove                 Place                 B                 
 _pstate
 enterMove                 Keep                 D                 
+saveMove keepC4Pop10.move
 _pstate
 enterMove                 Take                 C                 place                 E
+saveMove takePlaceC4Pop10.move
+_pstate
+loadMove passC4Pop10.move
+_pstate
+loadMove keepC4Pop10.move
+_pstate
+loadMove takePlaceC4Pop10.move
 _pstate
 # test move parsing: no spaces
 enterMove PlaceB

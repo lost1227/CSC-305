@@ -1,0 +1,125 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+	<title>6</title>
+	<meta name="generator" content="LibreOffice 6.0.7.3 (Linux)"/>
+	<meta name="created" content="00:00:00"/>
+	<meta name="changed" content="2021-01-05T23:48:25.948874969"/>
+	<style type="text/css">
+		p.msonormal { margin-bottom: 0in }
+		h2.cjk { font-family: "NSimSun" }
+		h2.ctl { font-family: "Arial" }
+		h3.cjk { font-family: "NSimSun" }
+		h3.ctl { font-family: "Arial" }
+		a:link { color: #0000ff; font-family: "Times New Roman", serif }
+		a:visited { color: #800080 }
+	</style>
+</head>
+<body lang="en-US" link="#0000ff" vlink="#800080" dir="ltr">
+<p class="msonormal" align="center" style="margin-bottom: 0.2in"><font size="5" style="font-size: 20pt"><b>Testing
+BoardTest</b></font></p>
+<h2 class="western">Overview</h2>
+<p class="msonormal" style="margin-bottom: 0.2in"><font size="2" style="font-size: 11pt">For
+this milestone you'll do a large-grained sort of TDD. Writing tests
+before you code is an excellent way to be really sure you understand
+what your program is supposed to do, and to plan its design with all
+features in mind. And the testing portion of the first milestone
+takes a big portion of the time, so getting it done in advance is a
+good idea.</font></p>
+<p class="msonormal" style="margin-bottom: 0.2in"><font size="2" style="font-size: 11pt">To
+start, first read the General Spec which includes behavior of the
+various games, and also of the BoardTest scaffold we'll use to test
+the games. Unit-level testing is often done with libraries that call
+modules, e.g. classes and methods, directly, with expected results.
+We may do some of this later in the term, but the design of our
+board, move, etc classes is too sophisticated for you to write such
+tests at this point. Instead, the BoardTest scaffold will supply a
+simple text interface for writing your tests.</font></p>
+<p class="msonormal" style="margin-bottom: 0.2in"><font size="2" style="font-size: 11pt">I'll
+supply a working BoardTest executable for reference, to help clarify
+the spec, and to let you verify that your test input files parse
+correctly, etc. But note that the focus is on writing test inputs,
+not on running my BoardTest. My BoardTest won't show any bugs (at
+least I hope not). Imagine instead you were working just from the
+General Spec and building input test cases for BoardTest based on
+that, with no code written yet.</font></p>
+<h3 class="western">Specific Steps</h3>
+<p class="msonormal" style="margin-bottom: 0.2in"><font size="2" style="font-size: 11pt">0.
+Review the testing guidelines from the course required reading</font></p>
+<p class="msonormal" style="margin-bottom: 0.2in"><font size="2" style="font-size: 11pt">1.
+Read carefully the General Spec, including the BoardTest application.
+Be sure you understand thoroughly the command set for the BoardTest
+application. </font>
+</p>
+<p class="msonormal" style="margin-bottom: 0.2in"><font size="2" style="font-size: 11pt">2.
+Run my example BoardTest program for each command, and for all three
+board types.</font></p>
+<p class="msonormal" style="margin-bottom: 0.2in"><font size="2" style="font-size: 11pt">3.
+Build several BoardTest input files (I have about 10 total) for
+Checkers, C4Pop10, and Othello. Name your test files Checkers.#,
+C4Pop10.#, or Othello.#, where # is a single digit from 0 to 5. You
+<i>must </i><span style="font-variant: normal"><span style="font-style: normal">start
+with 0 and number sequentially, e.g. C4Pop10.0, C4Pop10.1, etc.
+</span></span>Generate sample output from my program for them and
+check the sample output to be sure you understand it. Each test file
+must run against my BoardTest in at most 0.1 second of CPU time. (Use
+the “time” command to help with this.) And no test file may
+result in an output exceeding 50 Kbytes.</font></p>
+<p class="msonormal" style="margin-bottom: 0.2in"><font size="2" style="font-size: 11pt">Just
+for example, here's a small Othello test input file. It makes a few
+moves, displays the board, and shows the board's value. This might be
+enough to catch some obvious bugs in apply moves, or tracking the
+board value, but more sophisticated and complete testing would be
+needed to catch subtler possible bugs.</font></p>
+<p style="margin-bottom: 0in">enterMove [2, 3]</p>
+<p style="margin-bottom: 0in">applyMove</p>
+<p style="margin-bottom: 0in">showBoard</p>
+<p style="margin-bottom: 0in">enterMove [2, 2]</p>
+<p style="margin-bottom: 0in">applyMove</p>
+<p style="margin-bottom: 0in">enterMove [2, 1] 
+</p>
+<p style="margin-bottom: 0in">applyMove</p>
+<p style="margin-bottom: 0in">enterMove [2, 4]</p>
+<p style="margin-bottom: 0in">applyMove</p>
+<p style="margin-bottom: 0in">enterMove [2, 5] 
+</p>
+<p style="margin-bottom: 0in">applyMove</p>
+<p style="margin-bottom: 0in">enterMove [1, 5]</p>
+<p style="margin-bottom: 0in">applyMove</p>
+<p style="margin-bottom: 0in">showBoard</p>
+<p style="margin-bottom: 0in">showVal</p>
+<p style="margin-bottom: 0in"><br/>
+
+</p>
+<p class="msonormal" style="margin-bottom: 0.2in"><font size="2" style="font-size: 11pt">4.
+Turn all your test files in to turnin directory
+</font><font size="2" style="font-size: 11pt"><i>~grade-cstaley/305/milestone0/turnin</i></font><font size="2" style="font-size: 11pt">.</font>
+<font size="2" style="font-size: 11pt">Turn in at least one and at
+most four test files of any particular game. Bender will run each of
+your 3-12</font> <font size="2" style="font-size: 11pt">test files
+against a suite of 26 different faulty versions of BoardTest that
+I’ve prepared. If any of your test files uncover a bug in one of
+the faulty versions (i.e. if the output from the “good” BoardTest
+I gave you differs from the output of the faulty version for one of
+your test files) then that faulty version is “detected”.</font>
+<font size="2" style="font-size: 11pt">When your test files detect 21
+of 26 faulty versions, you’ve passed.</font></p>
+<p class="msonormal" style="margin-bottom: 0.2in"><font size="2" style="font-size: 11pt">If
+any test file takes more than 0.1 second to run against my correct
+BoardTest, or if any test file causes my correct BoardTest to blow
+up, or produces an output exceeding 50K bytes, then Bender will
+reject the entire test suite with an appropriately acerbic Email, and
+without further checking.</font></p>
+<p class="msonormal" style="margin-bottom: 0.2in"><font size="2" style="font-size: 11pt">Test
+files may not depend upon one another, e.g. test file A may not
+assume test file B has been previously run and has produced an output
+file needed by test file A. Each test file must rely solely on the
+game output files it has produced, if any. No test file may cause
+more than 1000 moves to be run via testRun or testPlay, total.</font></p>
+<p class="msonormal" style="margin-bottom: 0.2in"><br/>
+<br/>
+
+</p>
+</body>
+</html>

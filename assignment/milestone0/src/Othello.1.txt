@@ -8,8 +8,14 @@ enterMove [1,2]
 _pstate
 # Test move parsing: many spaces
 enterMove             Pass               
+saveMove passOthello.move
 _pstate
 enterMove             [             1             ,             2             ]             
+saveMove manySpacesOthello.move
+_pstate
+loadMove passOthello.move
+_pstate
+loadMove manySpacesOthello.move
 _pstate
 # Test move parsing: missing parts
 enterMove Pas

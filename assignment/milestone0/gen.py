@@ -74,6 +74,9 @@ def check_limits(file):
         if output.find("Unknown command") > -1:
             status = "WARN"
             message += "  inputs contained invalid commands\n"
+        if output.find("Error: Bad file") > -1:
+            status = "WARN"
+            message += "  inputs loaded nonexistent files\n"
 
         times = completion.stderr.decode().split(' ')[:3]
 

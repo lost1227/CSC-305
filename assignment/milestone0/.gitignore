@@ -1,3 +1,4 @@
 BoardTest
 build/
 *.board
+*.move
