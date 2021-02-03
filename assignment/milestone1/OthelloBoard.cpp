@@ -18,24 +18,40 @@ short OthelloBoard::mWeights[dim][dim] = {
    { 8, 0, 1, 1, 1, 1, 0,  8},
    { 8, 0, 1, 1, 1, 1, 0,  8},
    { 0, 0, 0, 0, 0, 0, 0,  0},
-   (16, 0, 8, 8, 8, 8, 0, 16)
+   // BUG:: using () instead of {} means that the expression evaluates
+   // to 16. This is because `,` is an expression, resulting in the second value
+   {16, 0, 8, 8, 8, 8, 0, 16} 
 };
 
-OthelloBoard::Direction mDirs[numDirs] = {
-   {0, 1}, {-1, 1}, {-1, 0}, {-1, -1}, {0, -1}, {1, -1}, {1, 0}, {1, -1}
+
+
+// Directions are row, column
+// BUG: Missing OthelloBoard::, was making a local array instead of initializing OthelloBoard::mDirs
+// BUG: {1, -1} was repeated twice and {1, 1} was making
+OthelloBoard::Direction OthelloBoard::mDirs[numDirs] = {
+   {0, 1}, {-1, 1}, {-1, 0}, {-1, -1}, {0, -1}, {1, -1}, {1, 0}, {1, 1}
 };
 
-set<OthelloBoard *> OthelloBoard::mRoster;
+// BUG: Missing implementation of OthelloBoard::GetClass
+const Class *OthelloBoard::GetClass() const {
+   // FIXME: Implement this stub
+   return nullptr;
+} 
+
+// This is a definition. It doesn't look like it, but this is calling the default constructor
+set<OthelloBoard *> OthelloBoard::mRoster {};
 
 Object *OthelloBoard::CreateBoard() {return new OthelloBoard();}
 
-OthelloBoard::OthelloBoard() : mNextMove(mBPiece), mWeight(0) {
+// BUG: Constructor is not initializing mPassCount
+OthelloBoard::OthelloBoard() : mNextMove(mBPiece), mWeight(0), mPassCount(0) {
    int row, col;
 
    for (row = 0; row < dim; row++)
       for (col = 0; col < dim; col++)
          mBoard[row][col] = 0;
 
+   // BUG: off by one error. dim/2+1 is 5. We meant to assign to 4.
    mBoard[dim/2+1][dim/2+1] = mBoard[dim/2][dim/2] = mWPiece;
    mBoard[dim/2+1][dim/2] = mBoard[dim/2][dim/2+1] = mBPiece;
    mRoster.insert(this);
@@ -47,7 +63,10 @@ OthelloBoard::~OthelloBoard() {
 
 int OthelloBoard::GetValue() const {
    int row, col, total;
-    
+   
+   // BUG: total was not initialized
+   total = 0;
+
    if (mPassCount < 2)  // Game not over
       return mWeight;
    else {               // Game over

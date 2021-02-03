@@ -59,6 +59,8 @@ public:
 
    char GetSquare(int row, int col) const {return mBoard[row][col];}
 
+   const Class *GetClass() const override;
+
 protected:
    static constexpr int numDirs = 8;
    static constexpr int squareCount = 64;
@@ -74,10 +76,10 @@ protected:
    static bool InBounds(int row, int col)
     {return InRange<short>(0, row, dim) && InRange<short>(0, col, dim);}
 
-   char mBoard[dim][dim];       // Current state of board
+   char mBoard[dim][dim];       // Current state of board: -1 white, 0 none, 1 black
    char mNextMove;              // Whose move is next (mWPiece or mBPiece)
    char mPassCount;             // How many pass moves have just been made
-   short mWeight;               // Current board weight.
+   short mWeight;               // Current board value.
    std::list<std::shared_ptr<Move>> mMoveHist; // History of moves thus far.
 };
 

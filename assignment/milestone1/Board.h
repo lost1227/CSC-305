@@ -70,7 +70,7 @@ public:
    // Caller owns the moves.  Moves are returned in sorted order, as determined
    // by the operator< for the move class in question.  Returns an empty move
    // list iff the game is over.
-   virtual void GetAllMoves(std::list<std::unique_ptr<Move>> *fillIn) const = 0;
+   virtual void GetAllMoves(std::list<std::unique_ptr<Move>> *) const = 0;
 
    // Create a default-constructed move of the appropriate type for this board.
    virtual std::unique_ptr<Move> CreateMove() const = 0;
