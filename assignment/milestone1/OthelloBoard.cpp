@@ -183,11 +183,11 @@ void OthelloBoard::GetAllMoves(list<unique_ptr<Move>> *moves) const {
              && mBoard[testRow][testCol] == -mNextMove);
       
             if (InBounds(testRow, testCol)
-             && mBoard[testRow][testCol] == mNextMove && steps > 2)
+             && mBoard[testRow][testCol] == mNextMove && steps > 1) {
+               moves->push_back(unique_ptr<Move>{new OthelloMove(row, col)});
                break;
+            }
          }
-         if (dNdx < numDirs)
-            moves->push_back(unique_ptr<Move>{new OthelloMove(row, col)});
       }
 
    if (moves->size() == 0)

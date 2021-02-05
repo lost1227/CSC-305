@@ -12,6 +12,7 @@ void *OthelloMove::operator new(size_t sz) {
 
    if (mFreeList.size()) {
       temp = mFreeList.back();
+      mFreeList.pop_back();
    } 
    else {
       temp = ::new char[sz];

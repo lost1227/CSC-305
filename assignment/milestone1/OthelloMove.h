@@ -21,7 +21,7 @@ public:
    friend class OthelloBoard;
    typedef std::list<FlipSet> FlipList;
    
-   OthelloMove(char row = 0, char col = 0) : mRow(row), mCol(row) {}
+   OthelloMove(char row = 0, char col = 0) : mRow(row), mCol(col) {}
    virtual ~OthelloMove() {}
 
    void AddFlipSet(const FlipSet &fs) 
