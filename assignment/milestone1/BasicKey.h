@@ -21,34 +21,24 @@ public:
 
 template<int size>
 bool BasicKey<size>::operator==(const Board::Key &other) const {
-    try {
-        auto& castOther = dynamic_cast<const BasicKey<size>&>(other);
-        for(int i = 0; i < size; i++) {
-            if(vals[i] != castOther.vals[i])
-                return false;
-        }
-        return true;
-    } catch(const std::bad_cast& e) {
-        return false;
+    const BasicKey<size> *oPtr = dynamic_cast<const BasicKey<size>*>(&other);
+    assert(oPtr != nullptr);
+    for(int i = 0; i < size; i++) {
+        if(vals[i] != oPtr->vals[i])
+            return false;
     }
+    return true;
 }
 
 template<int size>
 bool BasicKey<size>::operator<(const Board::Key &other) const {
-    try {
-        auto& castOther = dynamic_cast<const BasicKey<size>&>(other);
-        for(int i = 0; i < size; i++) {
-            if(vals[i] != castOther.vals[i])
-                return vals[i] < castOther.vals[i];
-        }
-        return true;
-    } catch(const std::bad_cast& e) {
-        // This wil be reached whenever other is not a BasicKey<size>
-        // FIXME: What's the best behavior here?
-        // I can't do a lexicographical comparison since I don't know the type (and thus the length)
-        // of other.
-        return false;
+    const BasicKey<size> *oPtr = dynamic_cast<const BasicKey<size>*>(&other);
+    assert(oPtr != nullptr);
+    for(int i = 0; i < size; i++) {
+        if(vals[i] != oPtr->vals[i])
+            return vals[i] < oPtr->vals[i];
     }
+    return false;
 }
 
 template<int size>
