@@ -13,18 +13,19 @@ using namespace std;
 
 const int outWidth = 80;
 
-void printMoveList(list<unique_ptr<Board::Move>> &moves) {
-    if(moves.size() == 0){
+template<class T>
+void printMoveList(T begin, T end) {
+    if(begin == end){
         cout << endl;
         return;
     }
     list<string> moveStrs;
     string curr;
     int longestMoveLength = 0;
-    for(auto& mov : moves) {
-        curr = *mov;
+    for(; !(begin == end); begin++) {
+        curr = **begin;
         longestMoveLength = max(longestMoveLength, (int) curr.length());
-        moveStrs.push_back((string) *mov);
+        moveStrs.push_back(move(curr));
     }
 
     curr = "";
@@ -63,10 +64,13 @@ int main() {
             view->Draw(cout);
             moves.clear();
             board->GetAllMoves(&moves);
-            printMoveList(moves);
+            printMoveList(moves.begin(), moves.end());
         } else if((idx = line.find("enterMove")) != string::npos) {
             *currMove = line.substr(idx + strlen("enterMove"));
             //*currMove = line;
+        } else if((idx = line.find("showMoveHist")) != string::npos) { 
+            const list<shared_ptr<const Board::Move>> &moveHist = board->GetMoveHist();
+            printMoveList(moveHist.begin(), moveHist.end());
         } else if((idx = line.find("showMove")) != string::npos) {
             cout << (string) *currMove << endl;
         } else if((idx = line.find("applyMove")) != string::npos) {
@@ -77,10 +81,13 @@ int main() {
             board->ApplyMove(currMove->Clone());
         } else if((idx = line.find("undoLastMove")) != string::npos) {
             board->UndoLastMove();
+        } else if((idx = line.find("showVal")) != string::npos) {
+            cout << "Value: " << board->GetValue() << endl;
         } else if((idx = line.find("quit")) != string::npos) {
             exit(0);
         } else {
             cout << "Invalid command!" << endl;
         }
+        cout << endl;
     }
 }
