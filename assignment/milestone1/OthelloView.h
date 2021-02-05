@@ -5,7 +5,11 @@
 
 class OthelloView : public View {
 public:
-   void Draw(std::ostream &out);
+   void Draw(std::ostream &out) override;
+
+   const Class *GetClass() const override;
+
+   virtual ~OthelloView() {}
 
 private:
    static Object *Create() {return new OthelloView();}

@@ -7,6 +7,7 @@
 #include "MyLib.h"
 #include "BasicKey.h"
 
+
 ////////////////////////////////////////////////////////////////////////////////
 using namespace std;
 
@@ -35,6 +36,7 @@ OthelloBoard::Direction OthelloBoard::mDirs[numDirs] = {
 // BUG: Missing implementation of OthelloBoard::GetClass
 const Class *OthelloBoard::GetClass() const {
    // FIXME: Implement this stub
+   throw BaseException("OthelloBoard::GetClass is not implemented");
    return nullptr;
 } 
 
@@ -44,7 +46,7 @@ set<OthelloBoard *> OthelloBoard::mRoster {};
 Object *OthelloBoard::CreateBoard() {return new OthelloBoard();}
 
 // BUG: Constructor is not initializing mPassCount
-OthelloBoard::OthelloBoard() : mNextMove(mBPiece), mWeight(0), mPassCount(0) {
+OthelloBoard::OthelloBoard() : mNextMove(mBPiece), mPassCount(0), mWeight(0) {
    int row, col;
 
    for (row = 0; row < dim; row++)
@@ -198,7 +200,7 @@ unique_ptr<Board> OthelloBoard::Clone() const {
 unique_ptr<const Board::Key> OthelloBoard::GetKey() const {
    BasicKey<5> *rtn = new BasicKey<5>();
    int row, col;
-   ulong *vals = rtn->vals;
+   uint *vals = rtn->vals;
 
    for (row = 0; row < dim; row++)
       for (col = 0; col < dim; col++)
@@ -275,7 +277,7 @@ ostream &OthelloBoard::Write(ostream &os) const {
 
    os.write((char *)&sz, sizeof(sz));
    for (auto itr = mMoveHist.begin(); itr != mMoveHist.end(); itr++)
-      itr->Write(os);
+      (*itr)->Write(os);
 
    return os;
 }
@@ -300,7 +302,7 @@ void *OthelloBoard::GetOptions() {
    return rtn;
 }
 
-static void SetOptions(const void *data) {
+void OthelloBoard::SetOptions(const void *data) {
    const Rules *rules = reinterpret_cast<const Rules *>(data);
    int row, col, dim = OthelloBoard::dim;
    set<OthelloBoard *>::iterator itr;

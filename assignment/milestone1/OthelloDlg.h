@@ -6,7 +6,9 @@
 
 class OthelloDlg : public Dialog {
 public:
-   bool Run(std::istream &in, std::ostream &out, void *data);
+   bool Run(std::istream &in, std::ostream &out, void *data) override;
+
+   const Class *GetClass() const override;
 
    static Object *Create() {return new OthelloDlg();}
 };

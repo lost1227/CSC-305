@@ -13,12 +13,18 @@ void OthelloView::Draw(ostream &out) {
    for (row = 0; row < OthelloBoard::dim; row++) {
       for (col = 0; col < OthelloBoard::dim; col++) {
          sqr = ob->GetSquare(row, col);
-         rtn = rtn +  sqr == OthelloBoard::mWPiece ? "W"
-          : sqr == OthelloBoard::mBPiece ? "B" : ".";
+         rtn = rtn + ((sqr == OthelloBoard::mWPiece) ? "W"
+          : ((sqr == OthelloBoard::mBPiece) ? "B" : "."));
       }
       rtn += "\n";
    }
    rtn += ob->GetWhoseMove() ? "W\n" : "B\n";
 
    out << rtn;
+}
+
+const Class *OthelloView::GetClass() const {
+   // FIXME: implement this method stub
+   throw BaseException("OthelloView::GetClass is not implemented");
+   return nullptr;
 }

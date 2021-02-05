@@ -70,7 +70,7 @@ void OthelloMove::operator=(const string &src) {
 }
 
 unique_ptr<Board::Move> OthelloMove::Clone() const {
-   return unique_ptr<Move>{new OthelloMove(this)};
+   return unique_ptr<Move>{new OthelloMove(*this)};
 }
 
 istream &OthelloMove::Read(istream &is) {

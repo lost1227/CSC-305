@@ -46,8 +46,8 @@ public:
    std::unique_ptr<Board> Clone() const override;
    std::unique_ptr<const Key> GetKey() const override;
 
-   std::istream &Read(std::istream &);
-   std::ostream &Write(std::ostream &) const;
+   std::istream &Read(std::istream &) override;
+   std::ostream &Write(std::ostream &) const override; 
    
    static Object *CreateBoard();
 
@@ -72,7 +72,7 @@ protected:
    static std::set<OthelloBoard *> mRoster; // Naked to preclude storage leak
    static Direction mDirs[numDirs];
    static short mWeights[dim][dim];
-   
+
    static bool InBounds(int row, int col)
     {return InRange<short>(0, row, dim) && InRange<short>(0, col, dim);}
 

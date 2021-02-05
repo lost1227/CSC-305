@@ -7,7 +7,6 @@
 #include <exception>
 #include <utility>
 
-#pragma warning (disable: 4996)
 
 // String subclass offering a printf-style constructor
 class FString : public std::string {
@@ -50,10 +49,26 @@ typedef const char *CStr;
 
 #ifdef LITTLE_ENDIAN
 
-inline ushort EndianXfer(ushort val) {}// Fill in
-inline short  EndianXfer(short val)  {}// Fill in
-inline int    EndianXfer(int val)    {}// Fill in
-inline uint   EndianXfer(uint val)   {}// Fill in
+inline ushort EndianXfer(ushort val) {
+   // FIXME: implement this stub
+   throw std::exception();
+   return 0;
+}// Fill in
+inline short  EndianXfer(short val)  {
+   // FIXME: implement this stub
+   throw std::exception();
+   return 0;
+}// Fill in
+inline int    EndianXfer(int val)    {
+   // FIXME: implement this stub
+   throw std::exception();
+   return 0;
+}// Fill in
+inline uint   EndianXfer(uint val)   {
+   // FIXME: implement this stub
+   throw std::exception();
+   return 0;
+}// Fill in
 
 #else
 

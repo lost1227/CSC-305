@@ -26,3 +26,9 @@ bool OthelloDlg::Run(istream &in, ostream &out, void *data) {
    }
    return resp == 'y';
 }
+
+const Class *OthelloDlg::GetClass() const {
+   // FIXME: Implement this stub
+   throw BaseException("OthelloBoard::GetClass is not implemented");
+   return nullptr;
+}
