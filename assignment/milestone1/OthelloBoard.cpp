@@ -54,8 +54,8 @@ OthelloBoard::OthelloBoard() : mNextMove(mBPiece), mPassCount(0), mWeight(0) {
          mBoard[row][col] = 0;
 
    // BUG: off by one error. dim/2+1 is 5. We meant to assign to 4.
-   mBoard[dim/2+1][dim/2+1] = mBoard[dim/2][dim/2] = mWPiece;
-   mBoard[dim/2+1][dim/2] = mBoard[dim/2][dim/2+1] = mBPiece;
+   mBoard[dim/2-1][dim/2-1] = mBoard[dim/2][dim/2] = mWPiece;
+   mBoard[dim/2-1][dim/2] = mBoard[dim/2][dim/2-1] = mBPiece;
    mRoster.insert(this);
 }
 
@@ -95,26 +95,33 @@ void OthelloBoard::ApplyMove(unique_ptr<Move> uMove) {
       mBoard[om->mRow][om->mCol] = mNextMove;
       mWeight += mNextMove * mWeights[om->mRow][om->mCol];
 
+      // Repeat considering each cardinal direction
       for (dNdx = 0; dNdx < numDirs; dNdx++) {
          dir = mDirs + dNdx;
          row = om->mRow;
          col = om->mCol;
 
+         // Walk from the new disc location outwards in the direction under consideration
+         // Keep walking so long as we encounter tiles of the opposite color
          do {
             row += dir->rDelta;
             col += dir->cDelta;
          } while (InBounds(row, col) && mBoard[row][col] == -mNextMove);
          
-         if (InBounds(row, col)) {
+         // Walk back towards the move location, flipping tiles as necesary
+         // Keep track of how many tiles were flipped
+         if (InBounds(row, col) && mBoard[row][col] == mNextMove) {
             for (switched = 0;
-             row != om->mRow && col != om->mCol;
+             row != om->mRow || col != om->mCol; // hmm
              row -= dir->rDelta, col -= dir->cDelta) {
                mBoard[row][col] = mNextMove;
                mWeight += mNextMove * mWeights[row][col];
                switched++;
             }
-            if (switched > 0)
+            if (switched > 0) {
+               switched -= 1; // Don't count the last tile as switched, since it wasn't
                om->AddFlipSet(OthelloMove::FlipSet(switched, dir));
+            }
          }
       }
       assert(om->GetFlipSets().size() > 0);
@@ -141,7 +148,7 @@ void OthelloBoard::UndoLastMove() {
       for (itr = om->mFlipSets.begin(); itr != om->mFlipSets.end(); itr++) {
          flipSet = *itr;
          row = baseRow + flipSet.dir->rDelta;
-         col = baseCol + flipSet.dir->rDelta;
+         col = baseCol + flipSet.dir->cDelta;
          for (flip = 0; flip < flipSet.count; flip++) {
             mBoard[row][col] = mNextMove;
             mWeight += 2*mNextMove*mWeights[row][col];
