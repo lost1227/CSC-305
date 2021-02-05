@@ -18,19 +18,27 @@
     - if (InBounds(row, col)) {
     + if (InBounds(row, col) && mBoard[row][col] == mNextMove) {
 7. OthelloBoard::ApplyMove() was counting one too many tiles as flipped
-    -   if (switched > 0)
-    +   if (switched > 0) {
-    +       switched -= 1;
-            om->AddFlipSet(OthelloMove::FlipSet(switched, dir));
-    +   }
-8. OthelloBoard::UndoLastMove() was using the rDelta to calculate the column
+    + if(row != om->mRow || col != om->mCol)
+    +    row -= dir->rDelta, col -= dir->cDelta;
+8. OthelloBoard::ApplyMove() was using incorrect boolean logic
+    - row != om->mRow && col != om->mCol
+    + row != om->mRow || col != om->mCol
+9. OthelloBoard::ApplyMove() was incorrectly calculating the board value
+    - mWeight += mNextMove * mWeights[row][col];
+    + mWeight += mNextMove * mWeights[row][col] * 2;
+10. OthelloBoard::UndoLastMove() was using the rDelta to calculate the column
     - col = baseCol + flipSet.dir->rDelta;
     + col = baseCol + flipSet.dir->cDelta;
-9. OthelloBoard::GetAllMoves() wouldn't get moves of length 1
+11. OthelloBoard::UndoLastMove() wouldn't set who's turn it is
+    + mNextMove = -mNextMove;
+11. OthelloBoard::GetAllMoves() wouldn't get moves of length 1
     - && mBoard[testRow][testCol] == mNextMove && steps > 2)
     + && mBoard[testRow][testCol] == mNextMove && steps > 1) {
-10. OthelloMove::operator new() wouldn't remove reused blocks from the free list
+12. OthelloBoard::GetAllMoves() would return a pass move, even if the game is over
+    + if(mPassCount == 2)
+    +    return;
+13. OthelloMove::operator new() wouldn't remove reused blocks from the free list
     + mFreeList.pop_back();
-11. OthelloMove::OthelloMove() constructor would use the row to initialize the column
+14. OthelloMove::OthelloMove() constructor would use the row to initialize the column
     - OthelloMove(char row = 0, char col = 0) : mRow(row), mCol(row) {}
     + OthelloMove(char row = 0, char col = 0) : mRow(row), mCol(col) {}

@@ -64,10 +64,7 @@ OthelloBoard::~OthelloBoard() {
 }
 
 int OthelloBoard::GetValue() const {
-   int row, col, total;
-   
-   // BUG: total was not initialized
-   total = 0;
+   int row, col, total = 0;
 
    if (mPassCount < 2)  // Game not over
       return mWeight;
@@ -92,6 +89,7 @@ void OthelloBoard::ApplyMove(unique_ptr<Move> uMove) {
    else {
       assert(mBoard[om->mRow][om->mCol] == 0);
 
+      mPassCount = 0;
       mBoard[om->mRow][om->mCol] = mNextMove;
       mWeight += mNextMove * mWeights[om->mRow][om->mCol];
 
@@ -111,17 +109,17 @@ void OthelloBoard::ApplyMove(unique_ptr<Move> uMove) {
          // Walk back towards the move location, flipping tiles as necesary
          // Keep track of how many tiles were flipped
          if (InBounds(row, col) && mBoard[row][col] == mNextMove) {
-            for (switched = 0;
-             row != om->mRow || col != om->mCol; // hmm
-             row -= dir->rDelta, col -= dir->cDelta) {
+            if(row != om->mRow || col != om->mCol)
+               row -= dir->rDelta, col -= dir->cDelta;
+            switched = 0;
+            while(row != om->mRow || col != om->mCol) {
                mBoard[row][col] = mNextMove;
-               mWeight += mNextMove * mWeights[row][col];
+               mWeight += mNextMove * mWeights[row][col] * 2;
                switched++;
+               row -= dir->rDelta, col -= dir->cDelta;
             }
-            if (switched > 0) {
-               switched -= 1; // Don't count the last tile as switched, since it wasn't
+            if (switched > 0)
                om->AddFlipSet(OthelloMove::FlipSet(switched, dir));
-            }
          }
       }
       assert(om->GetFlipSets().size() > 0);
@@ -131,13 +129,13 @@ void OthelloBoard::ApplyMove(unique_ptr<Move> uMove) {
 }
 
 void OthelloBoard::UndoLastMove() {
+   assert(mMoveHist.size() > 0);
    shared_ptr<OthelloMove> om = dynamic_pointer_cast<OthelloMove>(mMoveHist.back());
    int baseRow = om->mRow, baseCol = om->mCol;
    int row, col, flip;
    OthelloMove::FlipSet flipSet;
    OthelloMove::FlipList::iterator itr;
 
-   assert(mMoveHist.size() > 0);
    mMoveHist.pop_back();
 
    if (om->IsPass())
@@ -157,6 +155,8 @@ void OthelloBoard::UndoLastMove() {
          }
       }
    }
+
+   mNextMove = -mNextMove;
 }
 
 void OthelloBoard::GetAllMoves(list<unique_ptr<Move>> *moves) const {
@@ -164,6 +164,10 @@ void OthelloBoard::GetAllMoves(list<unique_ptr<Move>> *moves) const {
    Direction *dir;
 
    assert(moves->size() == 0);
+
+   // If the game is over, there are no moves available
+   if(mPassCount == 2)
+      return;
 
    for (row = 0; row < dim; row++)
       for (col = 0; col < dim; col++) {
@@ -211,7 +215,7 @@ unique_ptr<const Board::Key> OthelloBoard::GetKey() const {
 
    for (row = 0; row < dim; row++)
       for (col = 0; col < dim; col++)
-         vals[(row+1)/2] = vals[(row+1)/2] << sqrShift | mBoard[row][col] + 1;
+         vals[(row+1)/2] = vals[(row+1)/2] << sqrShift | (mBoard[row][col] + 1);
 
    vals[row/2] |= mNextMove + 1;
 
