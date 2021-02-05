@@ -2,7 +2,8 @@
 #include <string>
 #include <memory>
 
-#include "string.h"
+#include <string.h>
+#include <assert.h>
 
 #include "OthelloBoard.h"
 #include "OthelloView.h"
@@ -10,12 +11,46 @@
 
 using namespace std;
 
+const int outWidth = 80;
+
+void printMoveList(list<unique_ptr<Board::Move>> &moves) {
+    if(moves.size() == 0){
+        cout << endl;
+        return;
+    }
+    list<string> moveStrs;
+    string curr;
+    int longestMoveLength = 0;
+    for(auto& mov : moves) {
+        curr = *mov;
+        longestMoveLength = max(longestMoveLength, (int) curr.length());
+        moveStrs.push_back((string) *mov);
+    }
+
+    curr = "";
+    for(auto& mov : moveStrs) {
+        if(curr.length() + mov.length() > outWidth) {
+            cout << curr << endl;
+            curr = "";
+        } else if(curr.length() != 0) {
+            curr += " ";
+        }
+        curr += mov;
+        for(int i = mov.length(); i < longestMoveLength; i++)
+            curr += " ";
+    }
+    if(curr.length() > 0)
+        cout << curr;
+    cout << endl;
+}
 
 int main() {
     shared_ptr<OthelloBoard> board(new OthelloBoard());
     shared_ptr<OthelloView> view(new OthelloView());
 
     unique_ptr<Board::Move> currMove = board->CreateMove();
+
+    list<unique_ptr<Board::Move>> moves;
 
     view->SetModel(board);
 
@@ -26,6 +61,9 @@ int main() {
         size_t idx;
         if((idx = line.find("showBoard")) != string::npos) {
             view->Draw(cout);
+            moves.clear();
+            board->GetAllMoves(&moves);
+            printMoveList(moves);
         } else if((idx = line.find("enterMove")) != string::npos) {
             *currMove = line.substr(idx + strlen("enterMove"));
             //*currMove = line;
