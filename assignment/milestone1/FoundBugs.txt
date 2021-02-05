@@ -1,0 +1,36 @@
+1. OthelloBoard::mWeights initializer used parenthesis instead of curlybraces
+    - (16, 0, 8, 8, 8, 8, 0, 16)
+    + {16, 0, 8, 8, 8, 8, 0, 16}
+2. OthelloBoard::mDirs repeated {1, -1} twice and missed {1, 1}
+    -   {0, 1}, {-1, 1}, {-1, 0}, {-1, -1}, {0, -1}, {1, -1}, {1, 0}, {1, -1}
+    +   {0, 1}, {-1, 1}, {-1, 0}, {-1, -1}, {0, -1}, {1, -1}, {1, 0}, {1, 1}
+3. OthelloBoard::OthelloBoard() constructor was not initializing mPassCount()
+    -OthelloBoard::OthelloBoard() : mNextMove(mBPiece), mWeight(0) {
+    +OthelloBoard::OthelloBoard() : mNextMove(mBPiece), mWeight(0), mPassCount(0) {
+4. OthelloBoard::OthelloBoard() constructor was off-by-one when placing the initial tiles
+    -   mBoard[dim/2+1][dim/2+1] = mBoard[dim/2][dim/2] = mWPiece;
+    -   mBoard[dim/2+1][dim/2] = mBoard[dim/2][dim/2+1] = mBPiece;
+    +   mBoard[dim/2-1][dim/2-1] = mBoard[dim/2][dim/2] = mWPiece;
+    +   mBoard[dim/2-1][dim/2] = mBoard[dim/2][dim/2-1] = mBPiece;
+5. OthelloBoard::GetValue() was not initializing the total before performing a += operation
+    + total = 0;
+6. OthelloBoard::ApplyMove() was not checking that a run ended with one of the player's tiles
+    - if (InBounds(row, col)) {
+    + if (InBounds(row, col) && mBoard[row][col] == mNextMove) {
+7. OthelloBoard::ApplyMove() was counting one too many tiles as flipped
+    -   if (switched > 0)
+    +   if (switched > 0) {
+    +       switched -= 1;
+            om->AddFlipSet(OthelloMove::FlipSet(switched, dir));
+    +   }
+8. OthelloBoard::UndoLastMove() was using the rDelta to calculate the column
+    - col = baseCol + flipSet.dir->rDelta;
+    + col = baseCol + flipSet.dir->cDelta;
+9. OthelloBoard::GetAllMoves() wouldn't get moves of length 1
+    - && mBoard[testRow][testCol] == mNextMove && steps > 2)
+    + && mBoard[testRow][testCol] == mNextMove && steps > 1) {
+10. OthelloMove::operator new() wouldn't remove reused blocks from the free list
+    + mFreeList.pop_back();
+11. OthelloMove::OthelloMove() constructor would use the row to initialize the column
+    - OthelloMove(char row = 0, char col = 0) : mRow(row), mCol(row) {}
+    + OthelloMove(char row = 0, char col = 0) : mRow(row), mCol(col) {}
