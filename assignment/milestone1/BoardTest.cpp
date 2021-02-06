@@ -5,9 +5,9 @@
 #include <string.h>
 #include <assert.h>
 
-#include "OthelloBoard.h"
-#include "OthelloView.h"
-#include "OthelloMove.h"
+#include "CheckersBoard.h"
+#include "CheckersView.h"
+#include "CheckersMove.h"
 
 using namespace std;
 
@@ -15,6 +15,7 @@ const int outWidth = 80;
 
 template<class T>
 void printMoveList(T begin, T end) {
+    cout << "All Moves:" << endl;
     if(begin == end){
         cout << endl;
         return;
@@ -46,8 +47,8 @@ void printMoveList(T begin, T end) {
 }
 
 int main() {
-    shared_ptr<OthelloBoard> board(new OthelloBoard());
-    shared_ptr<OthelloView> view(new OthelloView());
+    shared_ptr<Board> board(new CheckersBoard());
+    shared_ptr<View> view(new CheckersView());
 
     unique_ptr<Board::Move> currMove = board->CreateMove();
 
@@ -62,6 +63,7 @@ int main() {
         size_t idx;
         if((idx = line.find("showBoard")) != string::npos) {
             view->Draw(cout);
+            cout << endl;
             moves.clear();
             board->GetAllMoves(&moves);
             printMoveList(moves.begin(), moves.end());
@@ -80,7 +82,12 @@ int main() {
             *currMove = line.substr(idx + strlen("doMove"));
             board->ApplyMove(currMove->Clone());
         } else if((idx = line.find("undoLastMove")) != string::npos) {
-            board->UndoLastMove();
+            int cnt = stoi(line.substr(idx + strlen("undoLastMove")));
+            for(int i = 0; i < cnt; i++)
+                if(board->GetMoveHist().size())
+                    board->UndoLastMove();
+                else
+                    break;
         } else if((idx = line.find("showVal")) != string::npos) {
             cout << "Value: " << board->GetValue() << endl;
         } else if((idx = line.find("quit")) != string::npos) {

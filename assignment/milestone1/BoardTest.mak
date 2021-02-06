@@ -1,9 +1,9 @@
 CXX = g++
 CPPFLAGS = -Wall -Werror -pedantic -g -std=c++11
 
-CPPFLAGS += -Wno-char-subscripts -Wno-error=parentheses
+CPPFLAGS += # -Wno-char-subscripts # -Wno-error=parentheses
 
-SRCS = TestMain.cpp OthelloBoard.cpp OthelloView.cpp OthelloMove.cpp
+SRCS = $(shell find . -name "*.cpp")
 OBJS = $(SRCS:.cpp=.o)
 MAIN = test
 
