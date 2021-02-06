@@ -6,6 +6,8 @@
 class CheckersView : public View {
 public:
    void Draw(std::ostream &out);
+
+   const Class *GetClass() const override;
    
 private:
    static Object *Create() {return new CheckersView();}

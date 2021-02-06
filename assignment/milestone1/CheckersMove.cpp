@@ -8,11 +8,14 @@ using namespace std;
 
 
 void *CheckersMove::operator new(size_t sz) {
-
+   // FIXME: implement this stub
+   throw BaseException("CheckersMove::operator new is not implemented");
+   return ::new char[sz];
 }
 
 void CheckersMove::operator delete(void *p) {
-
+   // FIXME: implement this stub
+   throw BaseException("CheckersMove::operator delete is not implemented");
 }
 
 CheckersMove::CheckersMove(const vector<CheckersBoard::Loc> &seq)
@@ -32,12 +35,8 @@ bool CheckersMove::operator==(const Board::Move &rhs) const {
 }
 
 bool CheckersMove::operator<(const Board::Move &rhs) const {
-
-
-
-
-
-
+   // FIXME: implement this stub
+   throw BaseException("CheckersMove::operator new is not implemented");
 }
 
 CheckersMove::operator string() const {
@@ -55,13 +54,8 @@ CheckersMove::operator string() const {
 }
 
 void CheckersMove::operator=(const string &src) {
-
-
-
-
-
-
-   
+   // FIXME: implement this stub
+   throw BaseException("CheckersMove::operator= is not implemented");
 }
 
 unique_ptr<Board::Move> CheckersMove::Clone() const {
@@ -69,7 +63,9 @@ unique_ptr<Board::Move> CheckersMove::Clone() const {
 }
 
 istream &CheckersMove::Read(istream &is) {
-   
+   // FIXME: implement this stub
+   throw BaseException("CheckersMove::read new is not implemented");
+   return is;
 }
 
 ostream &CheckersMove::Write(ostream &os) const {

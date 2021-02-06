@@ -46,7 +46,7 @@ public:
        {return rhs.row == row && rhs.col == col;}
 
       bool operator<(const Loc &rhs) const
-       {return row < rhs.row || row == rhs.row && col < rhs.col;}
+       {return row < rhs.row || (row == rhs.row && col < rhs.col);}
 
        void EndSwap() {row = EndianXfer(row); col = EndianXfer(col);}
    };
@@ -81,6 +81,8 @@ public:
    static void *GetOptions();
    static void SetOptions(const void *opts);      
 
+   const Class *GetClass() const override;
+
 protected:
    // Direction represents the row/col changes needed to move in a direction.
    struct Direction {
@@ -94,6 +96,9 @@ protected:
    void FindNormalMoves() const;
    bool IsBackRow(char pc, const Loc &loc) {
       // Fill in
+      // FIXME: implement this method stub
+      throw BaseException("CheckersBoard::IsBackRow is not implemented");
+      return false;
    }
 
    static Rules mRules;

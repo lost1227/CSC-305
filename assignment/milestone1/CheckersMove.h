@@ -30,6 +30,7 @@ protected:
 
    std::vector<CheckersBoard::Loc> mSeq;
    bool mWasKinged;
+   std::vector<bool> mWereKings;
 
    static std::vector<CheckersMove *> mFreeList;
 };

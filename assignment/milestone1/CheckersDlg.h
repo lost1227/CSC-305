@@ -8,6 +8,8 @@ class CheckersDlg : public Dialog {
 public:
    bool Run(std::istream &in, std::ostream &out, void *data);
 
+   const Class *GetClass() const override;
+
    static Object *Create() {return new CheckersDlg();}
 };
 

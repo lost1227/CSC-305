@@ -13,6 +13,9 @@
 
 using namespace std;
 
+set<CheckersBoard *> CheckersBoard::mRoster;
+CheckersBoard::Rules CheckersBoard::mRules;
+
 Object *CheckersBoard::CreateBoard() {return new CheckersBoard();}
 
 CheckersBoard::Direction CheckersBoard::mDirs[] = {
@@ -84,8 +87,8 @@ void CheckersBoard::ApplyMove(unique_ptr<Move> uMove) {
       here = mv->mSeq.back();
 
    // King me
-   if ((piece & WHITE) && here.row == 0
-    || !(piece & WHITE) && here.row == DIM-1) {
+   if (((piece & WHITE) && here.row == 0)
+    || (!(piece & WHITE) && here.row == DIM-1)) {
          mValue += sense * (mRules.kingWgt - PIECEWGT);
       piece |= KING;
    }
@@ -100,7 +103,8 @@ void CheckersBoard::ApplyMove(unique_ptr<Move> uMove) {
 }
 
 void CheckersBoard::UndoLastMove() {
-   
+   // FIXME: implement this stub
+   throw BaseException("CheckersMove::UndoLastMove is not implemented");
 }
 
 void CheckersBoard::GetAllMoves(list<unique_ptr<Move>> *moves) const {
@@ -121,9 +125,9 @@ unique_ptr<Board> CheckersBoard::Clone() const {
 }
 
 unique_ptr<const Board::Key> CheckersBoard::GetKey() const {
- 
-            
-   return unique_ptr<const Key>(rtn);
+   // FIXME: implement this stub
+   throw BaseException("CheckersBoard::GetKey is not implemented");
+   return unique_ptr<const Key>(nullptr);
 }
 
 void *CheckersBoard::GetOptions() {
@@ -131,8 +135,8 @@ void *CheckersBoard::GetOptions() {
 }
 
 void CheckersBoard::SetOptions(const void *opts) {
-
-
+   // FIXME: implement this stub
+   throw BaseException("CheckersMove::SetOptions is not implemented");
 }
 
 void CheckersBoard::Rules::EndSwap() {
@@ -142,13 +146,8 @@ void CheckersBoard::Rules::EndSwap() {
 }
 
 istream &CheckersBoard::Read(istream &is) {
-
-
-
-
-
-
-
+   // FIXME: implement this stub
+   throw BaseException("CheckersMove::Read is not implemented");
 }
 
 ostream &CheckersBoard::Write(ostream &os) const {
@@ -173,11 +172,11 @@ void CheckersBoard::NewOptions() {
    
    for (int row = 0; row < DIM; row++)
       for (int col = 0; col < DIM; col++)
-         if (piece = mBoard[row][col]) {
+         if ((piece = mBoard[row][col])) {
             mValue += (piece & WHITE ? -1 : 1)
              * (piece & KING ? mRules.kingWgt : PIECEWGT);
-            if (row == 0 && !(piece & WHITE)
-             || row == DIM-1 && (piece & WHITE))
+            if ((row == 0 && !(piece & WHITE))
+             || (row == DIM-1 && (piece & WHITE)))
                mValue += (piece & WHITE ? -1 : 1) * mRules.backWgt;
          }
 }
@@ -193,6 +192,10 @@ void CheckersBoard::CalcMoves() const {
    vector<int> dirs;  // Series of directions moved
    bool upStep;       // Did we just make a new step forward?
    
+   //TODO: Use these variables
+   (void)ndx;
+   (void)jumpPiece;
+
    mMoves.clear();
    for (row = 0; row < DIM; row++)
       for (col = 0; col < DIM; col++) {
@@ -226,8 +229,8 @@ void CheckersBoard::CalcMoves() const {
                    thisLoc.col + 2*mDirs[dirs.back()].cDelta
                   );
 
-                  if (InRange(toLoc) && (!mBoard[toLoc.row][toLoc.col]
-                   || toLoc.row == row && toLoc.col == col)) {  // Piece has moved
+                  if ((InRange(toLoc) && (!mBoard[toLoc.row][toLoc.col]))
+                   || ((toLoc.row == row) && (toLoc.col == col))) {  // Piece has moved
                       // Fill in forward-step logic in DFS here.  Should be
                       // 1-2 dozen lines of code.
                   }
@@ -267,3 +270,9 @@ void CheckersBoard::FindNormalMoves() const {
          }
       }
    }        
+
+const Class *CheckersBoard::GetClass() const {
+   // FIXME: implement this method stub
+   throw BaseException("CheckersBoard::GetClass is not implemented");
+   return nullptr;
+}

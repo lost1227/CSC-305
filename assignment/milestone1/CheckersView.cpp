@@ -26,3 +26,9 @@ void CheckersView::Draw(ostream &out) {
 
    out << endl << (ob->GetWhoseMove() ? "White's move" : "Black's move") << endl;
 }
+
+const Class *CheckersView::GetClass() const {
+   // FIXME: implement this method stub
+   throw BaseException("CheckersView::GetClass is not implemented");
+   return nullptr;
+}
