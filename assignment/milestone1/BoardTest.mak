@@ -1,11 +1,13 @@
 CXX = g++
 CPPFLAGS = -Wall -Werror -pedantic -g -std=c++11
 
-CPPFLAGS += # -Wno-char-subscripts # -Wno-error=parentheses
+CPPFLAGS += -DLITTLE_ENDIAN
+CPPFLAGS += -Wno-error=char-subscripts -Wno-error=parentheses
+CPPFLAGS += -fsanitize=undefined -fsanitize=address
 
 SRCS = $(shell find . -name "*.cpp")
 OBJS = $(SRCS:.cpp=.o)
-MAIN = test
+MAIN = BoardTest
 
 DEPDIR := .deps
 DEPFLAGS = -MT $@ -MMD -MP -MF $(DEPDIR)/$*.d
