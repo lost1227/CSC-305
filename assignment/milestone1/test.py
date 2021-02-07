@@ -6,7 +6,7 @@ import shutil
 import tempfile
 import threading
 
-debug=["Othello.1"]
+debug=[]
 
 script_dir = Path(__file__).resolve().parent
 

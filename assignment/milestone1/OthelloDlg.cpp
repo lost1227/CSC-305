@@ -1,6 +1,8 @@
 #include "OthelloDlg.h"
 #include "OthelloBoard.h"
 
+#include <limits>
+
 using namespace std;
 
 bool OthelloDlg::Run(istream &in, ostream &out, void *data) {
@@ -16,6 +18,8 @@ bool OthelloDlg::Run(istream &in, ostream &out, void *data) {
    if ((in >> resp).eof())
       throw BaseException("Unexpected EOF");
 
+   in.ignore(numeric_limits<streamsize>::max(), '\n');
+   
    if (resp == 'y') {
       out << endl;
       ReadLimitInt(in, out, &rules->sideWgt, 0, 100, "Enter side weight");

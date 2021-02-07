@@ -385,14 +385,13 @@ void BoardTest::ExecCmd(string &cmdStr) {
 
 void BoardTest::Run() {
     string cmd;
-    while(shouldRun) {
-        getline(cin, cmd);
-        if(cin.eof()) {
-            cout << "Error: Unexpected EOF" << endl << endl;
-            break;
-        }
+    while(shouldRun && !cin.eof()) {
         try {
-        ExecCmd(cmd);
+            getline(cin, cmd);
+            if(cin.eof()) {
+                throw BaseException("Unexpected EOF");
+            }
+            ExecCmd(cmd);
         } catch(BaseException &e) {
             cout << "Error: " << e.what() << endl;
         }
