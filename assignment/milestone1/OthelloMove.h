@@ -55,7 +55,7 @@ protected:
    char mCol;
    FlipList mFlipSets;
 
-   static std::vector<OthelloMove *> mFreeList;
+   static std::vector<std::unique_ptr<OthelloMove, FreeListDeleter>> mFreeList;
 };
 
 #endif

@@ -5,13 +5,13 @@
 
 using namespace std;
 
-vector<OthelloMove *> OthelloMove::mFreeList;
+vector<unique_ptr<OthelloMove, FreeListDeleter>> OthelloMove::mFreeList;
 
 void *OthelloMove::operator new(size_t sz) {
    void *temp;
 
    if (mFreeList.size()) {
-      temp = mFreeList.back();
+      temp = (void *) mFreeList.back().release();
       mFreeList.pop_back();
    } 
    else {
@@ -23,7 +23,9 @@ void *OthelloMove::operator new(size_t sz) {
 }
 
 void OthelloMove::operator delete(void *p) {
-   mFreeList.push_back((OthelloMove *)p);
+
+   unique_ptr<OthelloMove, FreeListDeleter> ptr((OthelloMove *)p, FreeListDeleter());
+   mFreeList.push_back(move(ptr));
 
    mOutstanding--;
 }
@@ -81,7 +83,7 @@ istream &OthelloMove::Read(istream &is) {
    is.read(&mRow, sizeof(mRow));
    is.read(&mCol, sizeof(mCol));
    is.read(&size, sizeof(size));
-   while (--size) {
+   while (size--) {
       is.read(&count, sizeof(count)).read(&dirNum, sizeof(dirNum));
       mFlipSets.push_back(
        FlipSet(count, OthelloBoard::mDirs + dirNum));

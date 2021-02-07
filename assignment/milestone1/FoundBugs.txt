@@ -42,3 +42,31 @@
 14. OthelloMove::OthelloMove() constructor would use the row to initialize the column
     - OthelloMove(char row = 0, char col = 0) : mRow(row), mCol(row) {}
     + OthelloMove(char row = 0, char col = 0) : mRow(row), mCol(col) {}
+15. OthelloBoard::Read() OBOE when reading board: decrementer stopped at 1 instead of 0
+    - for (col = dim-1; col > 0; col--) {
+    + for (col = dim-1; col >= 0; col--) {
+16. OthelloBoard::Read() was not reading in the size
+    + is.read((char *)&size, sizeof(size));
+17. OthelloBoard::Read() OBOE: checking the predecrement instead of the postdecrement
+    - while (is && --size) {
+    + while (is && size--) {
+18. OthelloBoard::Write() not reversing byte order of read columns
+    + rowBits = EndianXfer(rowBits);
+19. OthelloBoard::Write() memory leak: not deleting the rules pointer
+    + delete rls;
+20. OthelloBoard::RecalcWeight() was not resetting the weight before recalculating it
+    + mWeight = 0
+21. OthelloBoard::GetOptions() 2D arrays are not pointer arrays
+    You can't take a short ** to a short[][]
+    -   short **mWeights = (short **)OthelloBoard::mWeights;
+    -   rtn->cornerWgt = mWeights[0][0];
+    -   rtn->sideWgt = mWeights[0][2];
+    -   rtn->nearSideWgt = mWeights[1][1];
+    -   rtn->innerWgt = mWeights[2][2];
+    +   rtn->cornerWgt = OthelloBoard::mWeights[0][0];
+    +   rtn->sideWgt = OthelloBoard::mWeights[0][2];
+    +   rtn->nearSideWgt = OthelloBoard::mWeights[1][1];
+    +   rtn->innerWgt = OthelloBoard::mWeights[2][2];
+22. OthelloMove::Read() OBOE: checking the predecrement instead of the postdecrement
+    -   while (--size) {
+    +   while (size--) {

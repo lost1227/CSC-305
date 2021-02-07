@@ -50,25 +50,23 @@ typedef const char *CStr;
 #ifdef LITTLE_ENDIAN
 
 inline ushort EndianXfer(ushort val) {
-   // FIXME: implement this stub
-   throw std::exception();
-   return 0;
-}// Fill in
+   return (val >> 8) | (val << 8);
+}
 inline short  EndianXfer(short val)  {
-   // FIXME: implement this stub
-   throw std::exception();
-   return 0;
-}// Fill in
+   return (val >> 8) | (val << 8);
+}
 inline int    EndianXfer(int val)    {
-   // FIXME: implement this stub
-   throw std::exception();
-   return 0;
-}// Fill in
+   return ((val & 0xFF000000) >> 24)
+      | ((val & 0x00FF0000) >> 8)
+      | ((val & 0x0000FF00) << 8)
+      | ((val & 0x000000FF) << 24);
+}
 inline uint   EndianXfer(uint val)   {
-   // FIXME: implement this stub
-   throw std::exception();
-   return 0;
-}// Fill in
+   return ((val & 0xFF000000) >> 24)
+      | ((val & 0x00FF0000) >> 8)
+      | ((val & 0x0000FF00) << 8)
+      | ((val & 0x000000FF) << 24);
+}
 
 #else
 
@@ -87,6 +85,13 @@ public:
 
 protected:
    std::string mErr;
+};
+
+struct FreeListDeleter {
+   void operator()(void *ptr) {
+      if(ptr)
+         ::operator delete[](ptr);
+   }
 };
 
 #endif

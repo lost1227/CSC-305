@@ -19,21 +19,16 @@ short OthelloBoard::mWeights[dim][dim] = {
    { 8, 0, 1, 1, 1, 1, 0,  8},
    { 8, 0, 1, 1, 1, 1, 0,  8},
    { 0, 0, 0, 0, 0, 0, 0,  0},
-   // BUG:: using () instead of {} means that the expression evaluates
-   // to 16. This is because `,` is an expression, resulting in the second value
    {16, 0, 8, 8, 8, 8, 0, 16} 
 };
 
 
 
 // Directions are row, column
-// BUG: Missing OthelloBoard::, was making a local array instead of initializing OthelloBoard::mDirs
-// BUG: {1, -1} was repeated twice and {1, 1} was making
 OthelloBoard::Direction OthelloBoard::mDirs[numDirs] = {
    {0, 1}, {-1, 1}, {-1, 0}, {-1, -1}, {0, -1}, {1, -1}, {1, 0}, {1, 1}
 };
 
-// BUG: Missing implementation of OthelloBoard::GetClass
 const Class *OthelloBoard::GetClass() const {
    // FIXME: Implement this stub
    throw BaseException("OthelloBoard::GetClass is not implemented");
@@ -45,7 +40,6 @@ set<OthelloBoard *> OthelloBoard::mRoster {};
 
 Object *OthelloBoard::CreateBoard() {return new OthelloBoard();}
 
-// BUG: Constructor is not initializing mPassCount
 OthelloBoard::OthelloBoard() : mNextMove(mBPiece), mPassCount(0), mWeight(0) {
    int row, col;
 
@@ -53,7 +47,6 @@ OthelloBoard::OthelloBoard() : mNextMove(mBPiece), mPassCount(0), mWeight(0) {
       for (col = 0; col < dim; col++)
          mBoard[row][col] = 0;
 
-   // BUG: off by one error. dim/2+1 is 5. We meant to assign to 4.
    mBoard[dim/2-1][dim/2-1] = mBoard[dim/2][dim/2] = mWPiece;
    mBoard[dim/2-1][dim/2] = mBoard[dim/2][dim/2-1] = mBPiece;
    mRoster.insert(this);
@@ -241,7 +234,7 @@ istream &OthelloBoard::Read(istream &is) {
    for (row = 0; row < dim; row++) {
       is.read((char *)&rowBits, sizeof(rowBits));
       rowBits = EndianXfer(rowBits);
-      for (col = dim-1; col > 0; col--) {
+      for (col = dim-1; col >= 0; col--) {
          mBoard[row][col] = rowBits & sqrMask;
          rowBits >>= sqrShift;
          if (mBoard[row][col] == (mWPiece & sqrMask)) // If cell was -1 (mWPiece)
@@ -254,8 +247,10 @@ istream &OthelloBoard::Read(istream &is) {
    is.read(&mNextMove, sizeof(mNextMove));
    is.read(&mPassCount, sizeof(mPassCount));
 
+   is.read((char *)&size, sizeof(size));
+
    RecalcWeight();
-   while (is && --size) {
+   while (is && size--) {
       move = new OthelloMove();
       move->Read(is);
       mMoveHist.push_back(shared_ptr<OthelloMove>(move));
@@ -279,7 +274,7 @@ ostream &OthelloBoard::Write(ostream &os) const {
    for (row = 0; row < dim; row++) {
       for (col = rowBits = 0; col < dim; col++)
          rowBits = rowBits << sqrShift | mBoard[row][col] & sqrMask;
-
+      rowBits = EndianXfer(rowBits);
       os.write((char *)&rowBits, sizeof(rowBits));
    }
 
@@ -290,11 +285,15 @@ ostream &OthelloBoard::Write(ostream &os) const {
    for (auto itr = mMoveHist.begin(); itr != mMoveHist.end(); itr++)
       (*itr)->Write(os);
 
+   delete rls;
+   
    return os;
 }
 
 void OthelloBoard::RecalcWeight() {
    int row, col;
+
+   mWeight = 0;
 
    for (row = 0; row < dim; row++)
       for (col = 0; col < dim; col++)
@@ -303,12 +302,11 @@ void OthelloBoard::RecalcWeight() {
 
 void *OthelloBoard::GetOptions() {
    Rules *rtn = new Rules;
-   short **mWeights = (short **)OthelloBoard::mWeights;
 
-   rtn->cornerWgt = mWeights[0][0];
-   rtn->sideWgt = mWeights[0][2];
-   rtn->nearSideWgt = mWeights[1][1];
-   rtn->innerWgt = mWeights[2][2];
+   rtn->cornerWgt = OthelloBoard::mWeights[0][0];
+   rtn->sideWgt = OthelloBoard::mWeights[0][2];
+   rtn->nearSideWgt = OthelloBoard::mWeights[1][1];
+   rtn->innerWgt = OthelloBoard::mWeights[2][2];
 
    return rtn;
 }
