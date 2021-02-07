@@ -38,7 +38,6 @@ public:
     shared_ptr<View> mView;
     shared_ptr<Dialog> mDlg;
     shared_ptr<Board::Move> mCurrMove;
-    list<unique_ptr<Board::Move>> mMoveOpts;
 
     bool shouldRun { true };
 private:
@@ -60,12 +59,12 @@ class ShowBoardCmd : public BoardTestCmd {
 public:
     ShowBoardCmd() : BoardTestCmd(regex(R"(^\s*showBoard)")) {}
     void Apply(BoardTest &board) override {
+        list<unique_ptr<Board::Move>> moveOpts;
         board.mView->Draw(cout);
         cout << endl;
-        cout << "All Moves:" << endl;
-        board.mMoveOpts.clear();
-        board.mBoard->GetAllMoves(&board.mMoveOpts);
-        printMoveList(board.mMoveOpts.begin(), board.mMoveOpts.end());
+        cout << "All Moves: " << endl;
+        board.mBoard->GetAllMoves(&moveOpts);
+        printMoveList(moveOpts.begin(), moveOpts.end());
     }
 };
 
@@ -92,12 +91,9 @@ public:
     ApplyMoveCmd() : BoardTestCmd(regex(R"(^\s*applyMove)")) {}
     void Apply(BoardTest &board) override {
         assert(board.mCurrMove);
-        // FIXME: Investigate reducing repeated calls to expensive GetAllMoves
-        // If we've already shown the board, mMoveOpts will already have the right
-        // contents, so we don't have to call GetAllMoves again
-        board.mMoveOpts.clear();
-        board.mBoard->GetAllMoves(&board.mMoveOpts);
-        for(auto& uniqMovePtr : board.mMoveOpts) {
+        list<unique_ptr<Board::Move>> moveOpts;
+        board.mBoard->GetAllMoves(&moveOpts);
+        for(auto& uniqMovePtr : moveOpts) {
             if(*uniqMovePtr == *board.mCurrMove) {
                 board.mBoard->ApplyMove(move(uniqMovePtr));
                 return;
@@ -112,7 +108,7 @@ public:
     ShowMoveHistCmd() : BoardTestCmd(regex(R"(^\s*showMoveHist)")) {}
     void Apply(BoardTest &board) override {
         const list<shared_ptr<const Board::Move>> &moveHist = board.mBoard->GetMoveHist();
-        cout << endl << "Move History:" << endl;
+        cout << endl << "Move History: " << endl;
         printMoveList(moveHist.begin(), moveHist.end());
     }
 };
@@ -124,12 +120,9 @@ public:
         board.mCurrMove = board.mBoard->CreateMove();
         (*board.mCurrMove) = mMatches[1];
 
-        // FIXME: Investigate reducing repeated calls to expensive GetAllMoves
-        // If we've already shown the board, mMoveOpts will already have the right
-        // contents, so we don't have to call GetAllMoves again
-        board.mMoveOpts.clear();
-        board.mBoard->GetAllMoves(&board.mMoveOpts);
-        for(auto& uniqMovePtr : board.mMoveOpts) {
+        list<unique_ptr<Board::Move>> moveOpts;
+        board.mBoard->GetAllMoves(&moveOpts);
+        for(auto& uniqMovePtr : moveOpts) {
             if(*uniqMovePtr == *board.mCurrMove) {
                 board.mBoard->ApplyMove(move(uniqMovePtr));
                 return;
@@ -215,7 +208,7 @@ public:
             cout << "Board keys are equal" << endl;
             return;
         }
-        cout << "Board keys are unequal";
+        cout << "Board keys are unequal" << endl;
         if(*key < *oKey) {
             cout << "Current board is less than " << mMatches[1] << endl;
         } else {
@@ -262,16 +255,17 @@ public:
         int seed = stoi(mMatches[1]);
         int moveCount = stoi(mMatches[2]);
         int idx;
+        list<unique_ptr<Board::Move>> moveOpts;
 
         srand(seed);
 
         for(int i = 0; i < moveCount; i++) {
-            board.mMoveOpts.clear();
-            board.mBoard->GetAllMoves(&board.mMoveOpts);
-            if(board.mMoveOpts.size() == 0)
+            moveOpts.clear();
+            board.mBoard->GetAllMoves(&moveOpts);
+            if(moveOpts.size() == 0)
                 break;
-            auto iterator = board.mMoveOpts.begin();
-            idx = rand() % board.mMoveOpts.size();
+            auto iterator = moveOpts.begin();
+            idx = rand() % moveOpts.size();
             advance(iterator, idx);
             
             *board.mCurrMove = **iterator;
@@ -287,13 +281,14 @@ public:
         int seed = stoi(mMatches[1]);
         int moveCount = stoi(mMatches[2]);
         int idx;
+        list<unique_ptr<Board::Move>> moveOpts;
 
         srand(seed);
 
         for(int i = 0; i < moveCount; i++) {
-            board.mMoveOpts.clear();
-            board.mBoard->GetAllMoves(&board.mMoveOpts);
-            if(board.mMoveOpts.size() == 0) {
+            moveOpts.clear();
+            board.mBoard->GetAllMoves(&moveOpts);
+            if(moveOpts.size() == 0) {
                 auto &moveHist = board.mBoard->GetMoveHist();
                 assert(moveHist.size() > 0);
                 size_t undoCount = (rand() % (moveHist.size() - 1)) + 1;
@@ -305,11 +300,11 @@ public:
                     *board.mCurrMove = *board.mBoard->CreateMove();
                 else
                     *board.mCurrMove = *moveHist.back();
-                board.mBoard->GetAllMoves(&board.mMoveOpts);
-                assert(board.mMoveOpts.size() > 0);
+                board.mBoard->GetAllMoves(&moveOpts);
+                assert(moveOpts.size() > 0);
             }
-            auto iterator = board.mMoveOpts.begin();
-            idx = rand() % board.mMoveOpts.size();
+            auto iterator = moveOpts.begin();
+            idx = rand() % moveOpts.size();
             advance(iterator, idx);
             
             *board.mCurrMove = **iterator;
@@ -391,10 +386,14 @@ void BoardTest::Run() {
     while(shouldRun) {
         getline(cin, cmd);
         if(cin.eof()) {
-            cout << "Error: Unexpected EOF" << endl;
+            cout << "Error: Unexpected EOF" << endl << endl;
             break;
         }
+        try {
         ExecCmd(cmd);
+        } catch(BaseException &e) {
+            cout << "Error: " << e.what() << endl;
+        }
         cout << endl;
     }
 }
@@ -404,7 +403,6 @@ const int outWidth = 80;
 template<class T>
 void printMoveList(T begin, T end) {
     if(begin == end){
-        cout << endl;
         return;
     }
     static list<string> moveStrs;
@@ -444,4 +442,5 @@ int main(int argc, char *argv[]) {
         shared_ptr<Dialog>(new OthelloDlg()));
     
     boardTest.Run();
+    
 }
