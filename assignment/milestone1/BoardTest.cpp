@@ -70,10 +70,11 @@ public:
 
 class EnterMoveCmd : public BoardTestCmd {
 public:
-    EnterMoveCmd() : BoardTestCmd(regex(R"(^\s*enterMove\s+(.*)$)")) {}
-    void Apply(BoardTest &board) override { 
-        board.mCurrMove = board.mBoard->CreateMove();
-        (*board.mCurrMove) = mMatches[1];
+    EnterMoveCmd() : BoardTestCmd(regex(R"(^\s*enterMove(.*)$)")) {}
+    void Apply(BoardTest &board) override {
+        auto tmpMove = board.mBoard->CreateMove();
+        (*tmpMove) = mMatches[1];
+        board.mCurrMove = move(tmpMove);
     };
 };
 
@@ -115,10 +116,11 @@ public:
 
 class DoMoveCmd : public BoardTestCmd {
 public:
-    DoMoveCmd() : BoardTestCmd(regex(R"(^\s*doMove\s+(.*)$)")) {}
+    DoMoveCmd() : BoardTestCmd(regex(R"(^\s*doMove(.*)$)")) {}
     void Apply(BoardTest &board) override {
-        board.mCurrMove = board.mBoard->CreateMove();
-        (*board.mCurrMove) = mMatches[1];
+        auto tmpMove = board.mBoard->CreateMove();
+        (*tmpMove) = mMatches[1];
+        board.mCurrMove = move(tmpMove);
 
         list<unique_ptr<Board::Move>> moveOpts;
         board.mBoard->GetAllMoves(&moveOpts);
