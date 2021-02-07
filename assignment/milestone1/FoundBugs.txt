@@ -79,3 +79,12 @@
     -          || !InRange<short>(0, tCol, OthelloBoard::dim+1))
     +         if (!InRange<short>(0, tRow, OthelloBoard::dim)
     +          || !InRange<short>(0, tCol, OthelloBoard::dim))
+25. OthelloBoard::SetOptions was marking side discs as edge discs
+    -         if (row == 0 || col == 0 || row == dim-1 || col == dim-1)
+    -            mWeights[row][col] = rules->sideWgt;
+    -         else if (row == 1 || col == 1 || row == dim-2 || col == dim-2)
+    -            mWeights[row][col] = rules->nearSideWgt;
+    +         if (row == 1 || col == 1 || row == dim-2 || col == dim-2)
+    +            mWeights[row][col] = rules->nearSideWgt;
+    +         else if (row == 0 || col == 0 || row == dim-1 || col == dim-1)
+    +            mWeights[row][col] = rules->sideWgt;

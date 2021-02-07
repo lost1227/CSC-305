@@ -318,10 +318,10 @@ void OthelloBoard::SetOptions(const void *data) {
 
    for (row = 0; row < dim; row++) {
       for (col = 0; col < dim; col++)
-         if (row == 0 || col == 0 || row == dim-1 || col == dim-1)
-            mWeights[row][col] = rules->sideWgt;
-         else if (row == 1 || col == 1 || row == dim-2 || col == dim-2)
+         if (row == 1 || col == 1 || row == dim-2 || col == dim-2)
             mWeights[row][col] = rules->nearSideWgt;
+         else if (row == 0 || col == 0 || row == dim-1 || col == dim-1)
+            mWeights[row][col] = rules->sideWgt;
          else
             mWeights[row][col] = rules->innerWgt;
 
