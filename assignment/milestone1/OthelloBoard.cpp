@@ -273,7 +273,7 @@ ostream &OthelloBoard::Write(ostream &os) const {
 
    for (row = 0; row < dim; row++) {
       for (col = rowBits = 0; col < dim; col++)
-         rowBits = rowBits << sqrShift | mBoard[row][col] & sqrMask;
+         rowBits = (rowBits << sqrShift) | (mBoard[row][col] & sqrMask);
       rowBits = EndianXfer(rowBits);
       os.write((char *)&rowBits, sizeof(rowBits));
    }

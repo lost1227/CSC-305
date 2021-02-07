@@ -48,7 +48,7 @@ OthelloMove::operator string() const {
 
 void OthelloMove::operator=(const string &src) {
    // regex reOth("^ *((Pass)|\\[ *(\\d+), *(\\d+) *\\]) *$"); No raw string
-   regex reOth(R"(^ *((Pass)|\[ *(\d+), *(\d+) *\]) *$)");
+   regex reOth(R"(^ *((Pass)|\[ *(\d+) *, *(\d+) *\]) *$)");
 
    const int kPassPtn = 2, kRowPtn = 3, kColPtn = 4; // RE Pattern indexes
    smatch reRes;
@@ -59,8 +59,8 @@ void OthelloMove::operator=(const string &src) {
          tRow = stoi(reRes[kRowPtn]);
          tCol = stoi(reRes[kColPtn]);
 
-         if (!InRange<short>(0, tRow, OthelloBoard::dim+1)
-          || !InRange<short>(0, tCol, OthelloBoard::dim+1))
+         if (!InRange<short>(0, tRow, OthelloBoard::dim)
+          || !InRange<short>(0, tCol, OthelloBoard::dim))
             throw BaseException(FString("Out of bounds Othello move: %s",
              src.c_str()));
       }

@@ -70,3 +70,12 @@
 22. OthelloMove::Read() OBOE: checking the predecrement instead of the postdecrement
     -   while (--size) {
     +   while (size--) {
+23. OthelloMove::operator= bad regex: not allowing space between number and comma
+    - regex reOth(R"(^ *((Pass)|\[ *(\d+), *(\d+) *\]) *$)");
+    + regex reOth(R"(^ *((Pass)|\[ *(\d+) *, *(\d+) *\]) *$)");
+24. OthelloMove::operator= OBOE: InRange is non-inclusive of the upper bound,
+    but dim+1 was passed the upper bound
+    -         if (!InRange<short>(0, tRow, OthelloBoard::dim+1)
+    -          || !InRange<short>(0, tCol, OthelloBoard::dim+1))
+    +         if (!InRange<short>(0, tRow, OthelloBoard::dim)
+    +          || !InRange<short>(0, tCol, OthelloBoard::dim))
