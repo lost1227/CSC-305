@@ -7,6 +7,8 @@ import tempfile
 
 script_dir = Path(__file__).resolve().parent
 
+makefile = script_dir / "BoardTest.mak"
+
 genScript = script_dir / "../milestone0/gen.py"
 
 builtFiles = script_dir / "../milestone0/build"
@@ -22,6 +24,7 @@ assert genScript.exists()
 if not testDir.exists():
     testDir.mkdir()
 
+subprocess.run(["make", "-f", str(makefile)])
 
 with tempfile.TemporaryDirectory() as tmpDir:
     subprocess.run(["python3", genScript], cwd=tmpDir)
@@ -56,4 +59,4 @@ with tempfile.TemporaryDirectory() as tmpDir:
         with diffOutPath.open("w") as oF:
             res = subprocess.run(["diff", str(expectedPath), str(actualPathOut)], cwd=tmpDir, stdout=oF)
             message = "FAIL" if res.returncode != 0 else "SUCCESS"
-            print("{:>12} {}".format(currDir.name, "FAIL"))
+            print("{:>12} {}".format(currDir.name, message))
