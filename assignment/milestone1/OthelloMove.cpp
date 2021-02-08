@@ -39,7 +39,7 @@ bool OthelloMove::operator==(const Board::Move &rhs) const {
 bool OthelloMove::operator<(const Board::Move &rhs) const {
    const OthelloMove &oRhs = dynamic_cast<const OthelloMove &>(rhs);
 
-   return mRow < oRhs.mRow || mCol < oRhs.mCol;
+   return mRow < oRhs.mRow || (mRow == oRhs.mRow && mCol < oRhs.mCol);
 }
 
 OthelloMove::operator string() const {

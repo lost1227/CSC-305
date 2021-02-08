@@ -88,3 +88,6 @@
     +            mWeights[row][col] = rules->nearSideWgt;
     +         else if (row == 0 || col == 0 || row == dim-1 || col == dim-1)
     +            mWeights[row][col] = rules->sideWgt;
+26. OthelloMove::operator< would compare columns even if rows weren't the same
+    -   return mRow < oRhs.mRow || mCol < oRhs.mCol;
+    +   return mRow < oRhs.mRow || (mRow == oRhs.mRow && mCol < oRhs.mCol);
