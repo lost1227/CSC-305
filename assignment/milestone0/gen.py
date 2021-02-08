@@ -92,19 +92,19 @@ def check_limits(file):
         system_t = int(system_m.group(1)) + (int(system_m.group(2)) / 100)
         real_t = (int(real_m.group(1)) * 60) + int(real_m.group(2)) + (int(real_m.group(3)) / 100)
 
-        if output_size >= max_outsize:
-            status = "FAILURE"
-            message += "  output is {} bytes ({:.1f}kB)\n".format(output_size, output_size / 1000)
+        #if output_size >= max_outsize:
+        #    status = "FAIL"
+        #    message += "  output is {} bytes ({:.1f}kB)\n".format(output_size, output_size / 1000)
         
         if real_t > max_outtime:
-            status = "FAILURE"
+            status = "FAIL"
             message += "  execution took {:.2f} seconds\n".format(real_t)
         
         if status != "Success":
             print("{}! {}".format(status,file))
             print(message, end='')
 
-        return status != "FAILURE"
+        return status != "FAIL"
 
 rc = 0
 

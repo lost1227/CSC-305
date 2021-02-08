@@ -276,3 +276,67 @@ _state
 
 testPlay 30 100
 _state
+
+undoLastMove 1000
+doMove C7 -> D8
+doMove F2 -> E1
+doMove C5 -> D6
+doMove F8 -> E7
+doMove D6 -> F8
+doMove G3 -> F2
+doMove B8 -> C7
+doMove H4 -> G3
+doMove C1 -> D2
+doMove F4 -> E5
+doMove D8 -> E7
+doMove F6 -> D8
+doMove B4 -> C5
+doMove G5 -> F6
+doMove A7 -> B8
+doMove E5 -> D6
+doMove C5 -> E7 -> G5
+doMove H6 -> F4
+doMove F8 -> H6
+doMove F2 -> E3
+doMove C3 -> D4
+doMove E3 -> C1
+doMove H6 -> G5
+doMove F4 -> E3
+doMove D4 -> F2 -> H4
+doMove E1 -> D2
+doMove G5 -> H6
+doMove H8 -> G7
+doMove H6 -> F8
+doMove D2 -> C3
+doMove B2 -> D4
+doMove G1 -> F2
+doMove A1 -> B2
+doMove H2 -> G1
+doMove B2 -> C3
+doMove F2 -> E1
+doMove A3 -> B2
+doMove C1 -> A3
+doMove B6 -> C5
+doMove D8 -> B6
+doMove A5 -> C7
+doMove A3 -> B2
+doMove F8 -> E7
+doMove B2 -> A3
+doMove D4 -> E5
+doMove A3 -> B2
+doMove H4 -> G5
+_state
+doMove B2 -> D4 -> B6 -> D8 -> F6 -> D4
+_state
+undoLastMove 1
+_state
+doMove B2 -> D4 -> B6 -> D8 -> F6 -> H4
+_state
+undoLastMove 1
+_state
+doMove B2 -> D4 -> F6 -> D8 -> B6 -> D4
+_state
+undoLastMove 1
+_state
+doMove B2 -> D4 -> F6 -> H4
+_state

@@ -39,3 +39,11 @@ Board and Move Keys (.3)
 1. Multijump differ on 2nd jump
 2. Multijump differ on 3rd jump
 3. Different move histories but the same board layout
+
+
+
+. . - . . . - . .
+. ! . ! . ! . ! .
+- . . . + . . . -
+. ! . ! . ! . ! .
+. . sf. . . - . .

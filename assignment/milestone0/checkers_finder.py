@@ -109,7 +109,9 @@ class BoardTest:
             
             parts = move.split(' -> ')
             for i, part in enumerate(parts):
-                if part in parts[i+1:-1]:
+                if i == 0 or i == len(parts) - 1:
+                    continue
+                if part in parts[i+1]:
                     print("Found one!")
                     print(self._board)
                     print(prev)
