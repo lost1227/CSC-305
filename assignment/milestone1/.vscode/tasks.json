@@ -1,0 +1,25 @@
+{
+    "tasks": [
+        {
+            "type": "process",
+            "label": "run make",
+            "command": "/usr/bin/make",
+            "args": [
+                "-f",
+                "BoardTest.mak"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "problemMatcher": [
+                "$gcc"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "detail": "Task to build with make"
+        }
+    ],
+    "version": "2.0.0"
+}
