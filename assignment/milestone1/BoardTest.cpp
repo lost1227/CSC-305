@@ -30,7 +30,7 @@ public:
     void RegisterCmd(BoardTestCmd *cmd) {
         mCmds.push_back(unique_ptr<BoardTestCmd>(cmd));
     }
-    void ExecCmd(string &);
+    void ExecCmd(const string &);
     void Run();
 
     
@@ -57,7 +57,7 @@ protected:
 
 class ShowBoardCmd : public BoardTestCmd {
 public:
-    ShowBoardCmd() : BoardTestCmd(regex(R"(^\s*showBoard)")) {}
+    ShowBoardCmd() : BoardTestCmd(regex(R"(^\s*showBoard(?:\s.*)?$)")) {}
     void Apply(BoardTest &board) override {
         list<unique_ptr<Board::Move>> moveOpts;
         board.mView->Draw(cout);
@@ -65,6 +65,7 @@ public:
         cout << "All Moves: " << endl;
         board.mBoard->GetAllMoves(&moveOpts);
         printMoveList(moveOpts.begin(), moveOpts.end());
+        cout << endl;
     }
 };
 
@@ -75,21 +76,22 @@ public:
         auto tmpMove = board.mBoard->CreateMove();
         (*tmpMove) = mMatches[1];
         board.mCurrMove = move(tmpMove);
+        cout << endl;
     };
 };
 
 class ShowMoveCmd : public BoardTestCmd {
 public:
-    ShowMoveCmd() : BoardTestCmd(regex(R"(^\s*showMove)")) {}
+    ShowMoveCmd() : BoardTestCmd(regex(R"(^\s*showMove(?:\s.*)?$)")) {}
     void Apply(BoardTest &board) override {
         assert(board.mCurrMove);
-        cout << (string)(*board.mCurrMove) << endl;
+        cout << (string)(*board.mCurrMove) << endl << endl;
     }
 };
 
 class ApplyMoveCmd : public BoardTestCmd {
 public:
-    ApplyMoveCmd() : BoardTestCmd(regex(R"(^\s*applyMove)")) {}
+    ApplyMoveCmd() : BoardTestCmd(regex(R"(^\s*applyMove(?:\s.*)?$)")) {}
     void Apply(BoardTest &board) override {
         assert(board.mCurrMove);
         list<unique_ptr<Board::Move>> moveOpts;
@@ -97,20 +99,22 @@ public:
         for(auto& uniqMovePtr : moveOpts) {
             if(*uniqMovePtr == *board.mCurrMove) {
                 board.mBoard->ApplyMove(move(uniqMovePtr));
+                cout << endl;
                 return;
             }
         }
-        cout << "Invalid move!" << endl;
+        cout << "Invalid move!" << endl << endl;
     }
 };
 
 class ShowMoveHistCmd : public BoardTestCmd {
 public:
-    ShowMoveHistCmd() : BoardTestCmd(regex(R"(^\s*showMoveHist)")) {}
+    ShowMoveHistCmd() : BoardTestCmd(regex(R"(^\s*showMoveHist(?:\s.*)?$)")) {}
     void Apply(BoardTest &board) override {
         const list<shared_ptr<const Board::Move>> &moveHist = board.mBoard->GetMoveHist();
         cout << endl << "Move History: " << endl;
         printMoveList(moveHist.begin(), moveHist.end());
+        cout << endl;
     }
 };
 
@@ -127,30 +131,32 @@ public:
         for(auto& uniqMovePtr : moveOpts) {
             if(*uniqMovePtr == *board.mCurrMove) {
                 board.mBoard->ApplyMove(move(uniqMovePtr));
+                cout << endl;
                 return;
             }
         }
-        cout << "Invalid move!" << endl;
+        cout << "Invalid move!" << endl << endl;
     }
 };
 
 class UndoLastMoveCmd : public BoardTestCmd {
 public:
-    UndoLastMoveCmd() : BoardTestCmd(regex(R"(^\s*undoLastMove\s+(\d+))")) {}
+    UndoLastMoveCmd() : BoardTestCmd(regex(R"(^\s*undoLastMove\s+(\d+)(?:\s.*)?$)")) {}
     void Apply(BoardTest &board) override {
         int count = stoi(mMatches[1]);
         auto moveHist = board.mBoard->GetMoveHist();
         count = min(count, (int)moveHist.size());
         for(int i = 0; i < count; i++)
             board.mBoard->UndoLastMove();
+        cout << endl;
     }
 };
 
 class ShowValCmd : public BoardTestCmd {
 public:
-    ShowValCmd() : BoardTestCmd(regex(R"(^\s*showVal)")) {}
+    ShowValCmd() : BoardTestCmd(regex(R"(^\s*showVal(?:\s.*)?$)")) {}
     void Apply(BoardTest &board) override {
-        cout << "Value: " << board.mBoard->GetValue() << endl;
+        cout << "Value: " << board.mBoard->GetValue() << endl << endl;
     }
 };
 
@@ -161,42 +167,46 @@ public:
         ofstream strm(mMatches[1]);
         board.mBoard->Write(strm);
         strm.close();
+        cout << endl;
     }
 };
 
 class LoadBoardCmd : public BoardTestCmd {
 public:
-    LoadBoardCmd() : BoardTestCmd(regex(R"(^\s*loadBoard\s+([^\s]*))")) {}
+    LoadBoardCmd() : BoardTestCmd(regex(R"(^\s*loadBoard\s+([^\s]*)(?:\s.*)?$)")) {}
     void Apply(BoardTest &board) override {
         ifstream strm(mMatches[1]);
         board.mBoard->Read(strm);
         strm.close();
+        cout << endl;
     }
 };
 
 class SaveMoveCmd : public BoardTestCmd {
 public:
-    SaveMoveCmd() : BoardTestCmd(regex(R"(^\s*saveMove\s+([^\s]*))")) {}
+    SaveMoveCmd() : BoardTestCmd(regex(R"(^\s*saveMove\s+([^\s]*)(?:\s.*)?$)")) {}
     void Apply(BoardTest &board) override {
         ofstream strm(mMatches[1]);
         board.mCurrMove->Write(strm);
         strm.close();
+        cout << endl;
     }
 };
 
 class LoadMoveCmd : public BoardTestCmd {
 public:
-    LoadMoveCmd() : BoardTestCmd(regex(R"(^\s*loadMove\s+([^\s]*))")) {}
+    LoadMoveCmd() : BoardTestCmd(regex(R"(^\s*loadMove\s+([^\s]*)(?:\s.*)?$)")) {}
     void Apply(BoardTest &board) override {
         ifstream strm(mMatches[1]);
         board.mCurrMove->Read(strm);
         strm.close();
+        cout << endl;
     }
 };
 
 class CompareKeysCmd : public BoardTestCmd {
 public:
-    CompareKeysCmd() : BoardTestCmd(regex(R"(^\s*compareKeys\s+([^\s]*))")) {}
+    CompareKeysCmd() : BoardTestCmd(regex(R"(^\s*compareKeys\s+([^\s]*)(?:\s.*)?$)")) {}
     void Apply(BoardTest &board) override {
         auto oBoard = board.mBoard->Clone();
         assert(oBoard);
@@ -207,14 +217,14 @@ public:
         auto oKey = oBoard->GetKey();
         
         if(*key == *oKey) {
-            cout << "Board keys are equal" << endl;
+            cout << "Board keys are equal" << endl << endl;
             return;
         }
         cout << "Board keys are unequal" << endl;
         if(*key < *oKey) {
-            cout << "Current board is less than " << mMatches[1] << endl;
+            cout << "Current board is less than " << mMatches[1] << endl << endl;
         } else {
-            cout << "Current board is greater than " << mMatches[1] << endl;
+            cout << "Current board is greater than " << mMatches[1] << endl << endl;
         }
     }
 };
@@ -229,30 +239,31 @@ public:
         assert(oMove);
         
         if(*currMove == *oMove) {
-            cout << "Moves are equal" << endl;
+            cout << "Moves are equal" << endl << endl;
         }else if(*currMove < *oMove) {
-            cout << "Current move is less than entered move" << endl;
+            cout << "Current move is less than entered move" << endl << endl;
         } else {
-            cout << "Current move is greater than entered move" << endl;
+            cout << "Current move is greater than entered move" << endl << endl;
         }
     }
 };
 
 class SetOptionsCmd : public BoardTestCmd {
 public:
-    SetOptionsCmd() : BoardTestCmd(regex(R"(^\s*setOptions)")) {}
+    SetOptionsCmd() : BoardTestCmd(regex(R"(^\s*setOptions(?:\s.*)?$)")) {}
     void Apply(BoardTest &board) override {
         // FIXME: Use the BoardClass to get/set options
         OthelloBoard::Rules *rules = reinterpret_cast<OthelloBoard::Rules *>(OthelloBoard::GetOptions());
         board.mDlg->Run(cin, cout, rules);
         OthelloBoard::SetOptions(rules);
         delete rules;
+        cout << endl;
     }
 };
 
 class TestPlayCmd : public BoardTestCmd {
 public:
-    TestPlayCmd() : BoardTestCmd(regex(R"(^\s*testPlay\s+(\d+)\s+(\d+))")) {}
+    TestPlayCmd() : BoardTestCmd(regex(R"(^\s*testPlay\s+(\d+)\s+(\d+)(?:\s.*)?$)")) {}
     void Apply(BoardTest &board) override {
         int seed = stoi(mMatches[1]);
         int moveCount = stoi(mMatches[2]);
@@ -273,12 +284,13 @@ public:
             *board.mCurrMove = **iterator;
             board.mBoard->ApplyMove(move(*iterator));
         }
+        cout << endl;
     }
 };
 
 class TestRunCmd : public BoardTestCmd {
 public:
-    TestRunCmd() : BoardTestCmd(regex(R"(^\s*testRun\s+(\d+)\s+(\d+))")) {}
+    TestRunCmd() : BoardTestCmd(regex(R"(^\s*testRun\s+(\d+)\s+(\d+)(?:\s.*)?$)")) {}
     void Apply(BoardTest &board) override {
         int seed = stoi(mMatches[1]);
         int moveCount = stoi(mMatches[2]);
@@ -312,31 +324,40 @@ public:
             *board.mCurrMove = **iterator;
             board.mBoard->ApplyMove(move(*iterator));
         }
+        cout << endl;
     }
 };
 
 class KeyMoveCountCmd : public BoardTestCmd {
 public:
-    KeyMoveCountCmd() : BoardTestCmd(regex(R"(^\s*keyMoveCount)")) {}
+    KeyMoveCountCmd() : BoardTestCmd(regex(R"(^\s*keyMoveCount(?:\s.*)?$)")) {}
     void Apply(BoardTest &) override {
         cout << "Moves/Keys: "
              << Board::Move::GetOutstanding()
              << "/" << Board::Key::GetOutstanding()
-            << endl;
+            << endl << endl;
     }
 };
 
 class EmptyLineCmd : public BoardTestCmd {
 public:
     EmptyLineCmd() : BoardTestCmd(regex(R"(^\s*$)")){}
-    void Apply(BoardTest &) override {};
+    void Apply(BoardTest &board) override {};
 };
 
 class QuitCmd : public BoardTestCmd {
 public:
-    QuitCmd() : BoardTestCmd(regex(R"(^\s*quit)")) {}
+    QuitCmd() : BoardTestCmd(regex(R"(^\s*quit(?:\s.*)?$)")) {}
     void Apply(BoardTest &board) override {
         board.shouldRun = false;
+    }
+};
+
+class CommentCmd : public BoardTestCmd {
+public:
+    CommentCmd() : BoardTestCmd(regex(R"(^(.*)#.*$)")) {}
+    void Apply(BoardTest &board) override {
+        board.ExecCmd(mMatches[1].str());
     }
 };
 
@@ -351,6 +372,7 @@ BoardTest::BoardTest(shared_ptr<Board> &&board, shared_ptr<View> &&view, shared_
     // FIXME: Since these are all singletons, could this be done better with static members?
     // That is, could we make each BoardTestCmd hold a static instance of itself, then have
     // the BoardTestCmd somehow register itself with BoardTest?
+    RegisterCmd(new CommentCmd());
     RegisterCmd(new EmptyLineCmd());
     RegisterCmd(new ShowBoardCmd());
     RegisterCmd(new EnterMoveCmd());
@@ -373,7 +395,7 @@ BoardTest::BoardTest(shared_ptr<Board> &&board, shared_ptr<View> &&view, shared_
     RegisterCmd(new QuitCmd());
 }
 
-void BoardTest::ExecCmd(string &cmdStr) {
+void BoardTest::ExecCmd(const string &cmdStr) {
     for(auto& cmd : mCmds) {
         if(cmd->Accept(cmdStr)) {
             cmd->Apply(*this);
@@ -393,9 +415,8 @@ void BoardTest::Run() {
             }
             ExecCmd(cmd);
         } catch(BaseException &e) {
-            cout << "Error: " << e.what() << endl;
+            cout << "Error: " << e.what() << endl << endl;
         }
-        cout << endl;
     }
 }
 
