@@ -95,10 +95,7 @@ protected:
    void CalcMoves() const;
    void FindNormalMoves() const;
    bool IsBackRow(char pc, const Loc &loc) {
-      // Fill in
-      // FIXME: implement this method stub
-      throw BaseException("CheckersBoard::IsBackRow is not implemented");
-      return false;
+      return ((pc & WHITE) && loc.row == 0) || (!(pc & WHITE) && loc.row == CheckersBoard::DIM-1);
    }
 
    static Rules mRules;

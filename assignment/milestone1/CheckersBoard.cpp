@@ -22,7 +22,7 @@ CheckersBoard::Direction CheckersBoard::mDirs[] = {
  {1, -1}, {1, 1}, {-1, -1}, {-1, 1}
 };
 
-CheckersBoard::CheckersBoard(void) : mMoveFlg(0), mMovesValid(false) {
+CheckersBoard::CheckersBoard(void) : mValue(0), mMoveFlg(0), mMovesValid(false) {
    int row, col;
    
    for (row = 0; row < DIM; row++)
@@ -108,9 +108,12 @@ void CheckersBoard::UndoLastMove() {
 }
 
 void CheckersBoard::GetAllMoves(list<unique_ptr<Move>> *moves) const {
-   throw BaseException("CheckersBoard::GetAllMoves is not implemented");
    if (!mMovesValid)
       CalcMoves();
+   assert(moves->empty());
+   for(auto& m : mMoves) {
+      moves->push_back(move(m.Clone()));
+   }
 }
 
 unique_ptr<Board::Move> CheckersBoard::CreateMove() const {
@@ -184,16 +187,12 @@ void CheckersBoard::NewOptions() {
 // provided code is correct.  Fill in the move-forward section only.
 void CheckersBoard::CalcMoves() const {
    int row, col, forward = mMoveFlg == WHITE ? -1 : 1, numDirs;
-   uint ndx;
+   // uint ndx;
    char piece, jumpPiece;
    Loc thisLoc, jumpLoc, toLoc;
    vector<Loc> locs;  // Series of locations moved to
    vector<int> dirs;  // Series of directions moved
    bool upStep;       // Did we just make a new step forward?
-   
-   //TODO: Use these variables
-   (void)ndx;
-   (void)jumpPiece;
 
    mMoves.clear();
    for (row = 0; row < DIM; row++)
@@ -228,11 +227,46 @@ void CheckersBoard::CalcMoves() const {
                    thisLoc.col + 2*mDirs[dirs.back()].cDelta
                   );
 
+                  /*
+                     The move is only valid if:
+                        - The destination is valid (in range && not on top of another piece)
+                        - The destination is not the spot we just jumped from
+                        - The piece we jumped over is the opposite color
+                        - The same jump is not already in the move history
+                  */
                   if ((InRange(toLoc) && (!mBoard[toLoc.row][toLoc.col]))
                    || ((toLoc.row == row) && (toLoc.col == col))) {  // Piece has moved
-                      // Fill in forward-step logic in DFS here.  Should be
-                      // 1-2 dozen lines of code.
+                     // Fill in forward-step logic in DFS here.  Should be
+                     // 1-2 dozen lines of code
+
+                     // These checks are relatively expensive, and only need to be done for 
+                     // king pieces
+                     if(piece & KING) {
+                        // The destination is the spot we just jumped from
+                        if(locs.size() > 1 && *(locs.end()-2) == toLoc) {
+                           goto end;
+                        }
+                        // The jump has already occurred
+                        for(auto itr = locs.begin(); itr != locs.end()-1; itr++) {
+                           if(thisLoc == *itr && toLoc == *itr) {
+                              goto end;
+                           }
+                        }
+                     }
+
+                     jumpLoc = Loc(
+                        (thisLoc.row + toLoc.row) / 2,
+                        (thisLoc.col + toLoc.col) / 2
+                     );
+                     jumpPiece = mBoard[jumpLoc.row][jumpLoc.col];
+                     if(jumpPiece && (jumpPiece & WHITE) != mMoveFlg) {
+                        upStep = true;
+                        locs.push_back(move(jumpLoc));
+                        dirs.push_back(0);
+                     }
+                      
                   }
+                  end:
                   dirs.back()++;
                }
             }

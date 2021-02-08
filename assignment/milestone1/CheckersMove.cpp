@@ -72,8 +72,27 @@ CheckersMove::operator string() const {
 }
 
 void CheckersMove::operator=(const string &src) {
-   // FIXME: implement this stub
-   throw BaseException("CheckersMove::operator= is not implemented");
+   static regex parser(R"(^([A-Za-z][0-9])(?:->([A-Za-z][0-9]))+$)");
+   smatch matches;
+   string spaceless;
+   spaceless.reserve(src.length());
+   for(auto &chr : src)
+      if(chr != ' ')
+         spaceless += chr;
+   if(!regex_match(spaceless, matches, parser)) {
+      throw BaseException("Bad Checkers move: " + src);
+   }
+   mSeq.clear();
+   auto iter = matches.begin();
+   iter++;
+   for(; iter != matches.end(); iter++) {
+      short row = toupper((*iter).str()[0]) - 'A';
+      short col = (*iter).str()[1] - '1';
+      if(!InRange(0, (int)row, CheckersBoard::DIM) || !InRange(0, (int)col, CheckersBoard::DIM)) {
+         throw BaseException("Out of bounds Checkers move: " + src);
+      }
+      mSeq.push_back(CheckersBoard::Loc(row, col));
+   }
 }
 
 unique_ptr<Board::Move> CheckersMove::Clone() const {
