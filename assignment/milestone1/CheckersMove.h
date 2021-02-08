@@ -5,6 +5,7 @@
 #include <vector>
 #include <memory>
 #include "CheckersBoard.h"
+#include "MyLib.h"
 
 class CheckersMove : public Board::Move {
 public:
@@ -32,7 +33,7 @@ protected:
    bool mWasKinged;
    std::vector<bool> mWereKings;
 
-   static std::vector<CheckersMove *> mFreeList;
+   static std::vector<std::unique_ptr<CheckersMove, FreeListDeleter>> mFreeList;
 };
 
 #endif

@@ -6,16 +6,28 @@
 
 using namespace std;
 
+vector<unique_ptr<CheckersMove, FreeListDeleter>> CheckersMove::mFreeList;
 
 void *CheckersMove::operator new(size_t sz) {
-   // FIXME: implement this stub
-   throw BaseException("CheckersMove::operator new is not implemented");
-   return ::new char[sz];
+   void *temp;
+
+   if (mFreeList.size()) {
+      temp = (void *) mFreeList.back().release();
+      mFreeList.pop_back();
+   } 
+   else {
+      temp = ::new char[sz];
+   }
+
+   mOutstanding++;
+   return temp;
 }
 
 void CheckersMove::operator delete(void *p) {
-   // FIXME: implement this stub
-   throw BaseException("CheckersMove::operator delete is not implemented");
+   unique_ptr<CheckersMove, FreeListDeleter> ptr((CheckersMove *)p, FreeListDeleter());
+   mFreeList.push_back(move(ptr));
+
+   mOutstanding--;
 }
 
 CheckersMove::CheckersMove(const vector<CheckersBoard::Loc> &seq)
@@ -35,8 +47,14 @@ bool CheckersMove::operator==(const Board::Move &rhs) const {
 }
 
 bool CheckersMove::operator<(const Board::Move &rhs) const {
-   // FIXME: implement this stub
-   throw BaseException("CheckersMove::operator new is not implemented");
+   const CheckersMove &oRhs = dynamic_cast<const CheckersMove &>(rhs);
+   vector<CheckersBoard::Loc>::const_iterator itr1, itr2;
+   for(itr1 = mSeq.begin(), itr2 = oRhs.mSeq.begin();
+    itr1 != mSeq.end() && itr2 != oRhs.mSeq.end() && *itr1 == *itr2;
+    itr1++, itr2++)
+      ;
+   return (itr1 == mSeq.end() && itr2 != oRhs.mSeq.end())
+      || (itr1 != mSeq.end() && itr2 != mSeq.end() && *itr1 < *itr2);
 }
 
 CheckersMove::operator string() const {

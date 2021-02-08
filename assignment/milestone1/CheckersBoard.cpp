@@ -108,10 +108,9 @@ void CheckersBoard::UndoLastMove() {
 }
 
 void CheckersBoard::GetAllMoves(list<unique_ptr<Move>> *moves) const {
+   throw BaseException("CheckersBoard::GetAllMoves is not implemented");
    if (!mMovesValid)
       CalcMoves();
-      
-   // Build and return a list based on mMoves.
 }
 
 unique_ptr<Board::Move> CheckersBoard::CreateMove() const {
