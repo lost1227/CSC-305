@@ -17,6 +17,9 @@
 #include "OthelloBoard.h"
 #include "OthelloView.h"
 #include "OthelloDlg.h"
+#include "CheckersBoard.h"
+#include "CheckersView.h"
+#include "CheckersDlg.h"
 
 using namespace std;
 
@@ -458,11 +461,24 @@ void printMoveList(T begin, T end) {
 
 int main(int argc, char *argv[]) {
     //FIXME: Use reflection instead of manual instantiation
-    BoardTest boardTest(
-        shared_ptr<Board>(new OthelloBoard()),
-        shared_ptr<View>(new OthelloView()),
-        shared_ptr<Dialog>(new OthelloDlg()));
+    if(argc < 2) {
+        cerr << "Usage: " << argv[0] << " [OthelloBoard | CheckersBoard | C4Pop10Board]" << endl;
+        return 1;
+    }
+    if(strcmp(argv[1], "OthelloBoard") == 0)
+        BoardTest(
+            shared_ptr<Board>(new OthelloBoard()),
+            shared_ptr<View>(new OthelloView()),
+            shared_ptr<Dialog>(new OthelloDlg())
+        ).Run();
+    else if(strcmp(argv[1], "CheckersBoard") == 0)
+        BoardTest(
+            shared_ptr<Board>(new CheckersBoard()),
+            shared_ptr<View>(new CheckersView()),
+            shared_ptr<Dialog>(new CheckersDlg())
+        ).Run();
+    else
+        throw BaseException(FString("Board %s not implemented!", argv[1]));
     
-    boardTest.Run();
     
 }
