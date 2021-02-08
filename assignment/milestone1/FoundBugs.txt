@@ -63,10 +63,10 @@
     -   rtn->sideWgt = mWeights[0][2];
     -   rtn->nearSideWgt = mWeights[1][1];
     -   rtn->innerWgt = mWeights[2][2];
-    +   rtn->cornerWgt = OthelloBoard::mWeights[0][0];
-    +   rtn->sideWgt = OthelloBoard::mWeights[0][2];
-    +   rtn->nearSideWgt = OthelloBoard::mWeights[1][1];
-    +   rtn->innerWgt = OthelloBoard::mWeights[2][2];
+    +   rtn->cornerWgt = mWeights[0][0];
+    +   rtn->sideWgt = mWeights[0][2];
+    +   rtn->nearSideWgt = mWeights[1][1];
+    +   rtn->innerWgt = mWeights[2][2];
 22. OthelloMove::Read() OBOE: checking the predecrement instead of the postdecrement
     -   while (--size) {
     +   while (size--) {
@@ -91,3 +91,11 @@
 26. OthelloMove::operator< would compare columns even if rows weren't the same
     -   return mRow < oRhs.mRow || mCol < oRhs.mCol;
     +   return mRow < oRhs.mRow || (mRow == oRhs.mRow && mCol < oRhs.mCol);
+27. OthelloBoard::GetKey OBOE:
+    - vals[(row+1)/2] = (vals[(row+1)/2] << sqrShift) | (mBoard[row][col] + 1);
+    - vals[row/2] |= mNextMove + 1;
+    + vals[row/2] = (vals[row/2] << sqrShift) | (mBoard[row][col] + 1);
+    + vals[row/2] |= mNextMove + 1;
+28. OthelloBoard::GetKey uninitialized data:
+    + vals[row/2] = 0;
+    vals[row/2] |= mNextMove + 1;

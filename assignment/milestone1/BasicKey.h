@@ -16,7 +16,7 @@ public:
 
     const Class *GetClass() const override;
 
-    uint vals [size];
+    ulong vals [size];
 };
 
 template<int size>

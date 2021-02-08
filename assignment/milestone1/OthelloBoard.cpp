@@ -204,12 +204,13 @@ unique_ptr<Board> OthelloBoard::Clone() const {
 unique_ptr<const Board::Key> OthelloBoard::GetKey() const {
    BasicKey<5> *rtn = new BasicKey<5>();
    int row, col;
-   uint *vals = rtn->vals;
+   ulong *vals = rtn->vals;
 
    for (row = 0; row < dim; row++)
       for (col = 0; col < dim; col++)
-         vals[(row+1)/2] = vals[(row+1)/2] << sqrShift | (mBoard[row][col] + 1);
+         vals[row/2] = (vals[row/2] << sqrShift) | (mBoard[row][col] + 1);
 
+   vals[row/2] = 0;
    vals[row/2] |= mNextMove + 1;
 
    return unique_ptr<const Board::Key>(rtn);
@@ -303,17 +304,17 @@ void OthelloBoard::RecalcWeight() {
 void *OthelloBoard::GetOptions() {
    Rules *rtn = new Rules;
 
-   rtn->cornerWgt = OthelloBoard::mWeights[0][0];
-   rtn->sideWgt = OthelloBoard::mWeights[0][2];
-   rtn->nearSideWgt = OthelloBoard::mWeights[1][1];
-   rtn->innerWgt = OthelloBoard::mWeights[2][2];
+   rtn->cornerWgt = mWeights[0][0];
+   rtn->sideWgt = mWeights[0][2];
+   rtn->nearSideWgt = mWeights[1][1];
+   rtn->innerWgt = mWeights[2][2];
 
    return rtn;
 }
 
 void OthelloBoard::SetOptions(const void *data) {
    const Rules *rules = reinterpret_cast<const Rules *>(data);
-   int row, col, dim = OthelloBoard::dim;
+   int row, col;
    set<OthelloBoard *>::iterator itr;
 
    for (row = 0; row < dim; row++) {
