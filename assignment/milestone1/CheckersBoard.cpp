@@ -144,7 +144,8 @@ void CheckersBoard::UndoLastMove() {
    mValue += 2*sense*mRules.moveWgt;
 
    piece = mBoard[movEndPos.row][movEndPos.col];
-   assert(piece != NONE && (piece & WHITE) == mMoveFlg);
+   assert(piece != NONE);
+   assert((piece & WHITE) == mMoveFlg);
 
    if (IsBackRow(piece, movEndPos))
       mValue -= sense * mRules.backWgt;
@@ -157,8 +158,8 @@ void CheckersBoard::UndoLastMove() {
    }
 
    // Move the piece back
-   mBoard[movStartPos.row][movStartPos.col] = piece;
    mBoard[movEndPos.row][movEndPos.col] = NONE;
+   mBoard[movStartPos.row][movStartPos.col] = piece;
 
    prevMvIter = mv->mSeq.begin();
    mvIter = mv->mSeq.begin() + 1;
