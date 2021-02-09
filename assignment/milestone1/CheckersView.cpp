@@ -4,6 +4,8 @@
 
 using namespace std;
 
+Class CheckersView::mClass("CheckersView", CheckersView::Create);
+
 void CheckersView::Draw(ostream &out) {
    int piece;
    CheckersBoard::Loc loc;
@@ -28,7 +30,5 @@ void CheckersView::Draw(ostream &out) {
 }
 
 const Class *CheckersView::GetClass() const {
-   // FIXME: implement this method stub
-   throw BaseException("CheckersView::GetClass is not implemented");
-   return nullptr;
+   return &mClass;
 }

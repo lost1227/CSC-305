@@ -9,6 +9,7 @@ public:
    bool Run(std::istream &in, std::ostream &out, void *data);
 
    const Class *GetClass() const override;
+   static Class mClass;
 
    static Object *Create() {return new CheckersDlg();}
 };

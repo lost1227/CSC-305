@@ -3,6 +3,8 @@
 
 using namespace std;
 
+Class CheckersDlg::mClass("CheckersDlg", CheckersDlg::Create);
+
 bool CheckersDlg::Run(istream &in, ostream &out, void *data) {
    // FIXME: implement this stub
    throw BaseException("CheckersDlg::Run is not implemented");

@@ -16,6 +16,16 @@ using namespace std;
 set<CheckersBoard *> CheckersBoard::mRoster;
 CheckersBoard::Rules CheckersBoard::mRules;
 
+BoardClass CheckersBoard::mClass(
+   "CheckersBoard",
+   CheckersBoard::CreateBoard,
+   "Checkers",
+   &CheckersView::mClass,
+   &CheckersDlg::mClass,
+   CheckersBoard::SetOptions,
+   CheckersBoard::GetOptions
+);
+
 Object *CheckersBoard::CreateBoard() {return new CheckersBoard();}
 
 CheckersBoard::Direction CheckersBoard::mDirs[] = {

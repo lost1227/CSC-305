@@ -84,6 +84,7 @@ public:
    static void SetOptions(const void *opts);      
 
    const Class *GetClass() const override;
+   static BoardClass mClass;
 
 protected:
    // Direction represents the row/col changes needed to move in a direction.
