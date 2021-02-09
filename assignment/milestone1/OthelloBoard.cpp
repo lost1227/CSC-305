@@ -11,6 +11,16 @@
 ////////////////////////////////////////////////////////////////////////////////
 using namespace std;
 
+BoardClass OthelloBoard::mClass(
+   "OthelloBoard",
+   OthelloBoard::CreateBoard,
+   "Othello",
+   &OthelloView::mClass,
+   &OthelloDlg::mClass,
+   OthelloBoard::SetOptions,
+   OthelloBoard::GetOptions
+);
+
 short OthelloBoard::mWeights[dim][dim] = {
    {16, 0, 8, 8, 8, 8, 0, 16},
    { 0, 0, 0, 0, 0, 0, 0,  0},
@@ -30,9 +40,7 @@ OthelloBoard::Direction OthelloBoard::mDirs[numDirs] = {
 };
 
 const Class *OthelloBoard::GetClass() const {
-   // FIXME: Implement this stub
-   throw BaseException("OthelloBoard::GetClass is not implemented");
-   return nullptr;
+   return &mClass;
 } 
 
 // This is a definition. It doesn't look like it, but this is calling the default constructor
@@ -285,8 +293,6 @@ ostream &OthelloBoard::Write(ostream &os) const {
    os.write((char *)&sz, sizeof(sz));
    for (auto itr = mMoveHist.begin(); itr != mMoveHist.end(); itr++)
       (*itr)->Write(os);
-
-   delete rls;
    
    return os;
 }
@@ -302,8 +308,9 @@ void OthelloBoard::RecalcWeight() {
 }
 
 void *OthelloBoard::GetOptions() {
-   Rules *rtn = new Rules;
-
+   static Rules rules;
+   Rules *rtn = &rules;
+   
    rtn->cornerWgt = mWeights[0][0];
    rtn->sideWgt = mWeights[0][2];
    rtn->nearSideWgt = mWeights[1][1];

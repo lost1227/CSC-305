@@ -5,6 +5,8 @@
 
 using namespace std;
 
+Class OthelloDlg::mClass("OthelloDlg", OthelloDlg::Create);
+
 bool OthelloDlg::Run(istream &in, ostream &out, void *data) {
    OthelloBoard::Rules *rules = reinterpret_cast<OthelloBoard::Rules *>(data);
    char resp;
@@ -32,7 +34,5 @@ bool OthelloDlg::Run(istream &in, ostream &out, void *data) {
 }
 
 const Class *OthelloDlg::GetClass() const {
-   // FIXME: Implement this stub
-   throw BaseException("OthelloBoard::GetClass is not implemented");
-   return nullptr;
+   return &mClass;
 }

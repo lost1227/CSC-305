@@ -60,7 +60,7 @@ public:
    char GetSquare(int row, int col) const {return mBoard[row][col];}
 
    const Class *GetClass() const override;
-
+   static BoardClass mClass;
 protected:
    static constexpr int numDirs = 8;
    static constexpr int squareCount = 64;

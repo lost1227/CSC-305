@@ -13,13 +13,7 @@
 #include "View.h"
 #include "Dialog.h"
 
-//FIXME: Use reflection instead of manual instantiation
-#include "OthelloBoard.h"
-#include "OthelloView.h"
-#include "OthelloDlg.h"
-#include "CheckersBoard.h"
-#include "CheckersView.h"
-#include "CheckersDlg.h"
+#include "MyLib.h"
 
 using namespace std;
 
@@ -29,13 +23,14 @@ void printMoveList(T, T);
 
 class BoardTest {
 public:
-    BoardTest(shared_ptr<Board> &&, shared_ptr<View> &&, shared_ptr<Dialog> &&);
+    BoardTest(const BoardClass *);
     void RegisterCmd(BoardTestCmd *cmd) {
         mCmds.push_back(unique_ptr<BoardTestCmd>(cmd));
     }
     void ExecCmd(const string &);
     void Run();
 
+    const BoardClass *mBrdCls;
     
     shared_ptr<Board> mBoard;
     shared_ptr<View> mView;
@@ -255,11 +250,9 @@ class SetOptionsCmd : public BoardTestCmd {
 public:
     SetOptionsCmd() : BoardTestCmd(regex(R"(^\s*setOptions(?:\s.*)?$)")) {}
     void Apply(BoardTest &board) override {
-        // FIXME: Use the BoardClass to get/set options
-        OthelloBoard::Rules *rules = reinterpret_cast<OthelloBoard::Rules *>(OthelloBoard::GetOptions());
+        void *rules = board.mBrdCls->GetOptions();
         board.mDlg->Run(cin, cout, rules);
-        OthelloBoard::SetOptions(rules);
-        delete rules;
+        board.mBrdCls->SetOptions(rules);
         cout << endl;
     }
 };
@@ -364,12 +357,41 @@ public:
     }
 };
 
-BoardTest::BoardTest(shared_ptr<Board> &&board, shared_ptr<View> &&view, shared_ptr<Dialog> &&dlg)
-    : mBoard(board)
-    , mView(view)
-    , mDlg(dlg)
-    , mCurrMove(board->CreateMove())
+BoardTest::BoardTest(const BoardClass *boardClass)
+    : mBrdCls{boardClass}
+    , mBoard(nullptr)
+    , mView(nullptr)
+    , mDlg(nullptr)
+    , mCurrMove(nullptr)
 {
+    const Class *viewClass, *dlgClass;
+    Object *oBoard, *oView, *oDlg;
+    Board *board;
+    View *view;
+    Dialog *dlg;
+
+    assert(boardClass);
+
+    viewClass = boardClass->GetViewClass();
+    dlgClass = boardClass->GetDlgClass();
+    assert(viewClass && dlgClass);
+
+    oBoard = boardClass->NewInstance();
+    oView = viewClass->NewInstance();
+    oDlg = dlgClass->NewInstance();
+    assert(oBoard && oView && oDlg);
+
+    board = dynamic_cast<Board *>(oBoard);
+    view = dynamic_cast<View *>(oView);
+    dlg = dynamic_cast<Dialog *>(oDlg);
+    assert(board && view && dlg);
+
+    mBoard = shared_ptr<Board>(board);
+    mView = shared_ptr<View>(view);
+    mDlg = shared_ptr<Dialog>(dlg);
+
+    mCurrMove = move(mBoard->CreateMove());
+
     mView->SetModel(mBoard);
 
     // FIXME: Since these are all singletons, could this be done better with static members?
@@ -460,25 +482,32 @@ void printMoveList(T begin, T end) {
 }
 
 int main(int argc, char *argv[]) {
-    //FIXME: Use reflection instead of manual instantiation
-    if(argc < 2) {
-        cerr << "Usage: " << argv[0] << " [OthelloBoard | CheckersBoard | C4Pop10Board]" << endl;
+    vector<const BoardClass *> boards = BoardClass::GetAllClasses();
+    bool invalidArguments = argc < 2;
+    const BoardClass *bCls = nullptr;;
+
+    if(!invalidArguments) {
+        invalidArguments = true;
+        for(auto &b : boards) {
+            if(argv[1] == b->GetName()) {
+                bCls = b;
+                invalidArguments = false;
+                break;
+            }
+        }
+    }
+    if(invalidArguments) {
+        cerr << "Usage: " << argv[0] << " [";
+        for(auto itr = boards.begin(); itr != boards.end(); itr++) {
+            cerr << (*itr)->GetName();
+            if(! (itr == boards.end() - 1))
+                cerr << " | ";
+        }
+        cerr << "]" << endl;
         return 1;
     }
-    if(strcmp(argv[1], "OthelloBoard") == 0)
-        BoardTest(
-            shared_ptr<Board>(new OthelloBoard()),
-            shared_ptr<View>(new OthelloView()),
-            shared_ptr<Dialog>(new OthelloDlg())
-        ).Run();
-    else if(strcmp(argv[1], "CheckersBoard") == 0)
-        BoardTest(
-            shared_ptr<Board>(new CheckersBoard()),
-            shared_ptr<View>(new CheckersView()),
-            shared_ptr<Dialog>(new CheckersDlg())
-        ).Run();
-    else
-        throw BaseException(FString("Board %s not implemented!", argv[1]));
-    
-    
+
+    assert(bCls);
+
+    BoardTest(bCls).Run();
 }

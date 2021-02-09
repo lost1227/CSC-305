@@ -8,6 +8,7 @@ public:
    void Draw(std::ostream &out) override;
 
    const Class *GetClass() const override;
+   static Class mClass;
 
    virtual ~OthelloView() {}
 

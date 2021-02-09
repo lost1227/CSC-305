@@ -40,6 +40,8 @@ public:
    // Return the Class object for the given type name.
    static const Class *ForName(const std::string &name);
 
+   void *operator new(size_t sz) = delete;
+
 protected:
    std::string mName;       // Class type name (e.g. "OthelloBoard")
    Object *(*mCreate)();    // Pointer to creation function for subclass
@@ -69,11 +71,10 @@ protected:
 class BoardClass : public Class {
 public:
    BoardClass(const std::string &n, Object *(*c)(), const std::string &fn, 
-    // Parameter to initialize the mViewClass member
-    // Parameter to initialize the mDlgClass member
-    // Function pointer parameter to the mutator for the options
-    // Function pointer parameter to the accessor for the options
-   
+    const Class *viewClass,
+    const Class *dlgClass,
+    void (*setOptions)(const void *),
+    void *(*getOptions)(),
    bool useXPos = false, int minPlayers = 2);
 
    virtual std::string GetFriendlyName() const {return mFriendlyName;}
@@ -90,8 +91,8 @@ protected:
    std::string mFriendlyName;
    const Class *mViewClass;
    const Class *mDlgClass;
-   // Ptr to option mutator
-   // Pointer to option accessor
+   void (*mSetOptions)(const void *);
+   void *(*mGetOptions)();
    bool mUseXPos;
    int mMinPlayers;             // Min number of players for game.      
    BoardClass *mNext;         

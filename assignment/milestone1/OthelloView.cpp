@@ -3,6 +3,8 @@
 
 using namespace std;
 
+Class OthelloView::mClass("OthelloView", OthelloView::Create);
+
 void OthelloView::Draw(ostream &out) {
    string rtn;
    int row, col;
@@ -24,7 +26,5 @@ void OthelloView::Draw(ostream &out) {
 }
 
 const Class *OthelloView::GetClass() const {
-   // FIXME: implement this method stub
-   throw BaseException("OthelloView::GetClass is not implemented");
-   return nullptr;
+   return &mClass;
 }
