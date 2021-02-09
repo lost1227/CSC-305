@@ -33,6 +33,8 @@ CheckersBoard::CheckersBoard(void) : mValue(0), mMoveFlg(0), mMovesValid(false) 
             mBoard[row][col] = NONE;
    
    mRoster.insert(this);
+
+   mValue = (mMoveFlg & WHITE) ? -mRules.moveWgt : mRules.moveWgt;
 }
 
 CheckersBoard::~CheckersBoard() {
@@ -61,6 +63,8 @@ void CheckersBoard::ApplyMove(unique_ptr<Move> uMove) {
    piece = mBoard[here.row][here.col];
 
    assert(piece != NONE && (piece & WHITE) == mMoveFlg);
+
+   assert(mv->mWereKings.empty());
    
    mv->mWasKinged = false;
    
@@ -89,9 +93,13 @@ void CheckersBoard::ApplyMove(unique_ptr<Move> uMove) {
    // King me
    if (((piece & WHITE) && here.row == 0)
     || (!(piece & WHITE) && here.row == DIM-1)) {
-         mValue += sense * (mRules.kingWgt - PIECEWGT);
+      mValue += sense * (mRules.kingWgt - PIECEWGT);
       piece |= KING;
+      mv->mWasKinged = true;
    }
+
+   if (IsBackRow(piece, here))
+      mValue += sense * mRules.backWgt;
 
    mBoard[here.row][here.col] = piece;
    mBoard[original.row][original.col] = 0;
@@ -103,8 +111,74 @@ void CheckersBoard::ApplyMove(unique_ptr<Move> uMove) {
 }
 
 void CheckersBoard::UndoLastMove() {
-   // FIXME: implement this stub
-   throw BaseException("CheckersMove::UndoLastMove is not implemented");
+   int sense;
+   Loc movEndPos, movStartPos, jumpPos;
+   char piece, jumpedPiece;
+   vector<CheckersBoard::Loc>::iterator mvIter, prevMvIter;
+   vector<bool>::iterator wereKingsIter;
+   shared_ptr<CheckersMove> mv = dynamic_pointer_cast<CheckersMove>(mMoveHist.back());
+   mMoveHist.pop_back();
+   movEndPos = mv->mSeq.back();
+   movStartPos = mv->mSeq.front();
+
+   assert(mv->mSeq.size() >= 2);
+
+   // Invalidate move options
+   mMovesValid = false;
+
+   // Set who's turn it is
+   mMoveFlg ^= WHITE;
+   sense = (mMoveFlg == WHITE ? -1 : 1);
+
+   // Update the bonus points for it being your turn
+   mValue += 2*sense*mRules.moveWgt;
+
+   piece = mBoard[movEndPos.row][movEndPos.col];
+   assert(piece != NONE && (piece & WHITE) == mMoveFlg);
+
+   if (IsBackRow(piece, movEndPos))
+      mValue -= sense * mRules.backWgt;
+
+   // Unking the piece if it was kinged
+   if(mv->mWasKinged) {
+      assert(piece & KING);
+      piece = piece & ~KING;
+      mValue -= sense * (mRules.kingWgt - PIECEWGT);
+   }
+
+   // Move the piece back
+   mBoard[movStartPos.row][movStartPos.col] = piece;
+   mBoard[movEndPos.row][movEndPos.col] = NONE;
+
+   prevMvIter = mv->mSeq.begin();
+   mvIter = mv->mSeq.begin() + 1;
+   wereKingsIter = mv->mWereKings.begin();
+   for(; mvIter != mv->mSeq.end(); prevMvIter++, mvIter++) {
+      // Check a piece was jumped
+      if(abs((*prevMvIter).row - (*mvIter).row) == 2) {
+         // Get the jumped piece's location
+         jumpPos.row = ((*prevMvIter).row + (*mvIter).row) / 2;
+         jumpPos.col = ((*prevMvIter).col + (*mvIter).col) / 2;
+
+         assert(!mBoard[jumpPos.row][jumpPos.col]);
+
+         // Rebuild the jumped piece (color and King?)
+         jumpedPiece = PIECE;
+         jumpedPiece |= (mMoveFlg & WHITE) ? 0 : WHITE;
+         assert(!(wereKingsIter == mv->mWereKings.end()));
+         if(*wereKingsIter) {
+            jumpedPiece |= KING;
+         }
+         wereKingsIter++;
+
+         // Restore the jumped piece
+         mBoard[jumpPos.row][jumpPos.col] = jumpedPiece;
+         mValue -= sense * (jumpedPiece & KING ? mRules.kingWgt : PIECEWGT);
+      }
+   }
+
+   if (IsBackRow(piece, movStartPos))
+      mValue += sense * mRules.backWgt;
 }
 
 void CheckersBoard::GetAllMoves(list<unique_ptr<Move>> *moves) const {
@@ -139,6 +213,7 @@ void *CheckersBoard::GetOptions() {
 void CheckersBoard::SetOptions(const void *opts) {
    // FIXME: implement this stub
    throw BaseException("CheckersMove::SetOptions is not implemented");
+   assert(mRules.kingWgt > PIECEWGT);
 }
 
 void CheckersBoard::Rules::EndSwap() {
@@ -187,12 +262,11 @@ void CheckersBoard::NewOptions() {
 // provided code is correct.  Fill in the move-forward section only.
 void CheckersBoard::CalcMoves() const {
    int row, col, forward = mMoveFlg == WHITE ? -1 : 1, numDirs;
-   // uint ndx;
    char piece, jumpPiece;
    Loc thisLoc, jumpLoc, toLoc;
    vector<Loc> locs;  // Series of locations moved to
    vector<int> dirs;  // Series of directions moved
-   bool upStep;       // Did we just make a new step forward?
+   bool upStep, isValidMove;       // Did we just make a new step forward?
 
    mMoves.clear();
    for (row = 0; row < DIM; row++)
@@ -234,26 +308,23 @@ void CheckersBoard::CalcMoves() const {
                         - The piece we jumped over is the opposite color
                         - The same jump is not already in the move history
                   */
-                  if ((InRange(toLoc) && (!mBoard[toLoc.row][toLoc.col]))
-                   || ((toLoc.row == row) && (toLoc.col == col))) {  // Piece has moved
-                     // Fill in forward-step logic in DFS here.  Should be
-                     // 1-2 dozen lines of code
-
-                     // These checks are relatively expensive, and only need to be done for 
-                     // king pieces
-                     if(piece & KING) {
-                        // The destination is the spot we just jumped from
-                        if(locs.size() > 1 && *(locs.end()-2) == toLoc) {
-                           goto end;
-                        }
+                  isValidMove = true;
+                  isValidMove = isValidMove && InRange(toLoc) && (!mBoard[toLoc.row][toLoc.col]);
+                  isValidMove = isValidMove || ((toLoc.row == row) && (toLoc.col == col));
+                  // These checks are relatively expensive, and only need to be done for 
+                  // king pieces
+                  if(piece & KING) {
+                        // The destination should not be the spot we just jumped from
+                        isValidMove = isValidMove && !(locs.size() > 1 && *(locs.end()-2) == toLoc);
                         // The jump has already occurred
                         for(auto itr = locs.begin(); itr != locs.end()-1; itr++) {
                            if(thisLoc == *itr && toLoc == *itr) {
-                              goto end;
+                              isValidMove = false;
+                              break;
                            }
                         }
                      }
-
+                  if (isValidMove) {
                      jumpLoc = Loc(
                         (thisLoc.row + toLoc.row) / 2,
                         (thisLoc.col + toLoc.col) / 2
@@ -261,12 +332,11 @@ void CheckersBoard::CalcMoves() const {
                      jumpPiece = mBoard[jumpLoc.row][jumpLoc.col];
                      if(jumpPiece && (jumpPiece & WHITE) != mMoveFlg) {
                         upStep = true;
-                        locs.push_back(move(jumpLoc));
+                        locs.push_back(move(toLoc));
                         dirs.push_back(0);
                      }
                       
                   }
-                  end:
                   dirs.back()++;
                }
             }

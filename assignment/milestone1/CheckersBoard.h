@@ -26,12 +26,14 @@ public:
    static constexpr int KING_MOVES = 4;
    static constexpr int BITS_PER_PIECE = 3;
 
+   // Note that kingWght is the ADDITIONAL weight given to a king
+   // So it should be PIECEWGT + {user_value}
    struct Rules {
       int kingWgt; // Weight given to a king
       int backWgt; // Additional weight given to a back-row piece
       int moveWgt;
 
-      Rules() : kingWgt(300), backWgt(100), moveWgt(20) {}
+      Rules() : kingWgt(300 + PIECE), backWgt(100), moveWgt(20) {}
 
       void EndSwap();
    };
@@ -95,7 +97,7 @@ protected:
    void CalcMoves() const;
    void FindNormalMoves() const;
    bool IsBackRow(char pc, const Loc &loc) {
-      return ((pc & WHITE) && loc.row == 0) || (!(pc & WHITE) && loc.row == CheckersBoard::DIM-1);
+      return ((pc & WHITE) && loc.row == CheckersBoard::DIM-1) || ((!(pc & WHITE)) && loc.row == 0);
    }
 
    static Rules mRules;

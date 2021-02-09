@@ -72,26 +72,23 @@ CheckersMove::operator string() const {
 }
 
 void CheckersMove::operator=(const string &src) {
-   static regex parser(R"(^([A-Za-z][0-9])(?:->([A-Za-z][0-9]))+$)");
+   static regex parser(R"(^(?:->)?([A-Za-z][0-9])(.*)$)");
    smatch matches;
-   string spaceless;
-   spaceless.reserve(src.length());
+   string currSubStr;
+   currSubStr.reserve(src.length());
    for(auto &chr : src)
       if(chr != ' ')
-         spaceless += chr;
-   if(!regex_match(spaceless, matches, parser)) {
-      throw BaseException("Bad Checkers move: " + src);
-   }
+         currSubStr += chr;
+
    mSeq.clear();
-   auto iter = matches.begin();
-   iter++;
-   for(; iter != matches.end(); iter++) {
-      short row = toupper((*iter).str()[0]) - 'A';
-      short col = (*iter).str()[1] - '1';
+   while(regex_match(currSubStr, matches, parser)) {
+      short row = toupper(matches[1].str()[0]) - 'A';
+      short col = matches[1].str()[1] - '1';
       if(!InRange(0, (int)row, CheckersBoard::DIM) || !InRange(0, (int)col, CheckersBoard::DIM)) {
          throw BaseException("Out of bounds Checkers move: " + src);
       }
       mSeq.push_back(CheckersBoard::Loc(row, col));
+      currSubStr = matches[2];
    }
 }
 
