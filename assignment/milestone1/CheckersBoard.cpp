@@ -111,8 +111,8 @@ void CheckersBoard::ApplyMove(unique_ptr<Move> uMove) {
    if (IsBackRow(piece, here))
       mValue += sense * mRules.backWgt;
 
-   mBoard[here.row][here.col] = piece;
    mBoard[original.row][original.col] = 0;
+   mBoard[here.row][here.col] = piece;
 
    mMoveFlg ^= WHITE;
    mValue -= 2*sense*mRules.moveWgt;
@@ -223,7 +223,6 @@ void *CheckersBoard::GetOptions() {
 void CheckersBoard::SetOptions(const void *opts) {
    // FIXME: implement this stub
    throw BaseException("CheckersMove::SetOptions is not implemented");
-   assert(mRules.kingWgt > PIECEWGT);
 }
 
 void CheckersBoard::Rules::EndSwap() {
@@ -324,17 +323,17 @@ void CheckersBoard::CalcMoves() const {
                   // These checks are relatively expensive, and only need to be done for 
                   // king pieces
                   if(piece & KING) {
-                        // The destination should not be the spot we just jumped from
-                        isValidMove = isValidMove && !(locs.size() > 1 && *(locs.end()-2) == toLoc);
-                        // The jump has already occurred
-                        for(auto itr = locs.begin(); itr != locs.end()-1; itr++) {
-                           if(thisLoc == *itr && toLoc == *itr) {
-                              isValidMove = false;
-                              break;
-                           }
+                     // The destination should not be the spot we just jumped from
+                     isValidMove = isValidMove && !(locs.size() > 1 && *(locs.end()-2) == toLoc);
+                     // The jump has already occurred
+                     for(auto itr = locs.begin(); itr != locs.end()-1; itr++) {
+                        if(thisLoc == *itr && toLoc == *(itr + 1)) {
+                           isValidMove = false;
+                           break;
                         }
                      }
-                  if (isValidMove) {
+                  }
+                  if(isValidMove) {
                      jumpLoc = Loc(
                         (thisLoc.row + toLoc.row) / 2,
                         (thisLoc.col + toLoc.col) / 2
@@ -344,8 +343,8 @@ void CheckersBoard::CalcMoves() const {
                         upStep = true;
                         locs.push_back(move(toLoc));
                         dirs.push_back(0);
+                        continue;
                      }
-                      
                   }
                   dirs.back()++;
                }

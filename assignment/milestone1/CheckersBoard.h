@@ -33,7 +33,7 @@ public:
       int backWgt; // Additional weight given to a back-row piece
       int moveWgt;
 
-      Rules() : kingWgt(300 + PIECE), backWgt(100), moveWgt(20) {}
+      Rules() : kingWgt(300), backWgt(100), moveWgt(20) {}
 
       void EndSwap();
    };
