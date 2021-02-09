@@ -452,7 +452,7 @@ void printMoveList(T begin, T end) {
     if(begin == end){
         return;
     }
-    static list<string> moveStrs;
+    static vector<string> moveStrs;
     int longestMoveLength = 0;
     static string curr;
     assert(moveStrs.size() == 0);
@@ -462,19 +462,33 @@ void printMoveList(T begin, T end) {
         moveStrs.push_back(move(curr));
     }
 
+    int colCount = 0;
     int currLineLen = 0;
-    for(auto& mov : moveStrs) {
-        if(currLineLen + mov.length() > outWidth) {
-            cout << endl;
+    /*while(currLineLen < outWidth) {
+        colCount++;
+        currLineLen += longestMoveLength + 1;
+        if(currLineLen > outWidth)
+            currLineLen--; // No trailing space on the last one.
+    }
+    if(currLineLen > outWidth)
+        colCount--;*/
+    colCount = outWidth / (longestMoveLength + 1);
+    currLineLen = 0;
+    for(auto mov = moveStrs.begin(); mov != moveStrs.end(); mov++) {
+        if(currLineLen != 0)
+             cout << " ";
+        if(currLineLen == colCount - 1 && mov != (moveStrs.end() - 1)) {
             currLineLen = 0;
-        } else if(currLineLen != 0) {
-            cout << " ";
-            ++currLineLen;
+            cout << *mov;
+            for(int i = (*mov).length(); i < longestMoveLength; i++)
+                cout << " ";
+            cout << endl;
+        } else {
+            currLineLen++;
+            cout << *mov;
+            for(int i = (*mov).length(); i < longestMoveLength; i++)
+                cout << " ";
         }
-        cout << mov;
-        currLineLen += mov.length();
-        for(int i = mov.length(); i < longestMoveLength; i++, currLineLen++)
-            cout << " ";
     }
     cout << endl;
 
