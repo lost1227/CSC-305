@@ -101,8 +101,9 @@ void CheckersBoard::ApplyMove(unique_ptr<Move> uMove) {
       here = mv->mSeq.back();
 
    // King me
-   if (((piece & WHITE) && here.row == 0)
-    || (!(piece & WHITE) && here.row == DIM-1)) {
+   if ((((piece & WHITE) && here.row == 0)
+    || (!(piece & WHITE) && here.row == DIM-1))
+    && !(piece & KING)) {
       mValue += sense * (mRules.kingWgt - PIECEWGT);
       piece |= KING;
       mv->mWasKinged = true;
@@ -363,10 +364,16 @@ void CheckersBoard::CalcMoves() const {
                      // The destination should not be the spot we just jumped from
                      isValidMove = isValidMove && !(locs.size() > 1 && *(locs.end()-2) == toLoc);
                      // The jump has already occurred
-                     for(auto itr = locs.begin(); itr != locs.end()-1; itr++) {
-                        if(thisLoc == *itr && toLoc == *(itr + 1)) {
-                           isValidMove = false;
-                           break;
+                     for(auto itr = locs.begin(); itr != locs.end(); itr++) {
+                        if(thisLoc == *itr) {
+                           if(itr != locs.begin() && *(itr-1) == toLoc) {
+                              isValidMove = false;
+                              break;
+                           }
+                           if(itr != (locs.end() - 1) && *(itr + 1) == toLoc) {
+                              isValidMove = false;
+                              break;
+                           }
                         }
                      }
                   }
