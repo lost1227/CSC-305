@@ -72,24 +72,33 @@ CheckersMove::operator string() const {
 }
 
 void CheckersMove::operator=(const string &src) {
-   static regex parser(R"(^(?:->)?([A-Za-z][0-9])(.*)$)");
+   static regex wholeStrCheck(R"(^\s*[A-Za-z]\s*[0-9]+(?:\s*->\s*[A-Za-z]\s*[0-9]+)+\s*$)");
+   static regex parser(R"(([A-Za-z])\s*([0-9]+))");
+   string curr;
    smatch matches;
-   string currSubStr;
-   currSubStr.reserve(src.length());
-   for(auto &chr : src)
-      if(chr != ' ')
-         currSubStr += chr;
+   vector<CheckersBoard::Loc> seq;
+   regex_iterator<string::const_iterator> itr(src.begin(), src.end(), parser);
+   regex_iterator<string::const_iterator> end;
 
-   mSeq.clear();
-   while(regex_match(currSubStr, matches, parser)) {
+   if(!regex_match(src, wholeStrCheck)) {
+      throw BaseException("Bad Checkers move: " + src);
+   }
+
+   for(;itr != end; itr++) {
+      curr = (*itr).str();
+      regex_match(curr, matches, parser);
+
       short row = toupper(matches[1].str()[0]) - 'A';
-      short col = matches[1].str()[1] - '1';
+      short col = stoi(matches[2]) - 1;
       if(!InRange(0, (int)row, CheckersBoard::DIM) || !InRange(0, (int)col, CheckersBoard::DIM)) {
          throw BaseException("Out of bounds Checkers move: " + src);
       }
-      mSeq.push_back(CheckersBoard::Loc(row, col));
-      currSubStr = matches[2];
+      seq.push_back(CheckersBoard::Loc(row, col));
    }
+
+   assert(seq.size() >= 2); // Invalid moves should be caught by the wholeStrCheck
+
+   mSeq = seq;
 }
 
 unique_ptr<Board::Move> CheckersMove::Clone() const {
