@@ -12,6 +12,14 @@ public:
    static Class mClass;
 
    static Object *Create() {return new CheckersDlg();}
+
+private:
+   static constexpr int KING_MIN = 0;
+   static constexpr int KING_MAX = 1000;
+   static constexpr int BACK_MIN = 0;
+   static constexpr int BACK_MAX = 1000;
+   static constexpr int MOVE_MIN = 0;
+   static constexpr int MOVE_MAX = 100;
 };
 
 #endif

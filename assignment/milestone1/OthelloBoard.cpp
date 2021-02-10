@@ -308,8 +308,7 @@ void OthelloBoard::RecalcWeight() {
 }
 
 void *OthelloBoard::GetOptions() {
-   static Rules rules;
-   Rules *rtn = &rules;
+   Rules *rtn = new Rules;
    
    rtn->cornerWgt = mWeights[0][0];
    rtn->sideWgt = mWeights[0][2];
