@@ -250,10 +250,18 @@ class SetOptionsCmd : public BoardTestCmd {
 public:
     SetOptionsCmd() : BoardTestCmd(regex(R"(^\s*setOptions(?:\s.*)?$)")) {}
     void Apply(BoardTest &board) override {
-        void *rules = board.mBrdCls->GetOptions();
-        board.mDlg->Run(cin, cout, rules);
-        board.mBrdCls->SetOptions(rules);
-        cout << endl;
+        void *rules = nullptr;
+        try {
+            rules = board.mBrdCls->GetOptions();
+            board.mDlg->Run(cin, cout, rules);
+            board.mBrdCls->SetOptions(rules);
+            cout << endl;
+            delete rules;
+        } catch(BaseException &e) {
+            if(rules)
+                delete rules;
+            throw e;
+        }
     }
 };
 

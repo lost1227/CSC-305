@@ -293,6 +293,8 @@ ostream &OthelloBoard::Write(ostream &os) const {
    os.write((char *)&sz, sizeof(sz));
    for (auto itr = mMoveHist.begin(); itr != mMoveHist.end(); itr++)
       (*itr)->Write(os);
+
+   delete rls;
    
    return os;
 }

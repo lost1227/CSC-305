@@ -2,7 +2,7 @@ CXX = g++
 CPPFLAGS = -Wall -Werror -pedantic -g -std=c++11
 
 CPPFLAGS += -DLITTLE_ENDIAN
-CPPFLAGS += -Wno-error=char-subscripts -Wno-error=parentheses
+CPPFLAGS += -Wno-error=char-subscripts -Wno-error=parentheses -Wno-error=delete-incomplete
 CPPFLAGS += -fsanitize=undefined -fsanitize=address
 
 SRCS = $(shell find . -name "*.cpp")
