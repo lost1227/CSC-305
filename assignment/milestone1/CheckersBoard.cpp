@@ -212,9 +212,24 @@ unique_ptr<Board> CheckersBoard::Clone() const {
 }
 
 unique_ptr<const Board::Key> CheckersBoard::GetKey() const {
-   // FIXME: implement this stub
-   throw BaseException("CheckersBoard::GetKey is not implemented");
-   return unique_ptr<const Key>(nullptr);
+   BasicKey<KEY_LEN> *key = new BasicKey<KEY_LEN>();
+   ulong *dataptr = key->vals;
+   char piece;
+   int saved = 0;
+   *dataptr = (mMoveFlg == WHITE) ? 1 : 0;
+   for(int row = DIM-1; row >= 0; row--) {
+      for(int col = 0; col < DIM/2; col++) {
+         piece = mBoard[row][(col * 2) + (row % 1)];
+         if (saved == 10) {
+            saved = 0;
+            dataptr++;
+            *dataptr = 0;
+         }
+         *dataptr = (*dataptr << BITS_PER_PIECE) | (piece & 0x7);
+         saved++;
+      }
+   }
+   return unique_ptr<const Board::Key>(key);
 }
 
 void *CheckersBoard::GetOptions() {
@@ -222,8 +237,8 @@ void *CheckersBoard::GetOptions() {
 }
 
 void CheckersBoard::SetOptions(const void *opts) {
-   // FIXME: implement this stub
-   throw BaseException("CheckersMove::SetOptions is not implemented");
+   const Rules *rOpts = reinterpret_cast<const Rules *>(opts);
+   mRules = *rOpts;
 }
 
 void CheckersBoard::Rules::EndSwap() {
@@ -233,8 +248,29 @@ void CheckersBoard::Rules::EndSwap() {
 }
 
 istream &CheckersBoard::Read(istream &is) {
-   // FIXME: implement this stub
-   throw BaseException("CheckersMove::Read is not implemented");
+   Rules rls;
+   int mvCount;
+   unique_ptr<CheckersMove> currMove;
+
+   is.read((char *)&rls, sizeof(rls));
+   rls.EndSwap();
+   SetOptions(&rls);
+
+   is.read((char *)&mvCount, sizeof(mvCount));
+   mvCount = EndianXfer(mvCount);
+   assert(mvCount >= 0);
+
+   while(!mMoveHist.empty()) {
+      UndoLastMove();
+   }
+
+   for(int i = 0; i < mvCount; i++) {
+      currMove = unique_ptr<CheckersMove>(new CheckersMove(vector<CheckersBoard::Loc>()));
+      currMove->Read(is);
+      ApplyMove(move(currMove));
+   }
+
+   return is;
 }
 
 ostream &CheckersBoard::Write(ostream &os) const {
@@ -385,7 +421,5 @@ void CheckersBoard::FindNormalMoves() const {
    }        
 
 const Class *CheckersBoard::GetClass() const {
-   // FIXME: implement this method stub
-   throw BaseException("CheckersBoard::GetClass is not implemented");
-   return nullptr;
+   return &mClass;
 }

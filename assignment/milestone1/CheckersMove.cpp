@@ -97,8 +97,18 @@ unique_ptr<Board::Move> CheckersMove::Clone() const {
 }
 
 istream &CheckersMove::Read(istream &is) {
-   // FIXME: implement this stub
-   throw BaseException("CheckersMove::read new is not implemented");
+   char numSteps, row, col;
+   mSeq.clear();
+   is.read((char *)&numSteps, sizeof(numSteps));
+   assert(numSteps >= 0);
+   mSeq.reserve(numSteps);
+   for(int i = 0; i < numSteps; i++) {
+      is.read((char *)&row, sizeof(row));
+      is.read((char *)&col, sizeof(col));
+      assert(InRange((char) 0, row, (char) CheckersBoard::DIM));
+      assert(InRange((char) 0, col, (char) CheckersBoard::DIM));
+      mSeq.push_back(CheckersBoard::Loc(row, col));
+   }
    return is;
 }
 
