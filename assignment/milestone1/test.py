@@ -5,8 +5,10 @@ from pathlib import Path
 import shutil
 import tempfile
 import threading
+import multiprocessing
 
-debug=[]
+debug = []
+# debug=["Checkers.1"]
 
 script_dir = Path(__file__).resolve().parent
 
@@ -27,7 +29,7 @@ assert genScript.exists()
 if not testDir.exists():
     testDir.mkdir()
 
-completion = subprocess.run(["make", "-f", str(makefile)])
+completion = subprocess.run(["make", "-f", str(makefile), "-j", str(multiprocessing.cpu_count())])
 if completion.returncode > 0:
     print("Compile error")
     exit(1)
@@ -62,11 +64,16 @@ def run_file(f, currDir, tmpDir):
                 subprocess.run(["python3", str(script_dir / "debug.py"), currDir.stem + "Board", "-b", myBoardTest], cwd=tmpDir, stdin=inF, stdout=ooF, stderr=oef)
             else:
                 subprocess.run([str(myBoardTest), currDir.stem + "Board"], cwd=tmpDir, stdin=inF, stdout=ooF, stderr=oef)
-    
+    message = "\033[92mSUCCESS\033[0m"
     with diffOutPath.open("w") as oF:
         res = subprocess.run(["diff", "-y", str(expectedPath), str(actualPathOut), "--width=200"], cwd=tmpDir, stdout=oF)
-        message = "\033[91mFAIL\033[0m" if res.returncode != 0 else "\033[92mSUCCESS\033[0m"
-        print("{:>12} {}".format(currDir.name, message))
+        message = "\033[92mSUCCESS\033[0m"
+        if res.returncode != 0:
+            message = "\033[91mFAIL\033[0m"
+    if not "FAIL" in message:
+        if diffOutPath.stat().st_size > 0:
+            message = "\033[93mWARN\033[0m"
+    print("{:>12} {}".format(currDir.name, message))
 
 thds = []
 
