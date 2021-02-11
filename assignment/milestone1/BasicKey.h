@@ -14,9 +14,13 @@ public:
     std::istream &Read(std::istream &) override;
     std::ostream &Write(std::ostream &) const override;
 
-    const Class *GetClass() const override;
+    const Class *GetClass() const override { return &mClass; }
+
+    static Object *Create(){return new BasicKey<size>();}
 
     ulong vals [size];
+
+    static Class mClass;
 };
 
 template<int size>
@@ -43,24 +47,27 @@ bool BasicKey<size>::operator<(const Board::Key &other) const {
 
 template<int size>
 std::istream &BasicKey<size>::Read(std::istream &stream) {
-    // FIXME: implement this stub
-    throw BaseException("BasicKey<size>::Read is not implemented");
+    ulong readVal;
+    for(auto &val : vals) {
+        stream.read((char *)&readVal, sizeof(readVal));
+        readVal = EndianXfer((uint)readVal);
+        val = readVal;
+    }
     return stream;
 }
 
 template<int size>
 std::ostream &BasicKey<size>::Write(std::ostream &stream) const {
-    // FIXME: implement this stub
-    throw BaseException("BasicKey<size>::Write is not implemented");
+    ulong writeVal;
+    for(auto &val : vals) {
+        writeVal = val;
+        writeVal = EndianXfer((uint)writeVal);
+        stream.write((char *)&writeVal, sizeof(writeVal));
+    }
     return stream;
 }
 
 template<int size>
-const Class *BasicKey<size>::GetClass() const {
-    // FIXME: implement this stub
-    throw BaseException("BasicKey<size>::GetClass is not implemented");
-    return nullptr;
-}
-
+Class BasicKey<size>::mClass(FString("BasicKey<%d>", size), BasicKey<size>::Create);
 
 #endif
