@@ -1,535 +1,313 @@
+#include <assert.h>
+#include <stdlib.h>
 #include <iostream>
 #include <fstream>
-#include <string>
-#include <regex>
-#include <memory>
+#include <sstream>
+#include <iomanip>
+#include <list>
+#include <set>
+#include <limits.h>
 #include <algorithm>
-
-#include <cstdlib>
-
-#include "assert.h"
-
+#include "MyLib.h"
 #include "Board.h"
 #include "View.h"
 #include "Dialog.h"
 
-#include "MyLib.h"
-
 using namespace std;
 
-class BoardTestCmd;
-template<class T>
-void printMoveList(T, T);
+void PrintMoves(const list<shared_ptr<const Board::Move>> &lst) {
+   int numCols, col, maxLen = 1;
+   const int maxCols = 80;
+      
+   for (auto lstItr = lst.begin(); lstItr != lst.end(); lstItr++)
+      maxLen = max(maxLen, (int)((string)(**lstItr)).size());
+   
+   numCols = maxCols / (maxLen + 1); // Figure number of columns
 
-class BoardTest {
-public:
-    BoardTest(const BoardClass *);
-    void RegisterCmd(BoardTestCmd *cmd) {
-        mCmds.push_back(unique_ptr<BoardTestCmd>(cmd));
-    }
-    void ExecCmd(const string &);
-    void Run();
-
-    const BoardClass *mBrdCls;
-    
-    shared_ptr<Board> mBoard;
-    shared_ptr<View> mView;
-    shared_ptr<Dialog> mDlg;
-    shared_ptr<Board::Move> mCurrMove;
-
-    bool shouldRun { true };
-private:
-    vector<unique_ptr<BoardTestCmd>> mCmds;
-};
-
-class BoardTestCmd {
-public:
-    virtual ~BoardTestCmd() {};
-    virtual bool Accept(const string& str) { return regex_match(str, mMatches, mMatcher); }
-    virtual void Apply(BoardTest&) = 0;
-protected:
-    BoardTestCmd(regex&& expr) : mMatcher(expr) {}
-    smatch mMatches;
-    regex mMatcher;
-};
-
-class ShowBoardCmd : public BoardTestCmd {
-public:
-    ShowBoardCmd() : BoardTestCmd(regex(R"(^\s*showBoard(?:\s.*)?$)")) {}
-    void Apply(BoardTest &board) override {
-        list<unique_ptr<Board::Move>> moveOpts;
-        board.mView->Draw(cout);
+   // Left justify following output
+   cout << setiosflags(ios::left) << resetiosflags(ios::right);
+   col = 0;
+   for (auto lstItr = lst.begin(); lstItr != lst.end(); lstItr++) {
+      if(!col)
         cout << endl;
-        cout << "All Moves: " << endl;
-        board.mBoard->GetAllMoves(&moveOpts);
-        printMoveList(moveOpts.begin(), moveOpts.end());
-        cout << endl;
-    }
-};
+      else
+        cout << " ";
+      col = (col + 1) % numCols;
+      cout << setw(maxLen) << (string) **lstItr;
+   }
+   cout << endl;
+}
 
-class EnterMoveCmd : public BoardTestCmd {
-public:
-    EnterMoveCmd() : BoardTestCmd(regex(R"(^\s*enterMove(.*)$)")) {}
-    void Apply(BoardTest &board) override {
-        auto tmpMove = board.mBoard->CreateMove();
-        (*tmpMove) = mMatches[1];
-        board.mCurrMove = move(tmpMove);
-        cout << endl;
-    };
-};
+int main(int argc, char **argv) {
+   const int argLen = 200, maxCols = 80, minArgs = 2, maxArgs = 3;
+   const BoardClass *boardClass;
+   shared_ptr<Board> board;
+   unique_ptr<View> brdView;
+   unique_ptr<Dialog> brdDlg;
+   shared_ptr<Board::Move> move, cmpMove;
+   string command, arg, commandLine;
+   char cArg[argLen];
+   int count, seed, ndx, runLimit, commentStart;
+   list<unique_ptr<Board::Move>> lst;
+   list<shared_ptr<const Board::Move>> cLst;
+   bool testRun, controlledTest;
 
-class ShowMoveCmd : public BoardTestCmd {
-public:
-    ShowMoveCmd() : BoardTestCmd(regex(R"(^\s*showMove(?:\s.*)?$)")) {}
-    void Apply(BoardTest &board) override {
-        assert(board.mCurrMove);
-        cout << (string)(*board.mCurrMove) << endl << endl;
-    }
-};
+   vector<const BoardClass *> boards = BoardClass::GetAllClasses();
 
-class ApplyMoveCmd : public BoardTestCmd {
-public:
-    ApplyMoveCmd() : BoardTestCmd(regex(R"(^\s*applyMove(?:\s.*)?$)")) {}
-    void Apply(BoardTest &board) override {
-        assert(board.mCurrMove);
-        list<unique_ptr<Board::Move>> moveOpts;
-        board.mBoard->GetAllMoves(&moveOpts);
-        for(auto& uniqMovePtr : moveOpts) {
-            if(*uniqMovePtr == *board.mCurrMove) {
-                board.mBoard->ApplyMove(move(uniqMovePtr));
-                cout << endl;
-                return;
-            }
-        }
-        cout << "Invalid move!" << endl << endl;
-    }
-};
+   (void)maxCols;
+   (void)cArg;
 
-class ShowMoveHistCmd : public BoardTestCmd {
-public:
-    ShowMoveHistCmd() : BoardTestCmd(regex(R"(^\s*showMoveHist(?:\s.*)?$)")) {}
-    void Apply(BoardTest &board) override {
-        const list<shared_ptr<const Board::Move>> &moveHist = board.mBoard->GetMoveHist();
-        cout << endl << "Move History: " << endl;
-        printMoveList(moveHist.begin(), moveHist.end());
-        cout << endl;
-    }
-};
+   if (argc < minArgs || argc > maxArgs) {
+      cout << "Usage: BoardTest BoardClass [runLimit]" << endl;
+      exit(1);
+   }
 
-class DoMoveCmd : public BoardTestCmd {
-public:
-    DoMoveCmd() : BoardTestCmd(regex(R"(^\s*doMove(.*)$)")) {}
-    void Apply(BoardTest &board) override {
-        auto tmpMove = board.mBoard->CreateMove();
-        (*tmpMove) = mMatches[1];
-        board.mCurrMove = move(tmpMove);
+   for(auto& bc : boards) {
+      if(bc->GetName() == argv[1]) {
+         boardClass = bc;
+         board = shared_ptr<Board>(dynamic_cast<Board *>(boardClass->NewInstance()));
+         brdView = unique_ptr<View>(dynamic_cast<View *>(boardClass->GetViewClass()->NewInstance()));
+         brdDlg = unique_ptr<Dialog>(dynamic_cast<Dialog *>(boardClass->GetDlgClass()->NewInstance()));
+         break;
+      }
+   }
 
-        list<unique_ptr<Board::Move>> moveOpts;
-        board.mBoard->GetAllMoves(&moveOpts);
-        for(auto& uniqMovePtr : moveOpts) {
-            if(*uniqMovePtr == *board.mCurrMove) {
-                board.mBoard->ApplyMove(move(uniqMovePtr));
-                cout << endl;
-                return;
-            }
-        }
-        cout << "Invalid move!" << endl << endl;
-    }
-};
+   if (!board || !brdView || !brdDlg) {
+      cout << "Failed to create classes or objects" << endl;
+      exit(1);
+   }
 
-class UndoLastMoveCmd : public BoardTestCmd {
-public:
-    UndoLastMoveCmd() : BoardTestCmd(regex(R"(^\s*undoLastMove\s+(\d+)(?:\s.*)?$)")) {}
-    void Apply(BoardTest &board) override {
-        int count = stoi(mMatches[1]);
-        auto moveHist = board.mBoard->GetMoveHist();
-        count = min(count, (int)moveHist.size());
-        for(int i = 0; i < count; i++)
-            board.mBoard->UndoLastMove();
-        cout << endl;
-    }
-};
+   controlledTest = argc == 3;
+   runLimit = controlledTest ? stoi(argv[2]) : -1;
 
-class ShowValCmd : public BoardTestCmd {
-public:
-    ShowValCmd() : BoardTestCmd(regex(R"(^\s*showVal(?:\s.*)?$)")) {}
-    void Apply(BoardTest &board) override {
-        cout << "Value: " << board.mBoard->GetValue() << endl << endl;
-    }
-};
+   brdView->SetModel(board);
+   move = board->CreateMove();
 
-class SaveBoardCmd : public BoardTestCmd {
-public:
-    SaveBoardCmd() : BoardTestCmd(regex(R"(^\s*saveBoard\s+([^\s]*))")) {}
-    void Apply(BoardTest &board) override {
-        ofstream strm(mMatches[1]);
-        board.mBoard->Write(strm);
-        strm.close();
-        cout << endl;
-    }
-};
-
-class LoadBoardCmd : public BoardTestCmd {
-public:
-    LoadBoardCmd() : BoardTestCmd(regex(R"(^\s*loadBoard\s+([^\s]*)(?:\s.*)?$)")) {}
-    void Apply(BoardTest &board) override {
-        ifstream strm(mMatches[1]);
-        board.mBoard->Read(strm);
-        strm.close();
-        cout << endl;
-    }
-};
-
-class SaveMoveCmd : public BoardTestCmd {
-public:
-    SaveMoveCmd() : BoardTestCmd(regex(R"(^\s*saveMove\s+([^\s]*)(?:\s.*)?$)")) {}
-    void Apply(BoardTest &board) override {
-        ofstream strm(mMatches[1]);
-        board.mCurrMove->Write(strm);
-        strm.close();
-        cout << endl;
-    }
-};
-
-class LoadMoveCmd : public BoardTestCmd {
-public:
-    LoadMoveCmd() : BoardTestCmd(regex(R"(^\s*loadMove\s+([^\s]*)(?:\s.*)?$)")) {}
-    void Apply(BoardTest &board) override {
-        ifstream strm(mMatches[1]);
-        board.mCurrMove->Read(strm);
-        strm.close();
-        cout << endl;
-    }
-};
-
-class CompareKeysCmd : public BoardTestCmd {
-public:
-    CompareKeysCmd() : BoardTestCmd(regex(R"(^\s*compareKeys\s+([^\s]*)(?:\s.*)?$)")) {}
-    void Apply(BoardTest &board) override {
-        auto oBoard = board.mBoard->Clone();
-        assert(oBoard);
-        ifstream strm(mMatches[1]);
-        oBoard->Read(strm);
-        strm.close();
-        auto key = board.mBoard->GetKey();
-        auto oKey = oBoard->GetKey();
-        
-        if(*key == *oKey) {
-            cout << "Board keys are equal" << endl << endl;
-            return;
-        }
-        cout << "Board keys are unequal" << endl;
-        if(*key < *oKey) {
-            cout << "Current board is less than " << mMatches[1] << endl << endl;
-        } else {
-            cout << "Current board is greater than " << mMatches[1] << endl << endl;
-        }
-    }
-};
-
-class CompareMoveCmd : public BoardTestCmd {
-public:
-    CompareMoveCmd() : BoardTestCmd(regex(R"(^\s*compareMove\s+(.*)$)")) {}
-    void Apply(BoardTest &board) override {
-        auto currMove = board.mCurrMove;
-        auto oMove = board.mBoard->CreateMove();
-        *oMove = mMatches[1];
-        assert(oMove);
-        
-        if(*currMove == *oMove) {
-            cout << "Moves are equal" << endl << endl;
-        }else if(*currMove < *oMove) {
-            cout << "Current move is less than entered move" << endl << endl;
-        } else {
-            cout << "Current move is greater than entered move" << endl << endl;
-        }
-    }
-};
-
-class SetOptionsCmd : public BoardTestCmd {
-public:
-    SetOptionsCmd() : BoardTestCmd(regex(R"(^\s*setOptions(?:\s.*)?$)")) {}
-    void Apply(BoardTest &board) override {
-        void *rules = nullptr;
-        try {
-            rules = board.mBrdCls->GetOptions();
-            board.mDlg->Run(cin, cout, rules);
-            board.mBrdCls->SetOptions(rules);
-            cout << endl;
-            delete rules;
-        } catch(BaseException &e) {
-            if(rules)
-                delete rules;
-            throw e;
-        }
-    }
-};
-
-class TestPlayCmd : public BoardTestCmd {
-public:
-    TestPlayCmd() : BoardTestCmd(regex(R"(^\s*testPlay\s+(\d+)\s+(\d+)(?:\s.*)?$)")) {}
-    void Apply(BoardTest &board) override {
-        int seed = stoi(mMatches[1]);
-        int moveCount = stoi(mMatches[2]);
-        int idx;
-        list<unique_ptr<Board::Move>> moveOpts;
-
-        srand(seed);
-
-        for(int i = 0; i < moveCount; i++) {
-            moveOpts.clear();
-            board.mBoard->GetAllMoves(&moveOpts);
-            if(moveOpts.size() == 0)
-                break;
-            auto iterator = moveOpts.begin();
-            idx = rand() % moveOpts.size();
-            advance(iterator, idx);
+   while (cin && !cin.eof()) {
+      try {
+         getline(cin, commandLine);
+         if (cin.eof())
+            throw BaseException("Unexpected EOF");
             
-            *board.mCurrMove = **iterator;
-            board.mBoard->ApplyMove(move(*iterator));
-        }
-        cout << endl;
-    }
-};
-
-class TestRunCmd : public BoardTestCmd {
-public:
-    TestRunCmd() : BoardTestCmd(regex(R"(^\s*testRun\s+(\d+)\s+(\d+)(?:\s.*)?$)")) {}
-    void Apply(BoardTest &board) override {
-        int seed = stoi(mMatches[1]);
-        int moveCount = stoi(mMatches[2]);
-        int idx;
-        list<unique_ptr<Board::Move>> moveOpts;
-
-        srand(seed);
-
-        for(int i = 0; i < moveCount; i++) {
-            moveOpts.clear();
-            board.mBoard->GetAllMoves(&moveOpts);
-            if(moveOpts.size() == 0) {
-                auto &moveHist = board.mBoard->GetMoveHist();
-                assert(moveHist.size() > 0);
-                size_t undoCount = (rand() % (moveHist.size() - 1)) + 1;
-                assert(undoCount > 0);
-                assert(undoCount < moveHist.size());
-                for(size_t i = 0; i < undoCount; i++)
-                    board.mBoard->UndoLastMove();
-                if(moveHist.size() == 0)
-                    *board.mCurrMove = *board.mBoard->CreateMove();
-                else
-                    *board.mCurrMove = *moveHist.back();
-                board.mBoard->GetAllMoves(&moveOpts);
-                assert(moveOpts.size() > 0);
-            }
-            auto iterator = moveOpts.begin();
-            idx = rand() % moveOpts.size();
-            advance(iterator, idx);
+         if ((commentStart = commandLine.find_first_of("#"))
+          != (int)string::npos)
+            commandLine = commandLine.substr(0, commentStart);
             
-            *board.mCurrMove = **iterator;
-            board.mBoard->ApplyMove(move(*iterator));
-        }
-        cout << endl;
-    }
-};
+         if (commandLine.find_first_not_of(" \t") == string::npos)
+            continue;
 
-class KeyMoveCountCmd : public BoardTestCmd {
-public:
-    KeyMoveCountCmd() : BoardTestCmd(regex(R"(^\s*keyMoveCount(?:\s.*)?$)")) {}
-    void Apply(BoardTest &) override {
-        cout << "Moves/Keys: "
-             << Board::Move::GetOutstanding()
-             << "/" << Board::Key::GetOutstanding()
-            << endl << endl;
-    }
-};
-
-class EmptyLineCmd : public BoardTestCmd {
-public:
-    EmptyLineCmd() : BoardTestCmd(regex(R"(^\s*$)")){}
-    void Apply(BoardTest &board) override {};
-};
-
-class QuitCmd : public BoardTestCmd {
-public:
-    QuitCmd() : BoardTestCmd(regex(R"(^\s*quit(?:\s.*)?$)")) {}
-    void Apply(BoardTest &board) override {
-        board.shouldRun = false;
-    }
-};
-
-class CommentCmd : public BoardTestCmd {
-public:
-    CommentCmd() : BoardTestCmd(regex(R"(^(.*)#.*$)")) {}
-    void Apply(BoardTest &board) override {
-        board.ExecCmd(mMatches[1].str());
-    }
-};
-
-BoardTest::BoardTest(const BoardClass *boardClass)
-    : mBrdCls{boardClass}
-    , mBoard(nullptr)
-    , mView(nullptr)
-    , mDlg(nullptr)
-    , mCurrMove(nullptr)
-{
-    const Class *viewClass, *dlgClass;
-    Object *oBoard, *oView, *oDlg;
-    Board *board;
-    View *view;
-    Dialog *dlg;
-
-    assert(boardClass);
-
-    viewClass = boardClass->GetViewClass();
-    dlgClass = boardClass->GetDlgClass();
-    assert(viewClass && dlgClass);
-
-    oBoard = boardClass->NewInstance();
-    oView = viewClass->NewInstance();
-    oDlg = dlgClass->NewInstance();
-    assert(oBoard && oView && oDlg);
-
-    board = dynamic_cast<Board *>(oBoard);
-    view = dynamic_cast<View *>(oView);
-    dlg = dynamic_cast<Dialog *>(oDlg);
-    assert(board && view && dlg);
-
-    mBoard = shared_ptr<Board>(board);
-    mView = shared_ptr<View>(view);
-    mDlg = shared_ptr<Dialog>(dlg);
-
-    mCurrMove = move(mBoard->CreateMove());
-
-    mView->SetModel(mBoard);
-
-    // FIXME: Since these are all singletons, could this be done better with static members?
-    // That is, could we make each BoardTestCmd hold a static instance of itself, then have
-    // the BoardTestCmd somehow register itself with BoardTest?
-    RegisterCmd(new CommentCmd());
-    RegisterCmd(new EmptyLineCmd());
-    RegisterCmd(new ShowBoardCmd());
-    RegisterCmd(new EnterMoveCmd());
-    RegisterCmd(new ShowMoveCmd());
-    RegisterCmd(new ApplyMoveCmd());
-    RegisterCmd(new ShowMoveHistCmd());
-    RegisterCmd(new DoMoveCmd());
-    RegisterCmd(new UndoLastMoveCmd());
-    RegisterCmd(new ShowValCmd());
-    RegisterCmd(new SaveBoardCmd());
-    RegisterCmd(new LoadBoardCmd());
-    RegisterCmd(new SaveMoveCmd());
-    RegisterCmd(new LoadMoveCmd());
-    RegisterCmd(new CompareKeysCmd());
-    RegisterCmd(new CompareMoveCmd());
-    RegisterCmd(new SetOptionsCmd());
-    RegisterCmd(new TestPlayCmd());
-    RegisterCmd(new TestRunCmd());
-    RegisterCmd(new KeyMoveCountCmd());
-    RegisterCmd(new QuitCmd());
-}
-
-void BoardTest::ExecCmd(const string &cmdStr) {
-    for(auto& cmd : mCmds) {
-        if(cmd->Accept(cmdStr)) {
-            cmd->Apply(*this);
-            return;
-        }
-    }
-    cout << "Unknown command!" << endl;
-}
-
-void BoardTest::Run() {
-    string cmd;
-    while(shouldRun && !cin.eof()) {
-        try {
-            getline(cin, cmd);
-            if(cin.eof()) {
-                throw BaseException("Unexpected EOF");
+         istringstream cmdIn(commandLine);
+         cmdIn >> command; // gets first word!
+         // ************************ enterMove ************************
+         if (command.compare("enterMove") == 0) {
+            getline(cmdIn, arg);
+            *move = arg;
+         }
+         // ************************ showMove ************************
+         else if (command.compare("showMove") == 0) {
+            cout << (string)*move << endl;
+         }
+         // ************************ applyMove ************************
+         else if (command.compare("applyMove") == 0) {
+            lst.clear();
+            board->GetAllMoves(&lst);
+            for(auto &mv : lst) {
+                if(*mv == *move) {
+                    board->ApplyMove(std::move(mv));
+                    break;
+                }
             }
-            ExecCmd(cmd);
-        } catch(BaseException &e) {
-            cout << "Error: " << e.what() << endl << endl;
-        }
-    }
-}
-
-const int outWidth = 80;
-
-template<class T>
-void printMoveList(T begin, T end) {
-    if(begin == end){
-        return;
-    }
-    static vector<string> moveStrs;
-    int longestMoveLength = 0;
-    static string curr;
-    assert(moveStrs.size() == 0);
-    for(; !(begin == end); begin++) {
-        curr = **begin;
-        longestMoveLength = max(longestMoveLength, (int) curr.length());
-        moveStrs.push_back(move(curr));
-    }
-
-    int colCount = 0;
-    int currLineLen = 0;
-    /*while(currLineLen < outWidth) {
-        colCount++;
-        currLineLen += longestMoveLength + 1;
-        if(currLineLen > outWidth)
-            currLineLen--; // No trailing space on the last one.
-    }
-    if(currLineLen > outWidth)
-        colCount--;*/
-    colCount = outWidth / (longestMoveLength + 1);
-    currLineLen = 0;
-    for(auto mov = moveStrs.begin(); mov != moveStrs.end(); mov++) {
-        if(currLineLen != 0)
-             cout << " ";
-        if(currLineLen == colCount - 1 && mov != (moveStrs.end() - 1)) {
-            currLineLen = 0;
-            cout << *mov;
-            for(int i = (*mov).length(); i < longestMoveLength; i++)
-                cout << " ";
-            cout << endl;
-        } else {
-            currLineLen++;
-            cout << *mov;
-            for(int i = (*mov).length(); i < longestMoveLength; i++)
-                cout << " ";
-        }
-    }
-    cout << endl;
-
-    moveStrs.clear();
-}
-
-int main(int argc, char *argv[]) {
-    vector<const BoardClass *> boards = BoardClass::GetAllClasses();
-    bool invalidArguments = argc < 2;
-    const BoardClass *bCls = nullptr;;
-
-    if(!invalidArguments) {
-        invalidArguments = true;
-        for(auto &b : boards) {
-            if(argv[1] == b->GetName()) {
-                bCls = b;
-                invalidArguments = false;
-                break;
+         }
+         // ************************ doMove ************************
+         else if (command.compare("doMove") == 0) {
+            getline(cmdIn, arg);
+            *move = arg;
+            lst.clear();
+            board->GetAllMoves(&lst);
+            for(auto &mv : lst) {
+                if(*mv == *move) {
+                    board->ApplyMove(std::move(mv));
+                    break;
+                }
             }
-        }
-    }
-    if(invalidArguments) {
-        cerr << "Usage: " << argv[0] << " [";
-        for(auto itr = boards.begin(); itr != boards.end(); itr++) {
-            cerr << (*itr)->GetName();
-            if(! (itr == boards.end() - 1))
-                cerr << " | ";
-        }
-        cerr << "]" << endl;
-        return 1;
-    }
+         }
+         // ************************ showVal ************************
+         else if (command.compare("showVal") == 0) {
+            cout << "Value: " << board->GetValue() << endl;
+         }
+         // ************************ saveBoard ************************
+         else if (command.compare("saveBoard") == 0) {
+            cmdIn >> arg;
+            ofstream strm(arg);
+            board->Write(strm);
+            strm.close();
+         }
+         // ************************ saveMove ************************
+         else if (command.compare("saveMove") == 0) {
+            cmdIn >> arg;
+            ofstream strm(arg);
+            move->Write(strm);
+            strm.close();
+         }
+         // ************************ loadBoard ************************
+         else if (command.compare("loadBoard") == 0) {
+            cmdIn >> arg;
+            ifstream strm(arg);
+            board->Read(strm);
+            strm.close();
+         }
+         // ************************ loadMove ************************
+         else if (command.compare("loadMove") == 0) {
+            cmdIn >> arg;
+            ifstream strm(arg);
+            move->Read(strm);
+            strm.close();
+         }
+         // ************************ compareKeys ************************
+         else if (command.compare("compareKeys") == 0) {
+            cmdIn >> arg;
+            auto oBoard = board->Clone();
+            ifstream strm(arg);
+            oBoard->Read(strm);
+            strm.close();
+            auto key = board->GetKey();
+            auto oKey = oBoard->GetKey();
+            
+            if(*key == *oKey) {
+                cout << "Board keys are equal" << endl;
+            } else {
+                cout << "Board keys are unequal" << endl;
+                if(*key < *oKey) {
+                    cout << "Current board is less than " << arg << endl;
+                } else {
+                    cout << "Current board is greater than " << arg << endl;
+                }
+            }
+         }
+         // ************************ compareMove ************************
+         else if (command.compare("compareMove") == 0) {
+            getline(cmdIn, arg);
+            if(!cmpMove)
+                cmpMove = board->CreateMove();
+            *cmpMove = arg;
+            if(*move == *cmpMove) {
+                cout << "Moves are equal" << endl;
+            } else if(*move < *cmpMove) {
+                cout << "Current move is less than entered move" << endl;
+            } else {
+                cout << "Current move is greater than entered move" << endl;
+            }
+            cmpMove = nullptr;
+         }
+         // ************************ setOptions ************************
+         else if (command.compare("setOptions") == 0) {
+            void *rules = nullptr;
+            try {
+               rules = boardClass->GetOptions();
+               if(brdDlg->Run(cin, cout, rules))
+                  boardClass->SetOptions(rules);
+               cout << endl;
+               delete rules;
+            } catch(BaseException &e) {
+               if(rules)
+                  delete rules;
+               throw e;
+            }
+            continue;
+         }
+         // ************************ undoLastMove ************************
+         else if (command.compare("undoLastMove") == 0) {
+            if (!(cmdIn >> count) || count < 0) {
+               cmdIn.clear();
+               throw BaseException("Must have a nonnegative count for undoLastMove");
+            }
 
-    assert(bCls);
+            if (count > (int)board->GetMoveHist().size())
+               count = board->GetMoveHist().size();
 
-    BoardTest(bCls).Run();
+            while (count-- > 0)
+               board->UndoLastMove();
+         }
+         // ************************ showMoveHist ************************
+         else if (command.compare("showMoveHist") == 0) {
+            cLst = board->GetMoveHist();
+            cout << endl << "Move History: ";
+            PrintMoves(cLst);
+         }
+         // ************************ showBoard ************************
+         else if (command.compare("showBoard") == 0) {
+            brdView->Draw(cout);
+            lst.clear();
+            board->GetAllMoves(&lst);
+            cLst.clear();
+
+            // for (auto uptr : lst) {                                      Nope
+            for (auto &uptr : lst) {
+               // cLst.push_back(uptr);                                     Nope
+               // shared_ptr<Board::Move> tPtr = uptr;                      Nope
+               // cLst.push_back(shared_ptr<Board::Move>(uptr));            Nope
+               // cLst.push_back(shared_ptr<Board::Move>(move(uptr))); *&$! Nope
+               // cLst.push_back(shared_ptr<Board::Move>(std::move(uptr))); YEP!
+               cLst.push_back(std::move(uptr));                          // Best
+            }
+
+            cout << endl << "All Moves: ";
+            PrintMoves(cLst);
+         }
+
+         // ************************ testPlay ************************
+         // ************************ testRun  ************************
+         else if (command.compare("testPlay") == 0
+          || command.compare("testRun") == 0) {
+            if (!(cmdIn >> seed >> count) || count < 0)
+               throw BaseException("Bad arguments for testPlay/testRun");
+               
+            srand(seed);
+            testRun = command.compare("testRun") == 0;
+            runLimit -= count;
+            
+            if (controlledTest && runLimit < 0)
+               throw BaseException("Run limit exceeded.");
+            
+            while (count-- > 0) {
+               lst.erase(lst.begin(), lst.end());
+               board->GetAllMoves(&lst);
+               if (lst.size() == 0)
+                  if (testRun) {
+                     ndx = 1 + rand() % board->GetMoveHist().size();
+                     while (ndx--)
+                        board->UndoLastMove();
+                  }
+                  else
+                     break;
+               else {
+                  ndx = rand() % lst.size();
+
+                  auto itr = lst.begin();
+                  while (ndx--)
+                     itr++;
+                  board->ApplyMove(std::move(*itr));
+               }
+            }
+         }
+         // ************************ keyMoveCount ************************
+         else if (command.compare("keyMoveCount") == 0) {
+            lst.clear();
+            cLst.clear();
+            cout << "Moves/Keys: " << Board::Move::GetOutstanding() << "/"
+             << Board::Key::GetOutstanding() << endl;
+         }
+         // ************************ quit ************************
+         else if (command.compare("quit") == 0)
+            break;
+         else
+            cout << "Unknown command: " << command << endl;
+      } 
+      catch (BaseException &err) {
+         cout << "Error: " << err.what() << endl;
+      }
+      cout << endl;
+   }
+
+   return 0;
 }
