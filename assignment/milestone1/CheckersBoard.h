@@ -76,8 +76,8 @@ public:
    
    char getPiece(Loc loc) const {return mBoard[loc.row][loc.col];}
 
-   std::istream &Read(std::istream &);
-   std::ostream &Write(std::ostream &) const;
+   std::istream &Read(std::istream &) override;
+   std::ostream &Write(std::ostream &) const override;
 
    static Object *CreateBoard();
    static void *GetOptions();
