@@ -240,6 +240,9 @@ void *CheckersBoard::GetOptions() {
 void CheckersBoard::SetOptions(const void *opts) {
    const Rules *rOpts = reinterpret_cast<const Rules *>(opts);
    mRules = *rOpts;
+   for(auto& board : mRoster) {
+      board->NewOptions();
+   }
 }
 
 void CheckersBoard::Rules::EndSwap() {

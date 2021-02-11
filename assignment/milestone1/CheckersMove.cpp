@@ -43,7 +43,7 @@ bool CheckersMove::operator==(const Board::Move &rhs) const {
     itr1++, itr2++)
       ;
    
-   return itr1 == mSeq.end();
+   return itr1 == mSeq.end() && itr2 == oRhs.mSeq.end();
 }
 
 bool CheckersMove::operator<(const Board::Move &rhs) const {
@@ -54,7 +54,7 @@ bool CheckersMove::operator<(const Board::Move &rhs) const {
     itr1++, itr2++)
       ;
    return (itr1 == mSeq.end() && itr2 != oRhs.mSeq.end())
-      || (itr1 != mSeq.end() && itr2 != mSeq.end() && *itr1 < *itr2);
+      || (itr1 != mSeq.end() && itr2 != oRhs.mSeq.end() && *itr1 < *itr2);
 }
 
 CheckersMove::operator string() const {
