@@ -8,7 +8,9 @@ public:
     bool Run(std::istream &in, std::ostream &out, void *data) override;
 
     const Class *GetClass() const override;
-    static Class mClass;
+    static const Class mClass;
+
+    static Object *Create() {return new C4Pop10Dlg();}
 };
 
 #endif

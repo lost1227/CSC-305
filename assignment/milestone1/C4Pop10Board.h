@@ -3,6 +3,7 @@
 
 #include "Board.h"
 #include "C4Pop10Move.h"
+#include "Class.h"
 
 class C4Pop10Board : public Board {
 public:
@@ -39,8 +40,12 @@ public:
     std::istream &Read(std::istream &) override;
     std::ostream &Write(std::ostream &) const override;
 
+    static Object *CreateBoard();
+    static void *GetOptions();
+    static void SetOptions(const void *opts);
+
     const Class *GetClass() const override;
-    static Class mClass;
+    static const BoardClass mClass;
 };
 
 #endif
