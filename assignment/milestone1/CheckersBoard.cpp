@@ -220,7 +220,7 @@ unique_ptr<const Board::Key> CheckersBoard::GetKey() const {
    *dataptr = (mMoveFlg == WHITE) ? 1 : 0;
    for(int row = DIM-1; row >= 0; row--) {
       for(int col = 0; col < DIM/2; col++) {
-         piece = mBoard[row][(col * 2) + (row % 1)];
+         piece = mBoard[row][(col * 2) + (row % 2)];
          if (saved == 10) {
             saved = 0;
             dataptr++;
