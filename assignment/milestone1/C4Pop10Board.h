@@ -9,6 +9,9 @@ class C4Pop10Board : public Board {
 public:
     friend class C4Pop10Move;
 
+    static constexpr int DIM_W = 7, DIM_H = 6;
+    static constexpr int NONE = 0, PIECE = 1, YELLOW = 2;
+    
     struct Rules {
         int safeWgt;
         int threatWgt;
@@ -46,6 +49,11 @@ public:
 
     const Class *GetClass() const override;
     static const BoardClass mClass;
+
+    const char GetLoc(int row, int col) const;
+private:
+    char mBoard[DIM_H][DIM_W];
+    char mNextMove;
 };
 
 #endif

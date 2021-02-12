@@ -2,6 +2,8 @@
 #include "C4Pop10Dlg.h"
 #include "C4Pop10View.h"
 
+#include <cstring>
+
 using namespace std;
 
 const BoardClass C4Pop10Board::mClass(
@@ -14,14 +16,13 @@ const BoardClass C4Pop10Board::mClass(
     C4Pop10Board::GetOptions
 );
 
-C4Pop10Board::C4Pop10Board() {
-    throw BaseException(FString("%s:%d not implemented", __FILE__, __LINE__));
+C4Pop10Board::C4Pop10Board()
+    : mNextMove{YELLOW}
+{
+    memset(mBoard, 0, sizeof(mBoard));
 }
 
-C4Pop10Board::~C4Pop10Board() {
-    // throw BaseException(FString("%s:%d not implemented", __FILE__, __LINE__));
-    cerr << FString("%s:%d not implemented", __FILE__, __LINE__) << endl;
-}
+C4Pop10Board::~C4Pop10Board() {}
 
 int C4Pop10Board::GetValue() const {
     throw BaseException(FString("%s:%d not implemented", __FILE__, __LINE__));
@@ -40,11 +41,11 @@ void C4Pop10Board::GetAllMoves(list<unique_ptr<Move>> *moves) const {
 }
 
 unique_ptr<Board::Move> C4Pop10Board::CreateMove() const {
-    throw BaseException(FString("%s:%d not implemented", __FILE__, __LINE__));
+    return unique_ptr<Board::Move>(new C4Pop10Move());
 }
 
 int C4Pop10Board::GetWhoseMove() const {
-    throw BaseException(FString("%s:%d not implemented", __FILE__, __LINE__));
+    return (mNextMove & YELLOW) ? 0 : 1;
 }
 
 const list<shared_ptr<const Board::Move>> &C4Pop10Board::GetMoveHist() const {
@@ -81,4 +82,8 @@ void C4Pop10Board::SetOptions(const void *opts) {
 
 const Class *C4Pop10Board::GetClass() const {
     return &mClass;
+}
+
+const char C4Pop10Board::GetLoc(int row, int col) const {
+    return mBoard[row][col];
 }
