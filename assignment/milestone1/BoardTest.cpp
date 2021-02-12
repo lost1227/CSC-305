@@ -28,7 +28,7 @@ void PrintMoves(const list<shared_ptr<const Board::Move>> &lst) {
    cout << setiosflags(ios::left) << resetiosflags(ios::right);
    col = 0;
    for (auto lstItr = lst.begin(); lstItr != lst.end(); lstItr++) {
-      if(!col)
+      if (!col)
         cout << endl;
       else
         cout << " ";
@@ -62,8 +62,8 @@ int main(int argc, char **argv) {
       exit(1);
    }
 
-   for(auto& bc : boards) {
-      if(bc->GetName() == argv[1]) {
+   for (auto& bc : boards) {
+      if (bc->GetName() == argv[1]) {
          boardClass = bc;
          board = shared_ptr<Board>(dynamic_cast<Board *>(boardClass->NewInstance()));
          brdView = unique_ptr<View>(dynamic_cast<View *>(boardClass->GetViewClass()->NewInstance()));
@@ -77,7 +77,7 @@ int main(int argc, char **argv) {
       exit(1);
    }
 
-   controlledTest = argc == 3;
+   controlledTest = argc == maxArgs;
    runLimit = controlledTest ? stoi(argv[2]) : -1;
 
    brdView->SetModel(board);
@@ -111,8 +111,8 @@ int main(int argc, char **argv) {
          else if (command.compare("applyMove") == 0) {
             lst.clear();
             board->GetAllMoves(&lst);
-            for(auto &mv : lst) {
-                if(*mv == *move) {
+            for (auto &mv : lst) {
+                if (*mv == *move) {
                     board->ApplyMove(std::move(mv));
                     break;
                 }
@@ -124,8 +124,8 @@ int main(int argc, char **argv) {
             *move = arg;
             lst.clear();
             board->GetAllMoves(&lst);
-            for(auto &mv : lst) {
-                if(*mv == *move) {
+            for (auto &mv : lst) {
+                if (*mv == *move) {
                     board->ApplyMove(std::move(mv));
                     break;
                 }
@@ -173,11 +173,11 @@ int main(int argc, char **argv) {
             auto key = board->GetKey();
             auto oKey = oBoard->GetKey();
             
-            if(*key == *oKey) {
+            if (*key == *oKey) {
                 cout << "Board keys are equal" << endl;
             } else {
                 cout << "Board keys are unequal" << endl;
-                if(*key < *oKey) {
+                if (*key < *oKey) {
                     cout << "Current board is less than " << arg << endl;
                 } else {
                     cout << "Current board is greater than " << arg << endl;
@@ -187,12 +187,12 @@ int main(int argc, char **argv) {
          // ************************ compareMove ************************
          else if (command.compare("compareMove") == 0) {
             getline(cmdIn, arg);
-            if(!cmpMove)
+            if (!cmpMove)
                 cmpMove = board->CreateMove();
             *cmpMove = arg;
-            if(*move == *cmpMove) {
+            if (*move == *cmpMove) {
                 cout << "Moves are equal" << endl;
-            } else if(*move < *cmpMove) {
+            } else if (*move < *cmpMove) {
                 cout << "Current move is less than entered move" << endl;
             } else {
                 cout << "Current move is greater than entered move" << endl;
@@ -204,12 +204,12 @@ int main(int argc, char **argv) {
             void *rules = nullptr;
             try {
                rules = boardClass->GetOptions();
-               if(brdDlg->Run(cin, cout, rules))
+               if (brdDlg->Run(cin, cout, rules))
                   boardClass->SetOptions(rules);
                cout << endl;
                delete rules;
             } catch(BaseException &e) {
-               if(rules)
+               if (rules)
                   delete rules;
                throw e;
             }

@@ -152,7 +152,7 @@ void CheckersBoard::UndoLastMove() {
       mValue -= sense * mRules.backWgt;
 
    // Unking the piece if it was kinged
-   if(mv->mWasKinged) {
+   if (mv->mWasKinged) {
       assert(piece & KING);
       piece = piece & ~KING;
       mValue -= sense * (mRules.kingWgt - PIECEWGT);
@@ -165,9 +165,9 @@ void CheckersBoard::UndoLastMove() {
    prevMvIter = mv->mSeq.begin();
    mvIter = mv->mSeq.begin() + 1;
    wereKingsIter = mv->mWereKings.begin();
-   for(; mvIter != mv->mSeq.end(); prevMvIter++, mvIter++) {
+   for (; mvIter != mv->mSeq.end(); prevMvIter++, mvIter++) {
       // Check a piece was jumped
-      if(abs((*prevMvIter).row - (*mvIter).row) == 2) {
+      if (abs((*prevMvIter).row - (*mvIter).row) == 2) {
          // Get the jumped piece's location
          jumpPos.row = ((*prevMvIter).row + (*mvIter).row) / 2;
          jumpPos.col = ((*prevMvIter).col + (*mvIter).col) / 2;
@@ -178,7 +178,7 @@ void CheckersBoard::UndoLastMove() {
          jumpedPiece = PIECE;
          jumpedPiece |= (mMoveFlg & WHITE) ? 0 : WHITE;
          assert(!(wereKingsIter == mv->mWereKings.end()));
-         if(*wereKingsIter) {
+         if (*wereKingsIter) {
             jumpedPiece |= KING;
          }
          wereKingsIter++;
@@ -197,7 +197,7 @@ void CheckersBoard::GetAllMoves(list<unique_ptr<Move>> *moves) const {
    if (!mMovesValid)
       CalcMoves();
    assert(moves->empty());
-   for(auto& m : mMoves) {
+   for (auto& m : mMoves) {
       moves->push_back(move(m.Clone()));
    }
 }
@@ -218,8 +218,8 @@ unique_ptr<const Board::Key> CheckersBoard::GetKey() const {
    char piece;
    int saved = 0;
    *dataptr = (mMoveFlg == WHITE) ? 1 : 0;
-   for(int row = DIM-1; row >= 0; row--) {
-      for(int col = 0; col < DIM/2; col++) {
+   for (int row = DIM-1; row >= 0; row--) {
+      for (int col = 0; col < DIM/2; col++) {
          piece = mBoard[row][(col * 2) + (row % 2)];
          if (saved == 10) {
             saved = 0;
@@ -240,7 +240,7 @@ void *CheckersBoard::GetOptions() {
 void CheckersBoard::SetOptions(const void *opts) {
    const Rules *rOpts = reinterpret_cast<const Rules *>(opts);
    mRules = *rOpts;
-   for(auto& board : mRoster) {
+   for (auto& board : mRoster) {
       board->NewOptions();
    }
 }
@@ -264,11 +264,11 @@ istream &CheckersBoard::Read(istream &is) {
    mvCount = EndianXfer(mvCount);
    assert(mvCount >= 0);
 
-   while(!mMoveHist.empty()) {
+   while (!mMoveHist.empty()) {
       UndoLastMove();
    }
 
-   for(int i = 0; i < mvCount; i++) {
+   for (int i = 0; i < mvCount; i++) {
       currMove = unique_ptr<CheckersMove>(new CheckersMove(vector<CheckersBoard::Loc>()));
       currMove->Read(is);
       ApplyMove(move(currMove));
@@ -363,30 +363,30 @@ void CheckersBoard::CalcMoves() const {
                   isValidMove = isValidMove || ((toLoc.row == row) && (toLoc.col == col));
                   // These checks are relatively expensive, and only need to be done for 
                   // king pieces
-                  if(piece & KING) {
+                  if (piece & KING) {
                      // The destination should not be the spot we just jumped from
                      isValidMove = isValidMove && !(locs.size() > 1 && *(locs.end()-2) == toLoc);
                      // The jump has already occurred
-                     for(auto itr = locs.begin(); itr != locs.end(); itr++) {
-                        if(thisLoc == *itr) {
-                           if(itr != locs.begin() && *(itr-1) == toLoc) {
+                     for (auto itr = locs.begin(); itr != locs.end(); itr++) {
+                        if (thisLoc == *itr) {
+                           if (itr != locs.begin() && *(itr-1) == toLoc) {
                               isValidMove = false;
                               break;
                            }
-                           if(itr != (locs.end() - 1) && *(itr + 1) == toLoc) {
+                           if (itr != (locs.end() - 1) && *(itr + 1) == toLoc) {
                               isValidMove = false;
                               break;
                            }
                         }
                      }
                   }
-                  if(isValidMove) {
+                  if (isValidMove) {
                      jumpLoc = Loc(
                         (thisLoc.row + toLoc.row) / 2,
                         (thisLoc.col + toLoc.col) / 2
                      );
                      jumpPiece = mBoard[jumpLoc.row][jumpLoc.col];
-                     if(jumpPiece && (jumpPiece & WHITE) != mMoveFlg) {
+                     if (jumpPiece && (jumpPiece & WHITE) != mMoveFlg) {
                         upStep = true;
                         locs.push_back(move(toLoc));
                         dirs.push_back(0);

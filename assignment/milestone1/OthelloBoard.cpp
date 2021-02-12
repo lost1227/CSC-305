@@ -110,10 +110,10 @@ void OthelloBoard::ApplyMove(unique_ptr<Move> uMove) {
          // Walk back towards the move location, flipping tiles as necesary
          // Keep track of how many tiles were flipped
          if (InBounds(row, col) && mBoard[row][col] == mNextMove) {
-            if(row != om->mRow || col != om->mCol)
+            if (row != om->mRow || col != om->mCol)
                row -= dir->rDelta, col -= dir->cDelta;
             switched = 0;
-            while(row != om->mRow || col != om->mCol) {
+            while (row != om->mRow || col != om->mCol) {
                mBoard[row][col] = mNextMove;
                mWeight += mNextMove * mWeights[row][col] * 2;
                switched++;
@@ -167,7 +167,7 @@ void OthelloBoard::GetAllMoves(list<unique_ptr<Move>> *moves) const {
    assert(moves->size() == 0);
 
    // If the game is over, there are no moves available
-   if(mPassCount == 2)
+   if (mPassCount == 2)
       return;
 
    for (row = 0; row < dim; row++)

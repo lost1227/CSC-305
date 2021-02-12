@@ -5,10 +5,10 @@
 
 class C4Pop10View : public View {
 public:
-    void Draw(std::ostream &out) override;
+   void Draw(std::ostream &out) override;
 
-    const Class *GetClass() const override;
-    static const Class mClass;
+   const Class *GetClass() const override;
+   static const Class mClass;
 
 private:
    static Object *Create() {return new C4Pop10View();}

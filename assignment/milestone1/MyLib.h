@@ -89,7 +89,7 @@ protected:
 
 struct FreeListDeleter {
    void operator()(void *ptr) {
-      if(ptr)
+      if (ptr)
          ::operator delete[](ptr);
    }
 };

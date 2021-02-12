@@ -20,7 +20,7 @@ Object *Class::NewInstance() const {
 
 const Class *Class::ForName(const std::string &name) {
     Class *curr = mClsHead;
-    while(curr && !(curr->mName == name))
+    while (curr && !(curr->mName == name))
         curr = curr->mNext;
     return curr;
 }
@@ -60,7 +60,7 @@ void *BoardClass::GetOptions() const {
 vector<const BoardClass *> BoardClass::GetAllClasses() {
     vector<const BoardClass *> classes;
     BoardClass *curr = mBrdClsHead;
-    while(curr) {
+    while (curr) {
         classes.push_back(curr);
         curr = curr->mNext;
     }

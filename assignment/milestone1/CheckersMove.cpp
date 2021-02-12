@@ -49,7 +49,7 @@ bool CheckersMove::operator==(const Board::Move &rhs) const {
 bool CheckersMove::operator<(const Board::Move &rhs) const {
    const CheckersMove &oRhs = dynamic_cast<const CheckersMove &>(rhs);
    vector<CheckersBoard::Loc>::const_iterator itr1, itr2;
-   for(itr1 = mSeq.begin(), itr2 = oRhs.mSeq.begin();
+   for (itr1 = mSeq.begin(), itr2 = oRhs.mSeq.begin();
     itr1 != mSeq.end() && itr2 != oRhs.mSeq.end() && *itr1 == *itr2;
     itr1++, itr2++)
       ;
@@ -80,17 +80,17 @@ void CheckersMove::operator=(const string &src) {
    regex_iterator<string::const_iterator> itr(src.begin(), src.end(), parser);
    regex_iterator<string::const_iterator> end;
 
-   if(!regex_match(src, wholeStrCheck)) {
+   if (!regex_match(src, wholeStrCheck)) {
       throw BaseException("Bad Checkers move: " + src);
    }
 
-   for(;itr != end; itr++) {
+   for (;itr != end; itr++) {
       curr = (*itr).str();
       regex_match(curr, matches, parser);
 
       short row = toupper(matches[1].str()[0]) - 'A';
       short col = stoi(matches[2]) - 1;
-      if(!InRange(0, (int)row, CheckersBoard::DIM) || !InRange(0, (int)col, CheckersBoard::DIM)) {
+      if (!InRange(0, (int)row, CheckersBoard::DIM) || !InRange(0, (int)col, CheckersBoard::DIM)) {
          throw BaseException("Out of bounds Checkers move: " + src);
       }
       seq.push_back(CheckersBoard::Loc(row, col));
@@ -111,7 +111,7 @@ istream &CheckersMove::Read(istream &is) {
    is.read((char *)&numSteps, sizeof(numSteps));
    assert(numSteps >= 0);
    mSeq.reserve(numSteps);
-   for(int i = 0; i < numSteps; i++) {
+   for (int i = 0; i < numSteps; i++) {
       is.read((char *)&row, sizeof(row));
       is.read((char *)&col, sizeof(col));
       assert(InRange((char) 0, row, (char) CheckersBoard::DIM));
