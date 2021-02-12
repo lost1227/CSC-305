@@ -51,7 +51,7 @@ C4Pop10Move::operator string() const {
             out << "Keep " << colToChar(mSrcCol);
         break;
         case MoveType::TAKE_PLACE:
-            out << "Take " << colToChar(mSrcCol) << " Place " << colToChar(mDstCol);
+            out << "Take " << colToChar(mSrcCol) << " place " << colToChar(mDstCol);
         break;
         default:
         assert(false);

@@ -55,7 +55,14 @@ private:
     char mBoard[DIM_H][DIM_W];
     char mMoveFlg;
     
-    int freeCols;
+    int mFreeCols;
+
+    std::list<std::shared_ptr<const C4Pop10Move>> mMoveHist;
+
+    bool IsPartOf4(int col) const;
+
+    static constexpr int NUM_DIRS = 4;
+    static const int mDirs[NUM_DIRS][2];
 };
 
 #endif
