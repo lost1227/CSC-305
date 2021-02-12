@@ -4,7 +4,10 @@
 
 using namespace std;
 
-Class *Class::mClsHead{nullptr};
+// BAD: No guarantee it will happen before a class is constructed
+// Class *Class::mClsHead{nullptr};
+
+Class *Class::mClsHead;
 
 Class::Class(const std::string &n, Object *(*c)())
     : mName(n)
