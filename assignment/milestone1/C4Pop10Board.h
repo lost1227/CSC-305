@@ -10,7 +10,7 @@ public:
     friend class C4Pop10Move;
 
     static constexpr int DIM_W = 7, DIM_H = 6;
-    static constexpr int NONE = 0, PIECE = 1, YELLOW = 2;
+    static constexpr int NONE = 0, PIECE = 1, RED = 2;
     
     struct Rules {
         int safeWgt;
@@ -53,7 +53,9 @@ public:
     const char GetLoc(int row, int col) const;
 private:
     char mBoard[DIM_H][DIM_W];
-    char mNextMove;
+    char mMoveFlg;
+    
+    int freeCols;
 };
 
 #endif

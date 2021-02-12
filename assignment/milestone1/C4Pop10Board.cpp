@@ -2,6 +2,7 @@
 #include "C4Pop10Dlg.h"
 #include "C4Pop10View.h"
 
+#include <cassert>
 #include <cstring>
 
 using namespace std;
@@ -17,7 +18,8 @@ const BoardClass C4Pop10Board::mClass(
 );
 
 C4Pop10Board::C4Pop10Board()
-    : mNextMove{YELLOW}
+    : mMoveFlg{0}
+    , freeCols{DIM_W}
 {
     memset(mBoard, 0, sizeof(mBoard));
 }
@@ -29,7 +31,38 @@ int C4Pop10Board::GetValue() const {
 }
 
 void C4Pop10Board::ApplyMove(unique_ptr<Move> move) {
-    throw BaseException(FString("%s:%d not implemented", __FILE__, __LINE__));
+    shared_ptr<Move> ourMove{::move(move)};
+    shared_ptr<C4Pop10Move> uMove = dynamic_pointer_cast<C4Pop10Move>(ourMove);
+
+    char piece;
+    int row, col;
+
+    switch(uMove->GetType()) {
+        case C4Pop10Move::MoveType::PASS:
+            throw BaseException(FString("%s:%d not implemented", __FILE__, __LINE__));
+        break;
+        case C4Pop10Move::MoveType::PLACE:
+            piece = PIECE | mMoveFlg;
+            col = uMove->GetSrcCol();
+            assert(col < DIM_W);
+            assert(!mBoard[DIM_H-1][col]);
+            for(row = DIM_H-1; row > 0 && !mBoard[row-1][col]; row--)
+                ;
+            if(row == DIM_H-1)
+                freeCols--;
+            mBoard[row][col] = piece;
+        break;
+        case C4Pop10Move::MoveType::KEEP:
+            throw BaseException(FString("%s:%d not implemented", __FILE__, __LINE__));
+        break;
+        case C4Pop10Move::MoveType::TAKE_PLACE:
+            throw BaseException(FString("%s:%d not implemented", __FILE__, __LINE__));
+        break;
+        default:
+        assert(false);
+    }
+
+    mMoveFlg = (mMoveFlg == RED) ? 0 : RED;
 }
 
 void C4Pop10Board::UndoLastMove() {
@@ -37,7 +70,17 @@ void C4Pop10Board::UndoLastMove() {
 }
 
 void C4Pop10Board::GetAllMoves(list<unique_ptr<Move>> *moves) const {
-    throw BaseException(FString("%s:%d not implemented", __FILE__, __LINE__));
+    int col;
+    assert(moves->size() == 0);
+
+    if(freeCols > 0) {
+        for(col = 0; col < DIM_W; col++) {
+            if(!(mBoard[DIM_H-1][col] & PIECE))
+                moves->push_back(unique_ptr<Move>(new C4Pop10Move(C4Pop10Move::MoveType::PLACE, col)));
+        }
+    } else {
+        throw BaseException(FString("%s:%d not implemented", __FILE__, __LINE__));
+    }
 }
 
 unique_ptr<Board::Move> C4Pop10Board::CreateMove() const {
@@ -45,7 +88,7 @@ unique_ptr<Board::Move> C4Pop10Board::CreateMove() const {
 }
 
 int C4Pop10Board::GetWhoseMove() const {
-    return (mNextMove & YELLOW) ? 0 : 1;
+    return (mMoveFlg & RED) ? 1 : 0;
 }
 
 const list<shared_ptr<const Board::Move>> &C4Pop10Board::GetMoveHist() const {

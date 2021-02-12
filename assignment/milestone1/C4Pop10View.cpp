@@ -25,11 +25,11 @@ void C4Pop10View::Draw(ostream &out) {
     int row, col;
     char piece;
 
-    for(row = 0; row < C4Pop10Board::DIM_H; row++) {
+    for(row = C4Pop10Board::DIM_H-1; row >= 0 ; row--) {
         for(col = 0; col < C4Pop10Board::DIM_W; col++) {
             piece = board->GetLoc(row, col);
             if(piece & C4Pop10Board::PIECE){
-                out << ((piece & C4Pop10Board::YELLOW) ? "Y" : "R");
+                out << ((piece & C4Pop10Board::RED) ? "R" : "Y");
             } else {
                 out << ".";
             }
