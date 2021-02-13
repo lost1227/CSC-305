@@ -9,9 +9,9 @@ public:
 
    const Class *GetClass() const override;
    static Class mClass;
-   
+
 private:
-   static Object *Create() {return new CheckersView();}
+   static Object *Create() { return new CheckersView(); }
 };
 
 #endif

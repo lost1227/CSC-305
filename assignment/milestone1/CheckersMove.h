@@ -1,9 +1,10 @@
 #ifndef CHECKERSMOVE_H
 #define CHECKERSMOVE_H
 
+#include <memory>
 #include <string>
 #include <vector>
-#include <memory>
+
 #include "CheckersBoard.h"
 #include "MyLib.h"
 
@@ -13,9 +14,9 @@ public:
 
    CheckersMove(const std::vector<CheckersBoard::Loc> &seq);
 
-   ~CheckersMove() {};
+   ~CheckersMove(){};
 
-   bool operator==(const Board::Move &rhs) const override; 
+   bool operator==(const Board::Move &rhs) const override;
    bool operator<(const Board::Move &rhs) const override;
    operator std::string() const override;
    void operator=(const std::string &src) override;
@@ -23,7 +24,7 @@ public:
 
    void operator delete(void *p);
    void *operator new(size_t sz);
-   void *operator new(size_t sz, void *vp) {return vp;}
+   void *operator new(size_t sz, void *vp) { return vp; }
 
 protected:
    std::istream &Read(std::istream &is);

@@ -1,9 +1,10 @@
 #ifndef BASIC_KEY_H
 #define BASIC_KEY_H
 
+#include <typeinfo>
+
 #include "Board.h"
 #include "MyLib.h"
-#include <typeinfo>
 
 template<int size>
 class BasicKey : public Board::Key {
@@ -16,16 +17,16 @@ public:
 
    const Class *GetClass() const override { return &mClass; }
 
-   static Object *Create(){return new BasicKey<size>();}
+   static Object *Create() { return new BasicKey<size>(); }
 
-   ulong vals [size];
+   ulong vals[size];
 
    static Class mClass;
 };
 
 template<int size>
 bool BasicKey<size>::operator==(const Board::Key &other) const {
-   const BasicKey<size> *oPtr = dynamic_cast<const BasicKey<size>*>(&other);
+   const BasicKey<size> *oPtr = dynamic_cast<const BasicKey<size> *>(&other);
    assert(oPtr != nullptr);
    for (int i = 0; i < size; i++) {
       if (vals[i] != oPtr->vals[i])
@@ -36,7 +37,7 @@ bool BasicKey<size>::operator==(const Board::Key &other) const {
 
 template<int size>
 bool BasicKey<size>::operator<(const Board::Key &other) const {
-   const BasicKey<size> *oPtr = dynamic_cast<const BasicKey<size>*>(&other);
+   const BasicKey<size> *oPtr = dynamic_cast<const BasicKey<size> *>(&other);
    assert(oPtr != nullptr);
    for (int i = 0; i < size; i++) {
       if (vals[i] != oPtr->vals[i])
@@ -68,6 +69,7 @@ std::ostream &BasicKey<size>::Write(std::ostream &stream) const {
 }
 
 template<int size>
-Class BasicKey<size>::mClass(FString("BasicKey<%d>", size), BasicKey<size>::Create);
+Class BasicKey<size>::mClass(
+   FString("BasicKey<%d>", size), BasicKey<size>::Create);
 
 #endif

@@ -1,8 +1,11 @@
-#include <regex>
-#include <ctype.h>
-#include "MyLib.h"
 #include "CheckersMove.h"
+
+#include <ctype.h>
+
+#include <regex>
+
 #include "CheckersBoard.h"
+#include "MyLib.h"
 
 using namespace std;
 
@@ -12,10 +15,9 @@ void *CheckersMove::operator new(size_t sz) {
    void *temp;
 
    if (mFreeList.size()) {
-      temp = (void *) mFreeList.back().release();
+      temp = (void *)mFreeList.back().release();
       mFreeList.pop_back();
-   } 
-   else {
+   } else {
       temp = ::new char[sz];
    }
 
@@ -24,25 +26,26 @@ void *CheckersMove::operator new(size_t sz) {
 }
 
 void CheckersMove::operator delete(void *p) {
-   unique_ptr<CheckersMove, FreeListDeleter> ptr((CheckersMove *)p, FreeListDeleter());
+   unique_ptr<CheckersMove, FreeListDeleter> ptr(
+      (CheckersMove *)p, FreeListDeleter());
    mFreeList.push_back(move(ptr));
 
    mOutstanding--;
 }
 
 CheckersMove::CheckersMove(const vector<CheckersBoard::Loc> &seq)
- : mSeq(seq), mWasKinged(false) {
+    : mSeq(seq), mWasKinged(false) {
 }
 
 bool CheckersMove::operator==(const Board::Move &rhs) const {
    const CheckersMove &oRhs = dynamic_cast<const CheckersMove &>(rhs);
    vector<CheckersBoard::Loc>::const_iterator itr1, itr2;
-   
-   for (itr1 = mSeq.begin(), itr2 = oRhs.mSeq.begin(); 
-    itr1 != mSeq.end() && itr2 != oRhs.mSeq.end() && *itr1 == *itr2;
-    itr1++, itr2++)
+
+   for (itr1 = mSeq.begin(), itr2 = oRhs.mSeq.begin();
+        itr1 != mSeq.end() && itr2 != oRhs.mSeq.end() && *itr1 == *itr2;
+        itr1++, itr2++)
       ;
-   
+
    return itr1 == mSeq.end() && itr2 == oRhs.mSeq.end();
 }
 
@@ -50,8 +53,8 @@ bool CheckersMove::operator<(const Board::Move &rhs) const {
    const CheckersMove &oRhs = dynamic_cast<const CheckersMove &>(rhs);
    vector<CheckersBoard::Loc>::const_iterator itr1, itr2;
    for (itr1 = mSeq.begin(), itr2 = oRhs.mSeq.begin();
-    itr1 != mSeq.end() && itr2 != oRhs.mSeq.end() && *itr1 == *itr2;
-    itr1++, itr2++)
+        itr1 != mSeq.end() && itr2 != oRhs.mSeq.end() && *itr1 == *itr2;
+        itr1++, itr2++)
       ;
    return (itr1 == mSeq.end() && itr2 != oRhs.mSeq.end())
       || (itr1 != mSeq.end() && itr2 != oRhs.mSeq.end() && *itr1 < *itr2);
@@ -60,7 +63,7 @@ bool CheckersMove::operator<(const Board::Move &rhs) const {
 CheckersMove::operator string() const {
    string rtn;
    vector<CheckersBoard::Loc>::const_iterator itr;
-   
+
    itr = mSeq.begin();
    if (itr != mSeq.end()) {
       rtn = FString("%c%d", (*itr).row + 'A', (*itr).col + 1);
@@ -72,7 +75,8 @@ CheckersMove::operator string() const {
 }
 
 void CheckersMove::operator=(const string &src) {
-   static regex wholeStrCheck(R"(^\s*[A-Za-z]\s*[0-9]+(?:\s*->\s*[A-Za-z]\s*[0-9]+)+\s*$)");
+   static regex wholeStrCheck(
+      R"(^\s*[A-Za-z]\s*[0-9]+(?:\s*->\s*[A-Za-z]\s*[0-9]+)+\s*$)");
    static regex parser(R"(([A-Za-z])\s*([0-9]+))");
    string curr;
    smatch matches;
@@ -84,19 +88,21 @@ void CheckersMove::operator=(const string &src) {
       throw BaseException("Bad Checkers move: " + src);
    }
 
-   for (;itr != end; itr++) {
+   for (; itr != end; itr++) {
       curr = (*itr).str();
       regex_match(curr, matches, parser);
 
       short row = toupper(matches[1].str()[0]) - 'A';
       short col = stoi(matches[2]) - 1;
-      if (!InRange(0, (int)row, CheckersBoard::DIM) || !InRange(0, (int)col, CheckersBoard::DIM)) {
+      if (!InRange(0, (int)row, CheckersBoard::DIM)
+         || !InRange(0, (int)col, CheckersBoard::DIM)) {
          throw BaseException("Out of bounds Checkers move: " + src);
       }
       seq.push_back(CheckersBoard::Loc(row, col));
    }
 
-   assert(seq.size() >= 2); // Invalid moves should be caught by the wholeStrCheck
+   assert(
+      seq.size() >= 2);  // Invalid moves should be caught by the wholeStrCheck
 
    mSeq = seq;
 }
@@ -114,8 +120,8 @@ istream &CheckersMove::Read(istream &is) {
    for (int i = 0; i < numSteps; i++) {
       is.read((char *)&row, sizeof(row));
       is.read((char *)&col, sizeof(col));
-      assert(InRange((char) 0, row, (char) CheckersBoard::DIM));
-      assert(InRange((char) 0, col, (char) CheckersBoard::DIM));
+      assert(InRange((char)0, row, (char)CheckersBoard::DIM));
+      assert(InRange((char)0, col, (char)CheckersBoard::DIM));
       mSeq.push_back(CheckersBoard::Loc(row, col));
    }
    return is;

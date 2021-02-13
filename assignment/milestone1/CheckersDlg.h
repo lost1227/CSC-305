@@ -11,8 +11,7 @@ public:
    const Class *GetClass() const override;
    static Class mClass;
 
-   static Object *Create() {return new CheckersDlg();}
-
+   static Object *Create() { return new CheckersDlg(); }
 };
 
 #endif

@@ -1,10 +1,10 @@
-#include <iostream>
-#include <string>
-#include <limits>
+#include "Dialog.h"
 
 #include <cassert>
+#include <iostream>
+#include <limits>
+#include <string>
 
-#include "Dialog.h"
 #include "MyLib.h"
 
 using namespace std;
@@ -17,11 +17,12 @@ enum class ReadLimitIntState {
    DONE
 };
 
-void Dialog::ReadLimitInt(istream &is, ostream &os, int *val, int lo , int hi, std::string prompt) {
+void Dialog::ReadLimitInt(
+   istream &is, ostream &os, int *val, int lo, int hi, std::string prompt) {
    ReadLimitIntState state = ReadLimitIntState::READ_INITIAL;
    char next;
    while (state != ReadLimitIntState::DONE) {
-      switch(state) {
+      switch (state) {
          case ReadLimitIntState::READ_INITIAL:
             assert(is.good());
             os << prompt << " [" << lo << ", " << hi << "]: ";
@@ -60,7 +61,8 @@ void Dialog::ReadLimitInt(istream &is, ostream &os, int *val, int lo , int hi, s
             break;
          case ReadLimitIntState::CHECK_VALUE:
             if (*val < lo || *val > hi) {
-               os << "Please enter a value between " << lo << " and " << hi << endl;
+               os << "Please enter a value between " << lo << " and " << hi
+                  << endl;
                state = ReadLimitIntState::READ_INITIAL;
                break;
             }

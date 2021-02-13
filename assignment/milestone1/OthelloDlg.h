@@ -11,7 +11,7 @@ public:
    const Class *GetClass() const override;
    static Class mClass;
 
-   static Object *Create() {return new OthelloDlg();}
+   static Object *Create() { return new OthelloDlg(); }
 };
 
 #endif

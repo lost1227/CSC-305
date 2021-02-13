@@ -11,14 +11,14 @@ public:
 
    static constexpr int DIM_W = 7, DIM_H = 6;
    static constexpr int NONE = 0, PIECE = 1, RED = 2;
-   
+
    struct Rules {
       int safeWgt;
       int threatWgt;
       int keptWgt;
       int moveWght;
 
-      Rules() : safeWgt(100), threatWgt(50), keptWgt(120), moveWght(50) {}
+      Rules(): safeWgt(100), threatWgt(50), keptWgt(120), moveWght(50) {}
 
       void EndSwap();
    };
@@ -51,10 +51,11 @@ public:
    static const BoardClass mClass;
 
    const char GetLoc(int row, int col) const;
+
 private:
    char mBoard[DIM_H][DIM_W];
    char mMoveFlg;
-   
+
    int mFreeCols;
 
    std::list<std::shared_ptr<const C4Pop10Move>> mMoveHist;

@@ -1,39 +1,41 @@
 #include <assert.h>
+#include <limits.h>
 #include <stdlib.h>
-#include <iostream>
+
+#include <algorithm>
 #include <fstream>
-#include <sstream>
 #include <iomanip>
+#include <iostream>
 #include <list>
 #include <set>
-#include <limits.h>
-#include <algorithm>
-#include "MyLib.h"
+#include <sstream>
+
 #include "Board.h"
-#include "View.h"
 #include "Dialog.h"
+#include "MyLib.h"
+#include "View.h"
 
 using namespace std;
 
 void PrintMoves(const list<shared_ptr<const Board::Move>> &lst) {
    int numCols, col, maxLen = 1;
    const int maxCols = 80;
-      
+
    for (auto lstItr = lst.begin(); lstItr != lst.end(); lstItr++)
       maxLen = max(maxLen, (int)((string)(**lstItr)).size());
-   
-   numCols = maxCols / (maxLen + 1); // Figure number of columns
+
+   numCols = maxCols / (maxLen + 1);  // Figure number of columns
 
    // Left justify following output
    cout << setiosflags(ios::left) << resetiosflags(ios::right);
    col = 0;
    for (auto lstItr = lst.begin(); lstItr != lst.end(); lstItr++) {
       if (!col)
-        cout << endl;
+         cout << endl;
       else
-        cout << " ";
+         cout << " ";
       col = (col + 1) % numCols;
-      cout << setw(maxLen) << (string) **lstItr;
+      cout << setw(maxLen) << (string) * *lstItr;
    }
    cout << endl;
 }
@@ -62,12 +64,15 @@ int main(int argc, char **argv) {
       exit(1);
    }
 
-   for (auto& bc : boards) {
+   for (auto &bc : boards) {
       if (bc->GetName() == argv[1]) {
          boardClass = bc;
-         board = shared_ptr<Board>(dynamic_cast<Board *>(boardClass->NewInstance()));
-         brdView = unique_ptr<View>(dynamic_cast<View *>(boardClass->GetViewClass()->NewInstance()));
-         brdDlg = unique_ptr<Dialog>(dynamic_cast<Dialog *>(boardClass->GetDlgClass()->NewInstance()));
+         board = shared_ptr<Board>(
+            dynamic_cast<Board *>(boardClass->NewInstance()));
+         brdView = unique_ptr<View>(
+            dynamic_cast<View *>(boardClass->GetViewClass()->NewInstance()));
+         brdDlg = unique_ptr<Dialog>(
+            dynamic_cast<Dialog *>(boardClass->GetDlgClass()->NewInstance()));
          break;
       }
    }
@@ -88,16 +93,16 @@ int main(int argc, char **argv) {
          getline(cin, commandLine);
          if (cin.eof())
             throw BaseException("Unexpected EOF");
-            
+
          if ((commentStart = commandLine.find_first_of("#"))
-          != (int)string::npos)
+            != (int)string::npos)
             commandLine = commandLine.substr(0, commentStart);
-            
+
          if (commandLine.find_first_not_of(" \t") == string::npos)
             continue;
 
          istringstream cmdIn(commandLine);
-         cmdIn >> command; // gets first word!
+         cmdIn >> command;  // gets first word!
          // ************************ enterMove ************************
          if (command.compare("enterMove") == 0) {
             getline(cmdIn, arg);
@@ -112,10 +117,10 @@ int main(int argc, char **argv) {
             lst.clear();
             board->GetAllMoves(&lst);
             for (auto &mv : lst) {
-                if (*mv == *move) {
-                    board->ApplyMove(std::move(mv));
-                    break;
-                }
+               if (*mv == *move) {
+                  board->ApplyMove(std::move(mv));
+                  break;
+               }
             }
          }
          // ************************ doMove ************************
@@ -125,10 +130,10 @@ int main(int argc, char **argv) {
             lst.clear();
             board->GetAllMoves(&lst);
             for (auto &mv : lst) {
-                if (*mv == *move) {
-                    board->ApplyMove(std::move(mv));
-                    break;
-                }
+               if (*mv == *move) {
+                  board->ApplyMove(std::move(mv));
+                  break;
+               }
             }
          }
          // ************************ showVal ************************
@@ -172,30 +177,30 @@ int main(int argc, char **argv) {
             strm.close();
             auto key = board->GetKey();
             auto oKey = oBoard->GetKey();
-            
+
             if (*key == *oKey) {
-                cout << "Board keys are equal" << endl;
+               cout << "Board keys are equal" << endl;
             } else {
-                cout << "Board keys are unequal" << endl;
-                if (*key < *oKey) {
-                    cout << "Current board is less than " << arg << endl;
-                } else {
-                    cout << "Current board is greater than " << arg << endl;
-                }
+               cout << "Board keys are unequal" << endl;
+               if (*key < *oKey) {
+                  cout << "Current board is less than " << arg << endl;
+               } else {
+                  cout << "Current board is greater than " << arg << endl;
+               }
             }
          }
          // ************************ compareMove ************************
          else if (command.compare("compareMove") == 0) {
             getline(cmdIn, arg);
             if (!cmpMove)
-                cmpMove = board->CreateMove();
+               cmpMove = board->CreateMove();
             *cmpMove = arg;
             if (*move == *cmpMove) {
-                cout << "Moves are equal" << endl;
+               cout << "Moves are equal" << endl;
             } else if (*move < *cmpMove) {
-                cout << "Current move is less than entered move" << endl;
+               cout << "Current move is less than entered move" << endl;
             } else {
-                cout << "Current move is greater than entered move" << endl;
+               cout << "Current move is greater than entered move" << endl;
             }
             cmpMove = nullptr;
          }
@@ -208,7 +213,7 @@ int main(int argc, char **argv) {
                   boardClass->SetOptions(rules);
                cout << endl;
                delete rules;
-            } catch(BaseException &e) {
+            } catch (BaseException &e) {
                if (rules)
                   delete rules;
                throw e;
@@ -219,7 +224,8 @@ int main(int argc, char **argv) {
          else if (command.compare("undoLastMove") == 0) {
             if (!(cmdIn >> count) || count < 0) {
                cmdIn.clear();
-               throw BaseException("Must have a nonnegative count for undoLastMove");
+               throw BaseException(
+                  "Must have a nonnegative count for undoLastMove");
             }
 
             if (count > (int)board->GetMoveHist().size())
@@ -248,7 +254,7 @@ int main(int argc, char **argv) {
                // cLst.push_back(shared_ptr<Board::Move>(uptr));            Nope
                // cLst.push_back(shared_ptr<Board::Move>(move(uptr))); *&$! Nope
                // cLst.push_back(shared_ptr<Board::Move>(std::move(uptr))); YEP!
-               cLst.push_back(std::move(uptr));                          // Best
+               cLst.push_back(std::move(uptr));  // Best
             }
 
             cout << endl << "All Moves: ";
@@ -258,17 +264,17 @@ int main(int argc, char **argv) {
          // ************************ testPlay ************************
          // ************************ testRun  ************************
          else if (command.compare("testPlay") == 0
-          || command.compare("testRun") == 0) {
+            || command.compare("testRun") == 0) {
             if (!(cmdIn >> seed >> count) || count < 0)
                throw BaseException("Bad arguments for testPlay/testRun");
-               
+
             srand(seed);
             testRun = command.compare("testRun") == 0;
             runLimit -= count;
-            
+
             if (controlledTest && runLimit < 0)
                throw BaseException("Run limit exceeded.");
-            
+
             while (count-- > 0) {
                lst.erase(lst.begin(), lst.end());
                board->GetAllMoves(&lst);
@@ -277,8 +283,7 @@ int main(int argc, char **argv) {
                      ndx = 1 + rand() % board->GetMoveHist().size();
                      while (ndx--)
                         board->UndoLastMove();
-                  }
-                  else
+                  } else
                      break;
                else {
                   ndx = rand() % lst.size();
@@ -295,15 +300,14 @@ int main(int argc, char **argv) {
             lst.clear();
             cLst.clear();
             cout << "Moves/Keys: " << Board::Move::GetOutstanding() << "/"
-             << Board::Key::GetOutstanding() << endl;
+                 << Board::Key::GetOutstanding() << endl;
          }
          // ************************ quit ************************
          else if (command.compare("quit") == 0)
             break;
          else
             cout << "Unknown command: " << command << endl;
-      } 
-      catch (BaseException &err) {
+      } catch (BaseException &err) {
          cout << "Error: " << err.what() << endl;
       }
       cout << endl;

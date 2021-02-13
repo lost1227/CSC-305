@@ -1,4 +1,5 @@
 #include "OthelloView.h"
+
 #include "OthelloBoard.h"
 
 using namespace std;
@@ -10,13 +11,15 @@ void OthelloView::Draw(ostream &out) {
    int row, col;
    char sqr;
    shared_ptr<const OthelloBoard> ob
-    = dynamic_pointer_cast<const OthelloBoard>(mModel);
+      = dynamic_pointer_cast<const OthelloBoard>(mModel);
 
    for (row = 0; row < OthelloBoard::dim; row++) {
       for (col = 0; col < OthelloBoard::dim; col++) {
          sqr = ob->GetSquare(row, col);
-         rtn = rtn + ((sqr == OthelloBoard::mWPiece) ? "W"
-          : ((sqr == OthelloBoard::mBPiece) ? "B" : "."));
+         rtn = rtn
+            + ((sqr == OthelloBoard::mWPiece)
+                  ? "W"
+                  : ((sqr == OthelloBoard::mBPiece) ? "B" : "."));
       }
       rtn += "\n";
    }

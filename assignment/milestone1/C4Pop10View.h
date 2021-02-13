@@ -11,7 +11,7 @@ public:
    static const Class mClass;
 
 private:
-   static Object *Create() {return new C4Pop10View();}
+   static Object *Create() { return new C4Pop10View(); }
 };
 
 #endif

@@ -13,7 +13,7 @@ public:
    virtual ~OthelloView() {}
 
 private:
-   static Object *Create() {return new OthelloView();}
+   static Object *Create() { return new OthelloView(); }
 };
 
 #endif

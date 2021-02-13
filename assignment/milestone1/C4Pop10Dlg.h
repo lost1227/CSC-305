@@ -10,7 +10,7 @@ public:
    const Class *GetClass() const override;
    static const Class mClass;
 
-   static Object *Create() {return new C4Pop10Dlg();}
+   static Object *Create() { return new C4Pop10Dlg(); }
 };
 
 #endif

@@ -1,7 +1,9 @@
-#include "MyLib.h"
 #include "OthelloMove.h"
-#include "OthelloBoard.h"
+
 #include <regex>
+
+#include "MyLib.h"
+#include "OthelloBoard.h"
 
 using namespace std;
 
@@ -11,10 +13,9 @@ void *OthelloMove::operator new(size_t sz) {
    void *temp;
 
    if (mFreeList.size()) {
-      temp = (void *) mFreeList.back().release();
+      temp = (void *)mFreeList.back().release();
       mFreeList.pop_back();
-   } 
-   else {
+   } else {
       temp = ::new char[sz];
    }
 
@@ -23,8 +24,8 @@ void *OthelloMove::operator new(size_t sz) {
 }
 
 void OthelloMove::operator delete(void *p) {
-
-   unique_ptr<OthelloMove, FreeListDeleter> ptr((OthelloMove *)p, FreeListDeleter());
+   unique_ptr<OthelloMove, FreeListDeleter> ptr(
+      (OthelloMove *)p, FreeListDeleter());
    mFreeList.push_back(move(ptr));
 
    mOutstanding--;
@@ -50,7 +51,7 @@ void OthelloMove::operator=(const string &src) {
    // regex reOth("^ *((Pass)|\\[ *(\\d+), *(\\d+) *\\]) *$"); No raw string
    regex reOth(R"(^ *((Pass)|\[ *(\d+) *, *(\d+) *\]) *$)");
 
-   const int kPassPtn = 2, kRowPtn = 3, kColPtn = 4; // RE Pattern indexes
+   const int kPassPtn = 2, kRowPtn = 3, kColPtn = 4;  // RE Pattern indexes
    smatch reRes;
    int tRow = -1, tCol = -1;  // Assume a "pass"
 
@@ -60,14 +61,13 @@ void OthelloMove::operator=(const string &src) {
          tCol = stoi(reRes[kColPtn]);
 
          if (!InRange<short>(0, tRow, OthelloBoard::dim)
-          || !InRange<short>(0, tCol, OthelloBoard::dim))
-            throw BaseException(FString("Out of bounds Othello move: %s",
-             src.c_str()));
+            || !InRange<short>(0, tCol, OthelloBoard::dim))
+            throw BaseException(
+               FString("Out of bounds Othello move: %s", src.c_str()));
       }
-   }
-   else 
+   } else
       throw BaseException(FString("Bad Othello move: %s", src.c_str()));
-   
+
    mRow = (char)tRow;
    mCol = (char)tCol;
 }
@@ -78,17 +78,16 @@ unique_ptr<Board::Move> OthelloMove::Clone() const {
 
 istream &OthelloMove::Read(istream &is) {
    char size, count, dirNum;
-   
+
    mFlipSets.clear();
    is.read(&mRow, sizeof(mRow));
    is.read(&mCol, sizeof(mCol));
    is.read(&size, sizeof(size));
    while (size--) {
       is.read(&count, sizeof(count)).read(&dirNum, sizeof(dirNum));
-      mFlipSets.push_back(
-       FlipSet(count, OthelloBoard::mDirs + dirNum));
+      mFlipSets.push_back(FlipSet(count, OthelloBoard::mDirs + dirNum));
    }
-      
+
    return is;
 }
 

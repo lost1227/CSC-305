@@ -1,21 +1,22 @@
 #ifndef BOARD_H
 #define BOARD_H
 
+#include <limits.h>
+
 #include <list>
-#include <string>
 #include <map>
 #include <memory>
-#include <limits.h>
-#include "Class.h"
+#include <string>
 
+#include "Class.h"
 
 class Board : public Object {
 public:
-   static constexpr int kWinVal = INT_MAX/4;
+   static constexpr int kWinVal = INT_MAX / 4;
 
    class Move {
    public:
-      virtual ~Move() {};
+      virtual ~Move(){};
       virtual std::unique_ptr<Move> Clone() const = 0;
       virtual bool operator==(const Move &) const = 0;
       virtual bool operator<(const Move &) const = 0;
@@ -25,20 +26,20 @@ public:
       virtual std::istream &Read(std::istream &) = 0;
       virtual std::ostream &Write(std::ostream &) const = 0;
 
-      static long GetOutstanding() {return mOutstanding;}
+      static long GetOutstanding() { return mOutstanding; }
 
    protected:
       static long mOutstanding;
    };
 
    // Base class for keys returned by getKey and used in the transposition
-   // table.  A class may return null from getKey, indicating that it 
+   // table.  A class may return null from getKey, indicating that it
    // should not be used with a transposition table.  Key-derived classes
-   // must not have any dynamically allocated data, since they are 
+   // must not have any dynamically allocated data, since they are
    // written and read to and from binary files as a single block of bytes.
    class Key : public Object {
    public:
-      virtual ~Key() {};
+      virtual ~Key(){};
 
       // Compare two keys for equality or less-than.
       virtual bool operator==(const Key &) const = 0;
@@ -47,19 +48,18 @@ public:
       virtual std::istream &Read(std::istream &) = 0;
       virtual std::ostream &Write(std::ostream &) const = 0;
 
-      static long GetOutstanding() {return mOutstanding;}
+      static long GetOutstanding() { return mOutstanding; }
 
    protected:
-
       static long mOutstanding;
    };
-      
+
    virtual ~Board() {}
 
    // Return current estimated value of board.
    virtual int GetValue() const = 0;
 
-   // Apply the specified move to the board.  
+   // Apply the specified move to the board.
    virtual void ApplyMove(std::unique_ptr<Move>) = 0;
 
    // Undo the last move.  May be called repeatedly.
@@ -78,7 +78,8 @@ public:
    virtual int GetWhoseMove() const = 0;
 
    // Return a move history list.  Board retains ownership of moves.
-   virtual const std::list<std::shared_ptr<const Move>> &GetMoveHist() const = 0;
+   virtual const std::list<std::shared_ptr<const Move>> &GetMoveHist()
+      const = 0;
 
    // Duplicate current board.
    virtual std::unique_ptr<Board> Clone() const = 0;
@@ -87,7 +88,7 @@ public:
    // key.
    virtual std::unique_ptr<const Key> GetKey() const = 0;
 
-   // Binary Read/Write   
+   // Binary Read/Write
    virtual std::istream &Read(std::istream &) = 0;
    virtual std::ostream &Write(std::ostream &) const = 0;
 };

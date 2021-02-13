@@ -1,7 +1,8 @@
 #include "CheckersDlg.h"
-#include "CheckersBoard.h"
 
 #include <limits>
+
+#include "CheckersBoard.h"
 
 using namespace std;
 
@@ -18,9 +19,9 @@ bool CheckersDlg::Run(istream &in, ostream &out, void *data) {
    CheckersBoard::Rules *rules = reinterpret_cast<CheckersBoard::Rules *>(data);
    char resp;
    out << "(Piece weight is always " << CheckersBoard::PIECEWGT << ")" << endl
-      << "King weight: " << rules->kingWgt << endl
-      << "Back row weight: " << rules->backWgt << endl
-      << "Move weight: " << rules->moveWgt << endl;
+       << "King weight: " << rules->kingWgt << endl
+       << "Back row weight: " << rules->backWgt << endl
+       << "Move weight: " << rules->moveWgt << endl;
 
    out << endl << "Modify? [y/n] ";
    if ((in >> resp).eof())
@@ -30,11 +31,14 @@ bool CheckersDlg::Run(istream &in, ostream &out, void *data) {
 
    if (resp == 'y') {
       out << endl;
-      ReadLimitInt(in, out, &rules->kingWgt, KING_MIN, KING_MAX, "Enter king weight");
-      ReadLimitInt(in, out, &rules->backWgt, BACK_MIN, BACK_MAX, "Enter back-row weight");
-      ReadLimitInt(in, out, &rules->moveWgt, MOVE_MIN, MOVE_MAX, "Enter move weight");
+      ReadLimitInt(
+         in, out, &rules->kingWgt, KING_MIN, KING_MAX, "Enter king weight");
+      ReadLimitInt(
+         in, out, &rules->backWgt, BACK_MIN, BACK_MAX, "Enter back-row weight");
+      ReadLimitInt(
+         in, out, &rules->moveWgt, MOVE_MIN, MOVE_MAX, "Enter move weight");
    }
-   
+
    return resp == 'y';
 }
 

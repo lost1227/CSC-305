@@ -2,6 +2,7 @@
 from pathlib import Path
 import re
 import subprocess
+from itertools import chain
 
 script_dir = Path(__file__).resolve().parent
 
@@ -27,11 +28,10 @@ limits = {
 
 pat = re.compile("(\d+) countable lines")
 
-for h in script_dir.glob("*.h"):
-   completion = subprocess.run([script_dir / "smartcount" , h], stdout=subprocess.PIPE, text=True)
+for f in chain(script_dir.glob("*.h"), script_dir.glob("*.cpp")):
+   subprocess.run(["clang-format-12", "-Werror", "--style=file", "-i", f])
+   completion = subprocess.run([script_dir / "smartcount" , f], stdout=subprocess.PIPE, text=True)
    match = pat.search(completion.stdout)
-   if h.name in limits:
-      if int(match.group(1)) > limits[h.name]:
-         print("{}: FAIL".format(h.name))
-   else:
-      print("{}: not found".format(h.name))
+   if f.name in limits:
+      if int(match.group(1)) > limits[f.name]:
+         print("{}: \033[91mFAIL\033[0m".format(f.name))

@@ -1,13 +1,15 @@
 #ifndef CHECKERS_H
 #define CHECKERS_H
 
+#include <assert.h>
+
 #include <iostream>
+#include <memory>
 #include <set>
 #include <vector>
-#include <memory>
-#include <assert.h>
-#include "MyLib.h"
+
 #include "Board.h"
+#include "MyLib.h"
 
 class CheckersMove;
 
@@ -29,11 +31,11 @@ public:
    // Note that kingWght is the ADDITIONAL weight given to a king
    // So it should be PIECEWGT + {user_value}
    struct Rules {
-      int kingWgt; // Weight given to a king
-      int backWgt; // Additional weight given to a back-row piece
+      int kingWgt;  // Weight given to a king
+      int backWgt;  // Additional weight given to a back-row piece
       int moveWgt;
 
-      Rules() : kingWgt(300), backWgt(100), moveWgt(20) {}
+      Rules(): kingWgt(300), backWgt(100), moveWgt(20) {}
 
       void EndSwap();
    };
@@ -42,15 +44,20 @@ public:
       short row;
       short col;
 
-      Loc(short r = -1, short c = -1) : row(r), col(c) {}
+      Loc(short r = -1, short c = -1): row(r), col(c) {}
 
-      bool operator==(const Loc &rhs) const
-       {return rhs.row == row && rhs.col == col;}
+      bool operator==(const Loc &rhs) const {
+         return rhs.row == row && rhs.col == col;
+      }
 
-      bool operator<(const Loc &rhs) const
-       {return row < rhs.row || (row == rhs.row && col < rhs.col);}
+      bool operator<(const Loc &rhs) const {
+         return row < rhs.row || (row == rhs.row && col < rhs.col);
+      }
 
-       void EndSwap() {row = EndianXfer(row); col = EndianXfer(col);}
+      void EndSwap() {
+         row = EndianXfer(row);
+         col = EndianXfer(col);
+      }
    };
 
    CheckersBoard();
@@ -63,25 +70,27 @@ public:
    void GetAllMoves(std::list<std::unique_ptr<Move>> *) const override;
    std::unique_ptr<Move> CreateMove() const override;
 
-   int GetWhoseMove() const override {return mMoveFlg == WHITE;}
-   const std::list<std::shared_ptr<const Move>> &GetMoveHist() const override
-    {return *(std::list<std::shared_ptr<const Move>> *)&mMoveHist;}
+   int GetWhoseMove() const override { return mMoveFlg == WHITE; }
+   const std::list<std::shared_ptr<const Move>> &GetMoveHist() const override {
+      return *(std::list<std::shared_ptr<const Move>> *)&mMoveHist;
+   }
 
    std::unique_ptr<Board> Clone() const override;
 
    std::unique_ptr<const Key> GetKey() const override;
 
-   static int InRange(Loc pos)
-    {return pos.row >= 0 && pos.row < DIM && pos.col >= 0 && pos.col < DIM;}
-   
-   char getPiece(Loc loc) const {return mBoard[loc.row][loc.col];}
+   static int InRange(Loc pos) {
+      return pos.row >= 0 && pos.row < DIM && pos.col >= 0 && pos.col < DIM;
+   }
+
+   char getPiece(Loc loc) const { return mBoard[loc.row][loc.col]; }
 
    std::istream &Read(std::istream &) override;
    std::ostream &Write(std::ostream &) const override;
 
    static Object *CreateBoard();
    static void *GetOptions();
-   static void SetOptions(const void *opts);      
+   static void SetOptions(const void *opts);
 
    const Class *GetClass() const override;
    static BoardClass mClass;
@@ -93,12 +102,12 @@ protected:
       short cDelta;  // Change in col for the direction
    };
 
-
-   void NewOptions();    // Recalculate for new options/rules.
+   void NewOptions();  // Recalculate for new options/rules.
    void CalcMoves() const;
    void FindNormalMoves() const;
    bool IsBackRow(char pc, const Loc &loc) {
-      return ((pc & WHITE) && loc.row == CheckersBoard::DIM-1) || ((!(pc & WHITE)) && loc.row == 0);
+      return ((pc & WHITE) && loc.row == CheckersBoard::DIM - 1)
+         || ((!(pc & WHITE)) && loc.row == 0);
    }
 
    static Rules mRules;
@@ -111,7 +120,7 @@ protected:
    char mBoard[DIM][DIM];
    char mMoveFlg;
    mutable bool mMovesValid;
-   
+
    // Precompute and adjust the list of possible moves, to save time
    mutable std::set<CheckersMove> mMoves;
    std::list<std::shared_ptr<Move>> mMoveHist;
