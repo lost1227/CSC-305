@@ -8,7 +8,7 @@ import threading
 import multiprocessing
 
 debug = []
-# debug=["Checkers.1"]
+# debug=["Checkers.3"]
 
 script_dir = Path(__file__).resolve().parent
 
@@ -71,7 +71,7 @@ def run_file(f, currDir, tmpDir):
         if res.returncode != 0:
             message = "\033[91mFAIL\033[0m"
     if not "FAIL" in message:
-        if diffOutPath.stat().st_size > 0:
+        if actualPathErr.stat().st_size > 0:
             message = "\033[93mWARN\033[0m"
     print("{:>12} {}".format(currDir.name, message))
 
