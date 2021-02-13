@@ -10,10 +10,14 @@ doMove D6 -> F8
 
 doMove H6 -> G7
 doMove F8 -> H6 # EC 5
-doMove F6 -> E5
-
 _state
 
+undoLastMove 1
+_state
+doMove F8 -> H6
+_state
+
+doMove F6 -> E5
 doMove H6 -> F4 -> D6 # EC 8
 
 undoLastMove 4

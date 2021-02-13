@@ -120,6 +120,9 @@ compareMove C3 -> E5 -> g6 -> B2
 compareMove c3 -> E5 -> G6 -> B2
 _state
 
+enterMove C3 -> E5 -> G6
+compareMove C3 -> E5 -> G6 -> B2
+
 enterMove G5 -> E3 -> C5 -> E7 -> G5
 compareMove G5 -> E3 -> C5 -> E7 -> G5
 compareMove G5 -> E7 -> C5 -> E3 -> G5
