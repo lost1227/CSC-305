@@ -9,7 +9,7 @@
             "type": "cppdbg",
             "request": "launch",
             "program": "${workspaceFolder}/BoardTest",
-            "args": ["CheckersBoard"],
+            "args": ["C4Pop10Board"],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",
             "environment": [],
