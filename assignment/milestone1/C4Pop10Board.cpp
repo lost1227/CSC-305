@@ -39,13 +39,15 @@ void C4Pop10Board::ApplyMove(unique_ptr<Move> move) {
          break;
       case C4Pop10Move::MoveType::PLACE:
          piece = PIECE | mMoveFlg;
-         col = uMove->GetSrcCol();
+         col = uMove->GetDstCol();
          assert(col < DIM_W);
          assert(!mBoard[DIM_H - 1][col]);
          for (row = DIM_H - 1; row > 0 && !mBoard[row - 1][col]; row--)
             ;
-         if (row == DIM_H - 1)
+         if (row == DIM_H - 1) {
+            uMove->SetDidFillCol(true);
             mFreeCols--;
+         }
          mBoard[row][col] = piece;
          break;
       case C4Pop10Move::MoveType::KEEP:
@@ -55,16 +57,10 @@ void C4Pop10Board::ApplyMove(unique_ptr<Move> move) {
          assert((piece & PIECE) && ((piece & RED) == mMoveFlg));
          for (row = 1; row < DIM_H && mBoard[row][col]; row++)
             mBoard[row - 1][col] = mBoard[row][col];
-         mBoard[DIM_H - 1][col] = 0;
+         mBoard[row - 1][col] = 0;
          if (uMove->GetType() == C4Pop10Move::MoveType::KEEP) {
             break;
          }
-         col = uMove->GetSrcCol();
-         piece = mBoard[0][col];
-         assert((piece & PIECE) && ((piece & RED) == mMoveFlg));
-         for (row = 1; row < DIM_H && mBoard[row][col]; row++)
-            mBoard[row - 1][col] = mBoard[row][col];
-         mBoard[DIM_H - 1][col] = 0;
          col = uMove->GetDstCol();
          assert(mBoard[DIM_H - 1][col] == 0);
          for (row = DIM_H - 2; row >= 0 && !mBoard[row][col]; row--)
@@ -80,7 +76,42 @@ void C4Pop10Board::ApplyMove(unique_ptr<Move> move) {
 }
 
 void C4Pop10Board::UndoLastMove() {
-   throw BaseException(FString("%s:%d not implemented", __FILE__, __LINE__));
+   int row, col;
+   // char piece;
+   shared_ptr<const C4Pop10Move> move = mMoveHist.back();
+   mMoveHist.pop_back();
+
+   mMoveFlg = (mMoveFlg == RED) ? 0 : RED;
+
+   switch (move->GetType()) {
+      case C4Pop10Move::MoveType::PASS:
+         break;
+      case C4Pop10Move::MoveType::PLACE:
+         col = move->GetDstCol();
+         for (row = DIM_H - 1; !mBoard[row][col]; row--)
+            assert(row >= 0);
+         assert((mBoard[row][col] & RED) == mMoveFlg);
+         mBoard[row][col] = 0;
+         break;
+      case C4Pop10Move::MoveType::TAKE_PLACE:
+         col = move->GetDstCol();
+         for (row = DIM_H - 1; !mBoard[row][col]; row--)
+            assert(row >= 0);
+         assert((mBoard[row][col] & RED) == mMoveFlg);
+         mBoard[row][col] = 0;
+      case C4Pop10Move::MoveType::KEEP:
+         col = move->GetSrcCol();
+         assert(!mBoard[DIM_H - 1][col]);
+         for (row = DIM_H - 1; row > 0; row--)
+            mBoard[row][col] = mBoard[row - 1][col];
+         mBoard[0][col] = PIECE | mMoveFlg;
+         break;
+      default:
+         assert(false);
+   }
+
+   if (move->GetDidFillCol())
+      mFreeCols++;
 }
 
 bool C4Pop10Board::IsPartOf4(int parCol) const {
@@ -93,12 +124,14 @@ bool C4Pop10Board::IsPartOf4(int parCol) const {
 
    for (ndir = 0; ndir < NUM_DIRS; ndir++) {
       currCount = 0;
-      for (row = 0, col = parCol; InRange(0, row, DIM_H)
-           && InRange(0, col, DIM_W) && ((mBoard[row][col] & RED) == mMoveFlg);
+      for (row = 0, col = parCol;
+           InRange(0, row, DIM_H) && InRange(0, col, DIM_W) && mBoard[row][col]
+           && ((mBoard[row][col] & RED) == mMoveFlg);
            row += mDirs[ndir][0], col += mDirs[ndir][1])
          ;
-      for (row -= mDirs[ndir][0], col -= mDirs[ndir][1]; InRange(0, row, DIM_H)
-           && InRange(0, col, DIM_W) && ((mBoard[row][col] & RED) == mMoveFlg);
+      for (row -= mDirs[ndir][0], col -= mDirs[ndir][1];
+           InRange(0, row, DIM_H) && InRange(0, col, DIM_W) && mBoard[row][col]
+           && ((mBoard[row][col] & RED) == mMoveFlg);
            row -= mDirs[ndir][0], col -= mDirs[ndir][1])
          currCount++;
       maxCount = max(maxCount, currCount);
@@ -116,6 +149,7 @@ void C4Pop10Board::GetAllMoves(list<unique_ptr<Move>> *moves) const {
 
    if (mMoveHist.size() > 0
       && mMoveHist.back()->GetType() == C4Pop10Move::MoveType::KEEP) {
+      // Must pass after keep
       moves->push_back(
          unique_ptr<Move>(new C4Pop10Move(C4Pop10Move::MoveType::PASS)));
    } else if (mFreeCols > 0) {
@@ -123,7 +157,7 @@ void C4Pop10Board::GetAllMoves(list<unique_ptr<Move>> *moves) const {
       for (col = 0; col < DIM_W; col++) {
          if (!(mBoard[DIM_H - 1][col] & PIECE))
             moves->push_back(unique_ptr<Move>(
-               new C4Pop10Move(C4Pop10Move::MoveType::PLACE, col)));
+               new C4Pop10Move(C4Pop10Move::MoveType::PLACE, -1, col)));
       }
    } else {
       openCols.clear();

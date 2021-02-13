@@ -9,7 +9,7 @@ using namespace std;
 vector<unique_ptr<C4Pop10Move, FreeListDeleter>> C4Pop10Move::mFreeList;
 
 C4Pop10Move::C4Pop10Move(MoveType mvType, int srcCol, int dstCol)
-    : mType(mvType), mSrcCol(srcCol), mDstCol(dstCol) {
+    : mType(mvType), mSrcCol(srcCol), mDstCol(dstCol), mDidFillCol{false} {
 }
 
 C4Pop10Move::~C4Pop10Move() {
@@ -45,7 +45,7 @@ C4Pop10Move::operator string() const {
          out << "Pass";
          break;
       case MoveType::PLACE:
-         out << "Place " << colToChar(mSrcCol);
+         out << "Place " << colToChar(mDstCol);
          break;
       case MoveType::KEEP:
          out << "Keep " << colToChar(mSrcCol);
@@ -76,8 +76,8 @@ void C4Pop10Move::operator=(const string &src) {
       mDstCol = -1;
    } else if (matches[2] == "Place") {
       mType = MoveType::PLACE;
-      mSrcCol = colStrToInt(matches[3]);
-      mDstCol = -1;
+      mSrcCol = -1;
+      mDstCol = colStrToInt(matches[3]);
    } else if (matches[4] == "Keep") {
       mType = MoveType::KEEP;
       mSrcCol = colStrToInt(matches[5]);

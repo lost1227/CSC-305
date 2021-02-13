@@ -31,11 +31,16 @@ public:
    int GetSrcCol() const { return mSrcCol; }
    int GetDstCol() const { return mDstCol; }
 
+   void SetDidFillCol(bool didFillCol) { mDidFillCol = didFillCol; }
+   bool GetDidFillCol() const { return mDidFillCol; }
+
 protected:
    MoveType mType;
 
    int mSrcCol;
    int mDstCol;
+
+   bool mDidFillCol;
 
    static std::vector<std::unique_ptr<C4Pop10Move, FreeListDeleter>> mFreeList;
 
