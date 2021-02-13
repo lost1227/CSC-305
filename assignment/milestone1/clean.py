@@ -23,7 +23,7 @@ limits = {
    "CheckersView.cpp": 27,
    "CheckersDlg.h": 13,
    "CheckersDlg.cpp": 30,
-   "Dialog.cpp": 24
+   "Dialog.cpp": 33
 }
 
 pat = re.compile("(\d+) countable lines")

@@ -8,12 +8,8 @@ using namespace std;
 
 Class CheckersDlg::mClass("CheckersDlg", CheckersDlg::Create);
 
-static constexpr int KING_MIN = 0;
-static constexpr int KING_MAX = 1000;
-static constexpr int BACK_MIN = 0;
-static constexpr int BACK_MAX = 1000;
-static constexpr int MOVE_MIN = 0;
-static constexpr int MOVE_MAX = 100;
+static constexpr int KING_MIN = 0, KING_MAX = 1000, BACK_MIN = 0,
+                     BACK_MAX = 1000, MOVE_MIN = 0, MOVE_MAX = 100;
 
 bool CheckersDlg::Run(istream &in, ostream &out, void *data) {
    CheckersBoard::Rules *rules = reinterpret_cast<CheckersBoard::Rules *>(data);
