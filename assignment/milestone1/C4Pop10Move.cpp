@@ -27,7 +27,12 @@ bool C4Pop10Move::operator==(const Board::Move &oth) const {
 }
 
 bool C4Pop10Move::operator<(const Board::Move &oth) const {
-   throw BaseException(FString("%s:%d not implemented", __FILE__, __LINE__));
+   const C4Pop10Move &c4Oth = dynamic_cast<const C4Pop10Move &>(oth);
+   if (mType != c4Oth.mType)
+      return mType < c4Oth.mType;
+   if (mSrcCol != c4Oth.mSrcCol)
+      return mSrcCol < c4Oth.mSrcCol;
+   return mDstCol < c4Oth.mDstCol;
 }
 
 inline char C4Pop10Move::colToChar(const int col) const {
