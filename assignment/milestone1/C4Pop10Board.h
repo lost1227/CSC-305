@@ -11,6 +11,7 @@ public:
 
    static constexpr int DIM_W = 7, DIM_H = 6;
    static constexpr char NONE = 0, PIECE = 1, RED = 2;
+   static constexpr int WIN_DISC_COUNT = 10;
 
    struct Rules {
       int safeWgt;

@@ -29,6 +29,10 @@ C4Pop10Board::~C4Pop10Board() {
 
 int C4Pop10Board::GetValue() const {
    int val;
+   if (mRedScore.keptDisks == WIN_DISC_COUNT)
+      return -kWinVal;
+   if (mYellowScore.keptDisks == WIN_DISC_COUNT)
+      return kWinVal;
    if (!mValidScores)
       RecalculateScores();
    val = (mMoveFlg & RED) ? -mRules.moveWght : mRules.moveWght;
@@ -140,6 +144,9 @@ void C4Pop10Board::ApplyMove(unique_ptr<Move> move) {
 
    char piece;
    int row, col;
+
+   assert(mRedScore.keptDisks < WIN_DISC_COUNT
+      && mYellowScore.keptDisks < WIN_DISC_COUNT);
 
    switch (uMove->GetType()) {
       case C4Pop10Move::MoveType::PASS:
@@ -267,6 +274,11 @@ void C4Pop10Board::GetAllMoves(list<unique_ptr<Move>> *moves) const {
 
    vector<int> openCols;
 
+   if (mRedScore.keptDisks == WIN_DISC_COUNT
+      || mYellowScore.keptDisks == WIN_DISC_COUNT) {
+      return;
+   }
+
    if (mMoveHist.size() > 0
       && mMoveHist.back()->GetType() == C4Pop10Move::MoveType::KEEP) {
       // Must pass after keep
@@ -314,6 +326,9 @@ void C4Pop10Board::GetAllMoves(list<unique_ptr<Move>> *moves) const {
          }
       }
    }
+   if (moves->empty())
+      moves->push_back(
+         unique_ptr<Move>(new C4Pop10Move(C4Pop10Move::MoveType::PASS)));
 }
 
 unique_ptr<Board::Move> C4Pop10Board::CreateMove() const {
