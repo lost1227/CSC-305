@@ -12,6 +12,7 @@ public:
    static constexpr int DIM_W = 7, DIM_H = 6;
    static constexpr char NONE = 0, PIECE = 1, RED = 2;
    static constexpr int WIN_DISC_COUNT = 10;
+   static constexpr int SHIFT_COUNT = 2, SHIFT_MASK = 3;
 
    struct Rules {
       int safeWgt;
@@ -54,7 +55,7 @@ public:
    const char GetLoc(int row, int col) const;
 
    struct PlayerScore {
-      int safeDisks, threatDisks, keptDisks;
+      char safeDisks, threatDisks, keptDisks;
       PlayerScore(): safeDisks{0}, threatDisks{0}, keptDisks{0} {}
    };
 
@@ -64,7 +65,7 @@ private:
    char mBoard[DIM_H][DIM_W];
    char mMoveFlg;
 
-   int mFreeCols;
+   char mFreeCols;
 
    std::list<std::shared_ptr<const C4Pop10Move>> mMoveHist;
 

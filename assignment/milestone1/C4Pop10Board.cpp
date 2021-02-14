@@ -3,6 +3,7 @@
 #include <algorithm>
 #include <cassert>
 #include <cstring>
+#include <iostream>
 
 #include "C4Pop10Dlg.h"
 #include "C4Pop10View.h"
@@ -352,12 +353,77 @@ unique_ptr<const Board::Key> C4Pop10Board::GetKey() const {
    throw BaseException(FString("%s:%d not implemented", __FILE__, __LINE__));
 }
 
-istream &C4Pop10Board::Read(istream &in) {
-   throw BaseException(FString("%s:%d not implemented", __FILE__, __LINE__));
+void C4Pop10Board::Rules::EndSwap() {
+   safeWgt = EndianXfer(safeWgt);
+   threatWgt = EndianXfer(safeWgt);
+   keptWgt = EndianXfer(keptWgt);
+   moveWght = EndianXfer(moveWght);
 }
 
-ostream &C4Pop10Board::Write(ostream &out) const {
-   throw BaseException(FString("%s:%d not implemented", __FILE__, __LINE__));
+istream &C4Pop10Board::Read(istream &is) {
+   int row, col;
+   unsigned char size;
+   unsigned short rowBits;
+   Rules rules;
+   C4Pop10Move *move;
+
+   is.read((char *)&rules, sizeof(rules));
+   rules.EndSwap();
+   SetOptions(&rules);
+
+   for(row = 0; row < DIM_H; row++) {
+      is.read((char *)&rowBits, sizeof(rowBits));
+      rowBits = EndianXfer(rowBits);
+      for(col = DIM_W; col >= 0; col--) {
+         mBoard[row][col] = rowBits & SHIFT_MASK;
+         rowBits = rowBits >> SHIFT_COUNT;
+      }
+   }
+
+   is.read(&mMoveFlg, sizeof(mMoveFlg));
+   is.read(&mFreeCols, sizeof(mFreeCols));
+   is.read((char *)&mRedScore, sizeof(mRedScore));
+   is.read((char *)&mYellowScore, sizeof(mYellowScore));
+
+   is.read((char *)&size, sizeof(size));
+   mMoveHist.clear();
+   while(is && size--) {
+      move = new C4Pop10Move();
+      move->Read(is);
+      mMoveHist.push_back(shared_ptr<C4Pop10Move>(move));
+   }
+   
+   return is;
+}
+
+ostream &C4Pop10Board::Write(ostream &os) const {
+   int row, col;
+   unsigned char size = mMoveHist.size();
+   unsigned short rowBits;
+   Rules *rules = reinterpret_cast<Rules *>(GetOptions());
+
+   rules->EndSwap();
+   os.write((char *)rules, sizeof(rules));
+
+   for(row = 0; row < DIM_H; row++) {
+      for(col = rowBits = 0; col < DIM_W; col++)
+         rowBits = (rowBits << SHIFT_COUNT) | (mBoard[row][col] & SHIFT_MASK);
+      rowBits = EndianXfer(rowBits);
+      os.write((char *)&rowBits, sizeof(rowBits));
+   }
+
+   os.write(&mMoveFlg, sizeof(mMoveFlg));
+   os.write(&mFreeCols, sizeof(mFreeCols));
+   os.write((char *)&mRedScore, sizeof(mRedScore));
+   os.write((char *)&mYellowScore, sizeof(mYellowScore));
+
+   os.write((char *)&size, sizeof(size));
+   for(auto& mv : mMoveHist)
+      mv->Write(os);
+   
+   delete rules;
+
+   return os;
 }
 
 Object *C4Pop10Board::CreateBoard() {
