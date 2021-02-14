@@ -329,7 +329,8 @@ const list<shared_ptr<const Board::Move>> &C4Pop10Board::GetMoveHist() const {
 }
 
 unique_ptr<Board> C4Pop10Board::Clone() const {
-   throw BaseException(FString("%s:%d not implemented", __FILE__, __LINE__));
+   C4Pop10Board *board = new C4Pop10Board(*this);
+   return unique_ptr<Board>(board);
 }
 
 unique_ptr<const Board::Key> C4Pop10Board::GetKey() const {
@@ -349,11 +350,12 @@ Object *C4Pop10Board::CreateBoard() {
 }
 
 void *C4Pop10Board::GetOptions() {
-   throw BaseException(FString("%s:%d not implemented", __FILE__, __LINE__));
+   return new Rules(mRules);
 }
 
 void C4Pop10Board::SetOptions(const void *opts) {
-   throw BaseException(FString("%s:%d not implemented", __FILE__, __LINE__));
+   const Rules *rules = reinterpret_cast<const Rules *>(opts);
+   mRules = *rules;
 }
 
 const Class *C4Pop10Board::GetClass() const {

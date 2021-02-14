@@ -16,7 +16,8 @@ C4Pop10Move::~C4Pop10Move() {
 }
 
 unique_ptr<Board::Move> C4Pop10Move::Clone() const {
-   throw BaseException(FString("%s:%d not implemented", __FILE__, __LINE__));
+   C4Pop10Move *move = new C4Pop10Move(*this);
+   return unique_ptr<Board::Move>(move);
 }
 
 bool C4Pop10Move::operator==(const Board::Move &oth) const {
