@@ -10,7 +10,7 @@ public:
    friend class C4Pop10Move;
 
    static constexpr int DIM_W = 7, DIM_H = 6;
-   static constexpr int NONE = 0, PIECE = 1, RED = 2;
+   static constexpr char NONE = 0, PIECE = 1, RED = 2;
 
    struct Rules {
       int safeWgt;
@@ -52,6 +52,13 @@ public:
 
    const char GetLoc(int row, int col) const;
 
+   struct PlayerScore {
+      int safeDisks, threatDisks, keptDisks;
+      PlayerScore(): safeDisks{0}, threatDisks{0}, keptDisks{0} {}
+   };
+
+   mutable PlayerScore mRedScore, mYellowScore;
+
 private:
    char mBoard[DIM_H][DIM_W];
    char mMoveFlg;
@@ -61,9 +68,28 @@ private:
    std::list<std::shared_ptr<const C4Pop10Move>> mMoveHist;
 
    bool IsPartOf4(int col) const;
+   int CountCol(int col) const;
 
-   static constexpr int NUM_DIRS = 4;
-   static const int mDirs[NUM_DIRS][2];
+   enum class PieceVal : char {
+      UNKNOWN = 0,
+      NONE = 1,
+      SAFE_ROW = 2,
+      SAFE_COL = 3,
+      THREAT = 4
+   };
+
+   struct Dir {
+      int dRow, dCol;
+   };
+
+   void RecalculateScores() const;
+   mutable bool mValidScores;
+
+   mutable PieceVal mBottomRowVal[DIM_W];
+
+   static Rules mRules;
+   static constexpr int DIAG_DIRS = 2, ALL_DIRS = 4;
+   static const Dir mDirs[ALL_DIRS];
 };
 
 #endif

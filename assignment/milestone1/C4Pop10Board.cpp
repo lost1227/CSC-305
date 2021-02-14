@@ -14,9 +14,13 @@ const BoardClass C4Pop10Board::mClass("C4Pop10Board", C4Pop10Board::CreateBoard,
    "C4Pop10", &C4Pop10View::mClass, &C4Pop10Dlg::mClass,
    C4Pop10Board::SetOptions, C4Pop10Board::GetOptions);
 
-const int C4Pop10Board::mDirs[NUM_DIRS][2] = {{0, 1}, {1, 1}, {1, 0}, {1, -1}};
+C4Pop10Board::Rules C4Pop10Board::mRules;
 
-C4Pop10Board::C4Pop10Board(): mMoveFlg{0}, mFreeCols{DIM_W} {
+const C4Pop10Board::Dir C4Pop10Board::mDirs[ALL_DIRS]
+   = {{1, 1}, {1, -1}, {0, 1}, {1, 0}};
+
+C4Pop10Board::C4Pop10Board()
+    : mMoveFlg{0}, mFreeCols{DIM_W}, mValidScores{false} {
    memset(mBoard, 0, sizeof(mBoard));
 }
 
@@ -24,7 +28,110 @@ C4Pop10Board::~C4Pop10Board() {
 }
 
 int C4Pop10Board::GetValue() const {
-   throw BaseException(FString("%s:%d not implemented", __FILE__, __LINE__));
+   int val;
+   if (!mValidScores)
+      RecalculateScores();
+   val = (mMoveFlg & RED) ? -mRules.moveWght : mRules.moveWght;
+   val += mYellowScore.keptDisks * mRules.keptWgt;
+   val += mYellowScore.safeDisks * mRules.safeWgt;
+   val += mYellowScore.threatDisks * mRules.threatWgt;
+   val -= mRedScore.keptDisks * mRules.keptWgt;
+   val -= mRedScore.safeDisks * mRules.safeWgt;
+   val -= mRedScore.threatDisks * mRules.threatWgt;
+   return val;
+}
+
+inline int C4Pop10Board::CountCol(int col) const {
+   int lookAhead;
+   char piece = mBoard[0][col];
+   for (lookAhead = 0; lookAhead < DIM_H && mBoard[lookAhead][col] == piece;
+        lookAhead++)
+      ;
+   return lookAhead;
+}
+
+void C4Pop10Board::RecalculateScores() const {
+   int row, col;
+   int curr, lookAhead, count;
+   int i;
+   char piece;
+   int nDir;
+   bool redHasSafeRow = false, yellowHasSafeRow = false;
+   PlayerScore *currPlayerScore;
+   for (auto &val : mBottomRowVal)
+      val = C4Pop10Board::PieceVal::UNKNOWN;
+
+   mRedScore.safeDisks = mRedScore.threatDisks = 0;
+   mYellowScore.safeDisks = mYellowScore.threatDisks = 0;
+
+   for (curr = 0; curr < DIM_W; curr++) {
+      // Check if we've already identified the type
+      if (mBottomRowVal[curr] != C4Pop10Board::PieceVal::UNKNOWN)
+         continue;
+      piece = mBoard[0][curr];
+      if (!(piece & PIECE)) {
+         mBottomRowVal[curr] = C4Pop10Board::PieceVal::NONE;
+         continue;
+      }
+      // Check for safe discs in a row along the bottom
+      for (lookAhead = curr; lookAhead < DIM_W && mBoard[0][lookAhead] == piece;
+           lookAhead++)
+         ;
+      count = lookAhead - curr;
+      if (count >= 4) {
+         for (i = 0; i < count; i++) {
+            mBottomRowVal[curr + i] = C4Pop10Board::PieceVal::SAFE_ROW;
+         }
+         if (piece & RED)
+            redHasSafeRow = true;
+         else
+            yellowHasSafeRow = true;
+         continue;
+      }
+      // Check for safe discs in a vertical row
+      count = CountCol(curr);
+      if (count >= 4) {
+         mBottomRowVal[curr] = C4Pop10Board::PieceVal::SAFE_COL;
+         continue;
+      }
+      // Check for threat disks
+      for (nDir = 0; nDir < DIAG_DIRS
+           && mBottomRowVal[curr] == C4Pop10Board::PieceVal::UNKNOWN;
+           nDir++) {
+         count = 0;
+         for (row = 0, col = curr; InRange(0, row, DIM_H)
+              && InRange(0, col, DIM_W) && mBoard[row][col] == piece;
+              row += mDirs[nDir].dRow, col += mDirs[nDir].dCol)
+            count++;
+         if (count >= 4) {
+            mBottomRowVal[curr] = C4Pop10Board::PieceVal::THREAT;
+         }
+      }
+      // If all checks fail, the piece has no value
+      if (mBottomRowVal[curr] == C4Pop10Board::PieceVal::UNKNOWN)
+         mBottomRowVal[curr] = C4Pop10Board::PieceVal::NONE;
+   }
+
+   for (curr = 0; curr < DIM_W; curr++) {
+      assert(mBottomRowVal[curr] != C4Pop10Board::PieceVal::UNKNOWN);
+      piece = mBoard[0][curr];
+      currPlayerScore = (piece & RED) ? &mRedScore : &mYellowScore;
+      if (mBottomRowVal[curr] == C4Pop10Board::PieceVal::SAFE_ROW) {
+         currPlayerScore->safeDisks += CountCol(curr);
+      } else if (mBottomRowVal[curr] == C4Pop10Board::PieceVal::SAFE_COL) {
+         count = CountCol(curr);
+         assert(count >= 4);
+         currPlayerScore->safeDisks += count - 3;
+      } else if (mBottomRowVal[curr] == C4Pop10Board::PieceVal::THREAT) {
+         currPlayerScore->threatDisks++;
+      }
+   }
+
+   if (redHasSafeRow)
+      mRedScore.safeDisks -= 3;
+   if (yellowHasSafeRow)
+      mYellowScore.safeDisks -= 3;
+   mValidScores = true;
 }
 
 void C4Pop10Board::ApplyMove(unique_ptr<Move> move) {
@@ -51,6 +158,10 @@ void C4Pop10Board::ApplyMove(unique_ptr<Move> move) {
          mBoard[row][col] = piece;
          break;
       case C4Pop10Move::MoveType::KEEP:
+         if (mMoveFlg & RED)
+            mRedScore.keptDisks++;
+         else
+            mYellowScore.keptDisks++;
       case C4Pop10Move::MoveType::TAKE_PLACE:
          col = uMove->GetSrcCol();
          piece = mBoard[0][col];
@@ -73,6 +184,7 @@ void C4Pop10Board::ApplyMove(unique_ptr<Move> move) {
 
    mMoveHist.push_back(uMove);
    mMoveFlg = (mMoveFlg == RED) ? 0 : RED;
+   mValidScores = false;
 }
 
 void C4Pop10Board::UndoLastMove() {
@@ -105,6 +217,12 @@ void C4Pop10Board::UndoLastMove() {
          for (row = DIM_H - 1; row > 0; row--)
             mBoard[row][col] = mBoard[row - 1][col];
          mBoard[0][col] = PIECE | mMoveFlg;
+         if (move->GetType() == C4Pop10Move::MoveType::KEEP) {
+            if (mMoveFlg & RED)
+               mRedScore.keptDisks--;
+            else
+               mYellowScore.keptDisks--;
+         }
          break;
       default:
          assert(false);
@@ -112,6 +230,8 @@ void C4Pop10Board::UndoLastMove() {
 
    if (move->GetDidFillCol())
       mFreeCols++;
+
+   mValidScores = false;
 }
 
 bool C4Pop10Board::IsPartOf4(int parCol) const {
@@ -122,17 +242,17 @@ bool C4Pop10Board::IsPartOf4(int parCol) const {
 
    assert(InRange(0, parCol, DIM_W));
 
-   for (ndir = 0; ndir < NUM_DIRS; ndir++) {
+   for (ndir = 0; ndir < ALL_DIRS; ndir++) {
       currCount = 0;
       for (row = 0, col = parCol;
            InRange(0, row, DIM_H) && InRange(0, col, DIM_W) && mBoard[row][col]
            && ((mBoard[row][col] & RED) == mMoveFlg);
-           row += mDirs[ndir][0], col += mDirs[ndir][1])
+           row += mDirs[ndir].dRow, col += mDirs[ndir].dCol)
          ;
-      for (row -= mDirs[ndir][0], col -= mDirs[ndir][1];
+      for (row -= mDirs[ndir].dRow, col -= mDirs[ndir].dCol;
            InRange(0, row, DIM_H) && InRange(0, col, DIM_W) && mBoard[row][col]
            && ((mBoard[row][col] & RED) == mMoveFlg);
-           row -= mDirs[ndir][0], col -= mDirs[ndir][1])
+           row -= mDirs[ndir].dRow, col -= mDirs[ndir].dCol)
          currCount++;
       maxCount = max(maxCount, currCount);
    }
