@@ -67,7 +67,7 @@ void C4Pop10Move::operator=(const string &src) {
    smatch matches;
 
    if (!regex_match(src, matches, moveMatcher)) {
-      throw BaseException("Bad C4Pop10Move: " + src);
+      throw BaseException("Bad C4Pop10 move: " + src);
    }
 
    if (matches[1] == "Pass") {
@@ -113,9 +113,20 @@ void *C4Pop10Move::operator new(size_t sz) {
 }
 
 istream &C4Pop10Move::Read(istream &in) {
-   throw BaseException(FString("%s:%d not implemented", __FILE__, __LINE__));
+   char didFillCol;
+   in.read((char *)&mType, sizeof(mType));
+   in.read(&mSrcCol, sizeof(mSrcCol));
+   in.read(&mDstCol, sizeof(mDstCol));
+   in.read(&didFillCol, sizeof(didFillCol));
+   mDidFillCol = (bool)didFillCol;
+   return in;
 }
 
 ostream &C4Pop10Move::Write(ostream &out) const {
-   throw BaseException(FString("%s:%d not implemented", __FILE__, __LINE__));
+   char didFillCol = (char)mDidFillCol;
+   out.write((char *)&mType, sizeof(mType));
+   out.write(&mSrcCol, sizeof(mSrcCol));
+   out.write(&mDstCol, sizeof(mDstCol));
+   out.write(&didFillCol, sizeof(didFillCol));
+   return out;
 }

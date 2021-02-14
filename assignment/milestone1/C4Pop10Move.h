@@ -8,7 +8,7 @@
 
 class C4Pop10Move : public Board::Move {
 public:
-   enum class MoveType { PASS = 0, PLACE = 1, KEEP = 2, TAKE_PLACE = 3 };
+   enum class MoveType : char { PASS = 0, PLACE = 1, KEEP = 2, TAKE_PLACE = 3 };
 
    C4Pop10Move(
       MoveType mvType = MoveType::PASS, int srcRow = -1, int dstRow = -1);
@@ -37,8 +37,8 @@ public:
 protected:
    MoveType mType;
 
-   int mSrcCol;
-   int mDstCol;
+   char mSrcCol;
+   char mDstCol;
 
    bool mDidFillCol;
 
