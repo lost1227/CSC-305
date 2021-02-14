@@ -5,6 +5,7 @@
 #include <cstring>
 #include <iostream>
 
+#include "BasicKey.h"
 #include "C4Pop10Dlg.h"
 #include "C4Pop10View.h"
 #include "MyLib.h"
@@ -350,12 +351,36 @@ unique_ptr<Board> C4Pop10Board::Clone() const {
 }
 
 unique_ptr<const Board::Key> C4Pop10Board::GetKey() const {
-   throw BaseException(FString("%s:%d not implemented", __FILE__, __LINE__));
+   BasicKey<3> *key = new BasicKey<3>;
+   int row, col;
+   int count = 0;
+   unsigned long *curr = key->vals;
+   char piece, val;
+   for (row = DIM_H - 1; row >= 0; row--) {
+      for (col = 0; col < DIM_W; col++) {
+         piece = mBoard[row][col];
+         if (!(piece & PIECE))
+            val = 1;
+         else if (piece & RED)
+            val = 0;
+         else
+            val = 2;
+         *curr = (*curr << SHIFT_COUNT) | val;
+         count++;
+         if (count == MAX_CELLS_PER_KEY) {
+            count = 0;
+            curr++;
+         }
+      }
+   }
+   *curr = (*curr << 1) | ((mMoveFlg & RED) ? 0 : 1);
+
+   return unique_ptr<const Board::Key>(key);
 }
 
 void C4Pop10Board::Rules::EndSwap() {
    safeWgt = EndianXfer(safeWgt);
-   threatWgt = EndianXfer(safeWgt);
+   threatWgt = EndianXfer(threatWgt);
    keptWgt = EndianXfer(keptWgt);
    moveWght = EndianXfer(moveWght);
 }
@@ -367,14 +392,14 @@ istream &C4Pop10Board::Read(istream &is) {
    Rules rules;
    C4Pop10Move *move;
 
-   is.read((char *)&rules, sizeof(rules));
+   is.read((char *)&rules, sizeof(Rules));
    rules.EndSwap();
    SetOptions(&rules);
 
-   for(row = 0; row < DIM_H; row++) {
+   for (row = 0; row < DIM_H; row++) {
       is.read((char *)&rowBits, sizeof(rowBits));
       rowBits = EndianXfer(rowBits);
-      for(col = DIM_W; col >= 0; col--) {
+      for (col = DIM_W - 1; col >= 0; col--) {
          mBoard[row][col] = rowBits & SHIFT_MASK;
          rowBits = rowBits >> SHIFT_COUNT;
       }
@@ -387,12 +412,14 @@ istream &C4Pop10Board::Read(istream &is) {
 
    is.read((char *)&size, sizeof(size));
    mMoveHist.clear();
-   while(is && size--) {
+   while (is && size--) {
       move = new C4Pop10Move();
       move->Read(is);
       mMoveHist.push_back(shared_ptr<C4Pop10Move>(move));
    }
-   
+
+   mValidScores = false;
+
    return is;
 }
 
@@ -403,10 +430,10 @@ ostream &C4Pop10Board::Write(ostream &os) const {
    Rules *rules = reinterpret_cast<Rules *>(GetOptions());
 
    rules->EndSwap();
-   os.write((char *)rules, sizeof(rules));
+   os.write((char *)rules, sizeof(Rules));
 
-   for(row = 0; row < DIM_H; row++) {
-      for(col = rowBits = 0; col < DIM_W; col++)
+   for (row = 0; row < DIM_H; row++) {
+      for (col = rowBits = 0; col < DIM_W; col++)
          rowBits = (rowBits << SHIFT_COUNT) | (mBoard[row][col] & SHIFT_MASK);
       rowBits = EndianXfer(rowBits);
       os.write((char *)&rowBits, sizeof(rowBits));
@@ -418,9 +445,9 @@ ostream &C4Pop10Board::Write(ostream &os) const {
    os.write((char *)&mYellowScore, sizeof(mYellowScore));
 
    os.write((char *)&size, sizeof(size));
-   for(auto& mv : mMoveHist)
+   for (auto &mv : mMoveHist)
       mv->Write(os);
-   
+
    delete rules;
 
    return os;

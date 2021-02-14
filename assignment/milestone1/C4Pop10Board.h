@@ -13,6 +13,7 @@ public:
    static constexpr char NONE = 0, PIECE = 1, RED = 2;
    static constexpr int WIN_DISC_COUNT = 10;
    static constexpr int SHIFT_COUNT = 2, SHIFT_MASK = 3;
+   static constexpr int MAX_CELLS_PER_KEY = 32 / 2;
 
    struct Rules {
       int safeWgt;

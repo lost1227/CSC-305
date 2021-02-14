@@ -158,6 +158,9 @@ int main(int argc, char **argv) {
          else if (command.compare("loadBoard") == 0) {
             cmdIn >> arg;
             ifstream strm(arg);
+            if (strm.fail()) {
+               throw BaseException("Bad file in loadBoard");
+            }
             board->Read(strm);
             strm.close();
          }
