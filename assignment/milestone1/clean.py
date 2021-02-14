@@ -28,10 +28,15 @@ limits = {
 
 pat = re.compile("(\d+) countable lines")
 
+ec = 0
+
 for f in chain(script_dir.glob("*.h"), script_dir.glob("*.cpp")):
    subprocess.run(["clang-format-12", "-Werror", "--style=file", "-i", f])
    completion = subprocess.run([script_dir / "smartcount" , f], stdout=subprocess.PIPE, text=True)
    match = pat.search(completion.stdout)
    if f.name in limits:
       if int(match.group(1)) > limits[f.name]:
+         ec = 1
          print("{}: \033[91mFAIL\033[0m".format(f.name))
+
+exit(ec)

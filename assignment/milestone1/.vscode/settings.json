@@ -57,5 +57,8 @@
         "streambuf": "cpp"
     },
     "editor.tabSize": 3,
-    "editor.rulers": [80]
+    "editor.rulers": [80],
+    "[plaintext]": {
+        "editor.tabSize": 8
+    }
 }

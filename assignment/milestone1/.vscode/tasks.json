@@ -2,7 +2,7 @@
     "tasks": [
         {
             "type": "process",
-            "label": "run make",
+            "label": "make",
             "command": "/usr/bin/make",
             "args": [
                 "-f",
@@ -19,6 +19,16 @@
                 "isDefault": true
             },
             "detail": "Task to build with make"
+        },
+        {
+            "type": "shell",
+            "label": "clean",
+            "command": "./clean.py",
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "detail": "Format code with clang-format",
+            "problemMatcher": []
         }
     ],
     "version": "2.0.0"

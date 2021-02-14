@@ -7,8 +7,8 @@ import tempfile
 import threading
 import multiprocessing
 
-debug = []
-# debug=["Checkers.3"]
+# debug = []
+debug=["C4Pop10.3"]
 
 script_dir = Path(__file__).resolve().parent
 
@@ -29,6 +29,10 @@ assert genScript.exists()
 if not testDir.exists():
     testDir.mkdir()
 
+completion = subprocess.run(["python3", "./clean.py"])
+if completion.returncode > 0:
+    print("Clean error")
+    exit(1)
 completion = subprocess.run(["make", "-f", str(makefile), "-j", str(multiprocessing.cpu_count())])
 if completion.returncode > 0:
     print("Compile error")
