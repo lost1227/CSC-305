@@ -107,7 +107,7 @@ protected:
    void FindNormalMoves() const;
    bool IsBackRow(char pc, const Loc &loc) {
       return ((pc & WHITE) && loc.row == CheckersBoard::DIM - 1)
-         || ((!(pc & WHITE)) && loc.row == 0);
+       || ((!(pc & WHITE)) && loc.row == 0);
    }
 
    static Rules mRules;

@@ -1,3 +1,7 @@
+// BoardTest.cpp
+// Jordan Powers
+// CSC-305-01
+
 #include <assert.h>
 #include <limits.h>
 #include <stdlib.h>
@@ -67,12 +71,12 @@ int main(int argc, char **argv) {
    for (auto &bc : boards) {
       if (bc->GetName() == argv[1]) {
          boardClass = bc;
-         board = shared_ptr<Board>(
-            dynamic_cast<Board *>(boardClass->NewInstance()));
+         board
+          = shared_ptr<Board>(dynamic_cast<Board *>(boardClass->NewInstance()));
          brdView = unique_ptr<View>(
-            dynamic_cast<View *>(boardClass->GetViewClass()->NewInstance()));
+          dynamic_cast<View *>(boardClass->GetViewClass()->NewInstance()));
          brdDlg = unique_ptr<Dialog>(
-            dynamic_cast<Dialog *>(boardClass->GetDlgClass()->NewInstance()));
+          dynamic_cast<Dialog *>(boardClass->GetDlgClass()->NewInstance()));
          break;
       }
    }
@@ -95,7 +99,7 @@ int main(int argc, char **argv) {
             throw BaseException("Unexpected EOF");
 
          if ((commentStart = commandLine.find_first_of("#"))
-            != (int)string::npos)
+          != (int)string::npos)
             commandLine = commandLine.substr(0, commentStart);
 
          if (commandLine.find_first_not_of(" \t") == string::npos)
@@ -216,9 +220,11 @@ int main(int argc, char **argv) {
                   boardClass->SetOptions(rules);
                cout << endl;
                delete rules;
+               rules = nullptr;
             } catch (BaseException &e) {
                if (rules)
                   delete rules;
+               rules = nullptr;
                throw e;
             }
             continue;
@@ -228,7 +234,7 @@ int main(int argc, char **argv) {
             if (!(cmdIn >> count) || count < 0) {
                cmdIn.clear();
                throw BaseException(
-                  "Must have a nonnegative count for undoLastMove");
+                "Must have a nonnegative count for undoLastMove");
             }
 
             if (count > (int)board->GetMoveHist().size())
@@ -267,7 +273,7 @@ int main(int argc, char **argv) {
          // ************************ testPlay ************************
          // ************************ testRun  ************************
          else if (command.compare("testPlay") == 0
-            || command.compare("testRun") == 0) {
+          || command.compare("testRun") == 0) {
             if (!(cmdIn >> seed >> count) || count < 0)
                throw BaseException("Bad arguments for testPlay/testRun");
 

@@ -25,7 +25,7 @@ void *OthelloMove::operator new(size_t sz) {
 
 void OthelloMove::operator delete(void *p) {
    unique_ptr<OthelloMove, FreeListDeleter> ptr(
-      (OthelloMove *)p, FreeListDeleter());
+    (OthelloMove *)p, FreeListDeleter());
    mFreeList.push_back(move(ptr));
 
    mOutstanding--;
@@ -61,9 +61,9 @@ void OthelloMove::operator=(const string &src) {
          tCol = stoi(reRes[kColPtn]);
 
          if (!InRange<short>(0, tRow, OthelloBoard::dim)
-            || !InRange<short>(0, tCol, OthelloBoard::dim))
+          || !InRange<short>(0, tCol, OthelloBoard::dim))
             throw BaseException(
-               FString("Out of bounds Othello move: %s", src.c_str()));
+             FString("Out of bounds Othello move: %s", src.c_str()));
       }
    } else
       throw BaseException(FString("Bad Othello move: %s", src.c_str()));

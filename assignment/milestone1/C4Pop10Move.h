@@ -11,7 +11,7 @@ public:
    enum class MoveType : char { PASS = 0, PLACE = 1, KEEP = 2, TAKE_PLACE = 3 };
 
    C4Pop10Move(
-      MoveType mvType = MoveType::PASS, int srcRow = -1, int dstRow = -1);
+    MoveType mvType = MoveType::PASS, int srcRow = -1, int dstRow = -1);
    ~C4Pop10Move();
 
    std::unique_ptr<Move> Clone() const override;

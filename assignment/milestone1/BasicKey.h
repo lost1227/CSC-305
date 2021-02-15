@@ -70,6 +70,6 @@ std::ostream &BasicKey<size>::Write(std::ostream &stream) const {
 
 template<int size>
 Class BasicKey<size>::mClass(
-   FString("BasicKey<%d>", size), BasicKey<size>::Create);
+ FString("BasicKey<%d>", size), BasicKey<size>::Create);
 
 #endif

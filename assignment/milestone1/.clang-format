@@ -39,7 +39,7 @@ BreakBeforeBinaryOperators: All
 BreakBeforeTernaryOperators: true
 BreakConstructorInitializers: BeforeComma
 BreakStringLiterals: false
-ContinuationIndentWidth: 3
+ContinuationIndentWidth: 1
 Cpp11BracedListStyle: true
 DeriveLineEnding: false
 EmptyLineBeforeAccessModifier: LogicalBlock

@@ -13,13 +13,13 @@
 using namespace std;
 
 const BoardClass C4Pop10Board::mClass("C4Pop10Board", C4Pop10Board::CreateBoard,
-   "C4Pop10", &C4Pop10View::mClass, &C4Pop10Dlg::mClass,
-   C4Pop10Board::SetOptions, C4Pop10Board::GetOptions);
+ "C4Pop10", &C4Pop10View::mClass, &C4Pop10Dlg::mClass, C4Pop10Board::SetOptions,
+ C4Pop10Board::GetOptions);
 
 C4Pop10Board::Rules C4Pop10Board::mRules;
 
 const C4Pop10Board::Dir C4Pop10Board::mDirs[ALL_DIRS]
-   = {{1, 1}, {1, -1}, {0, 1}, {1, 0}};
+ = {{1, 1}, {1, -1}, {0, 1}, {1, 0}};
 
 C4Pop10Board::C4Pop10Board()
     : mMoveFlg{0}, mFreeCols{DIM_W}, mValidScores{false} {
@@ -148,7 +148,7 @@ void C4Pop10Board::ApplyMove(unique_ptr<Move> move) {
    int row, col;
 
    assert(mRedScore.keptDisks < WIN_DISC_COUNT
-      && mYellowScore.keptDisks < WIN_DISC_COUNT);
+    && mYellowScore.keptDisks < WIN_DISC_COUNT);
 
    switch (uMove->GetType()) {
       case C4Pop10Move::MoveType::PASS:
@@ -277,21 +277,21 @@ void C4Pop10Board::GetAllMoves(list<unique_ptr<Move>> *moves) const {
    vector<int> openCols;
 
    if (mRedScore.keptDisks == WIN_DISC_COUNT
-      || mYellowScore.keptDisks == WIN_DISC_COUNT) {
+    || mYellowScore.keptDisks == WIN_DISC_COUNT) {
       return;
    }
 
    if (mMoveHist.size() > 0
-      && mMoveHist.back()->GetType() == C4Pop10Move::MoveType::KEEP) {
+    && mMoveHist.back()->GetType() == C4Pop10Move::MoveType::KEEP) {
       // Must pass after keep
       moves->push_back(
-         unique_ptr<Move>(new C4Pop10Move(C4Pop10Move::MoveType::PASS)));
+       unique_ptr<Move>(new C4Pop10Move(C4Pop10Move::MoveType::PASS)));
    } else if (mFreeCols > 0) {
       // Initial play: Place moves only
       for (col = 0; col < DIM_W; col++) {
          if (!(mBoard[DIM_H - 1][col] & PIECE))
             moves->push_back(unique_ptr<Move>(
-               new C4Pop10Move(C4Pop10Move::MoveType::PLACE, -1, col)));
+             new C4Pop10Move(C4Pop10Move::MoveType::PLACE, -1, col)));
       }
    } else {
       openCols.clear();
@@ -304,25 +304,25 @@ void C4Pop10Board::GetAllMoves(list<unique_ptr<Move>> *moves) const {
          kept[col] = false;
          piece = mBoard[0][col];
          if ((piece & PIECE) && (piece & RED) == mMoveFlg
-            && (kept[col] = IsPartOf4(col))) {
+          && (kept[col] = IsPartOf4(col))) {
             moves->push_back(unique_ptr<Move>(
-               new C4Pop10Move(C4Pop10Move::MoveType::KEEP, col)));
+             new C4Pop10Move(C4Pop10Move::MoveType::KEEP, col)));
          }
       }
       for (col = 0; col < DIM_W; col++) {
          piece = mBoard[0][col];
          if ((piece & PIECE) && (piece & RED) == mMoveFlg && !kept[col]) {
             if (openCols.size() == 0) {
-               moves->push_back(unique_ptr<Move>(new C4Pop10Move(
-                  C4Pop10Move::MoveType::TAKE_PLACE, col, col)));
+               moves->push_back(unique_ptr<Move>(
+                new C4Pop10Move(C4Pop10Move::MoveType::TAKE_PLACE, col, col)));
             } else if (openCols.size() == 1) {
                moves->push_back(unique_ptr<Move>(new C4Pop10Move(
-                  C4Pop10Move::MoveType::TAKE_PLACE, col, openCols.front())));
+                C4Pop10Move::MoveType::TAKE_PLACE, col, openCols.front())));
             } else {
                for (auto &toCol : openCols) {
                   if (toCol != col)
                      moves->push_back(unique_ptr<Move>(new C4Pop10Move(
-                        C4Pop10Move::MoveType::TAKE_PLACE, col, toCol)));
+                      C4Pop10Move::MoveType::TAKE_PLACE, col, toCol)));
                }
             }
          }
@@ -330,7 +330,7 @@ void C4Pop10Board::GetAllMoves(list<unique_ptr<Move>> *moves) const {
    }
    if (moves->empty())
       moves->push_back(
-         unique_ptr<Move>(new C4Pop10Move(C4Pop10Move::MoveType::PASS)));
+       unique_ptr<Move>(new C4Pop10Move(C4Pop10Move::MoveType::PASS)));
 }
 
 unique_ptr<Board::Move> C4Pop10Board::CreateMove() const {

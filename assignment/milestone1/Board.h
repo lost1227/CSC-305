@@ -79,7 +79,7 @@ public:
 
    // Return a move history list.  Board retains ownership of moves.
    virtual const std::list<std::shared_ptr<const Move>> &GetMoveHist()
-      const = 0;
+    const = 0;
 
    // Duplicate current board.
    virtual std::unique_ptr<Board> Clone() const = 0;

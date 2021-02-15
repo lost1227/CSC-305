@@ -7,8 +7,8 @@ import tempfile
 import threading
 import multiprocessing
 
-# debug = []
-debug=["C4Pop10.3"]
+debug = []
+# debug=["C4Pop10.3"]
 
 script_dir = Path(__file__).resolve().parent
 

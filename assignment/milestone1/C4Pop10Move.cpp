@@ -23,7 +23,7 @@ unique_ptr<Board::Move> C4Pop10Move::Clone() const {
 bool C4Pop10Move::operator==(const Board::Move &oth) const {
    const C4Pop10Move &othMov = dynamic_cast<const C4Pop10Move &>(oth);
    return mType == othMov.mType && mSrcCol == othMov.mSrcCol
-      && mDstCol == othMov.mDstCol;
+    && mDstCol == othMov.mDstCol;
 }
 
 bool C4Pop10Move::operator<(const Board::Move &oth) const {
@@ -69,7 +69,7 @@ C4Pop10Move::operator string() const {
 
 void C4Pop10Move::operator=(const string &src) {
    static regex moveMatcher(
-      R"(^\s*(?:(Pass)|(Place)\s+([A-G])|(Keep)\s+([A-G])|(Take)\s+([A-G])\s+place\s+([A-G]))\s*$)");
+    R"(^\s*(?:(Pass)|(Place)\s+([A-G])|(Keep)\s+([A-G])|(Take)\s+([A-G])\s+place\s+([A-G]))\s*$)");
    smatch matches;
 
    if (!regex_match(src, matches, moveMatcher)) {
@@ -98,7 +98,7 @@ void C4Pop10Move::operator=(const string &src) {
 
 void C4Pop10Move::operator delete(void *p) {
    unique_ptr<C4Pop10Move, FreeListDeleter> ptr(
-      (C4Pop10Move *)p, FreeListDeleter());
+    (C4Pop10Move *)p, FreeListDeleter());
    mFreeList.push_back(move(ptr));
 
    mOutstanding--;

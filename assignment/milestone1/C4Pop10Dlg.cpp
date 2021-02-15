@@ -28,14 +28,14 @@ bool C4Pop10Dlg::Run(istream &in, ostream &out, void *data) {
 
    if (resp == 'y') {
       out << endl;
-      ReadLimitInt(in, out, &rules->safeWgt, SAFE_MIN, SAFE_MAX,
-         "Enter safe disc weight");
-      ReadLimitInt(in, out, &rules->keptWgt, KEPT_MIN, KEPT_MAX,
-         "Enter kept disc weight");
-      ReadLimitInt(in, out, &rules->threatWgt, THREAT_MIN, THREAT_MAX,
-         "Enter threat weight");
       ReadLimitInt(
-         in, out, &rules->moveWght, MOVE_MIN, MOVE_MAX, "Enter move weight");
+       in, out, &rules->safeWgt, SAFE_MIN, SAFE_MAX, "Enter safe disc weight");
+      ReadLimitInt(
+       in, out, &rules->keptWgt, KEPT_MIN, KEPT_MAX, "Enter kept disc weight");
+      ReadLimitInt(in, out, &rules->threatWgt, THREAT_MIN, THREAT_MAX,
+       "Enter threat weight");
+      ReadLimitInt(
+       in, out, &rules->moveWght, MOVE_MIN, MOVE_MAX, "Enter move weight");
    }
 
    return resp == 'y';

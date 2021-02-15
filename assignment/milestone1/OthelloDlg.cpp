@@ -27,7 +27,7 @@ bool OthelloDlg::Run(istream &in, ostream &out, void *data) {
       out << endl;
       ReadLimitInt(in, out, &rules->sideWgt, 0, 100, "Enter side weight");
       ReadLimitInt(
-         in, out, &rules->nearSideWgt, 0, 100, "Enter near side weight");
+       in, out, &rules->nearSideWgt, 0, 100, "Enter near side weight");
       ReadLimitInt(in, out, &rules->cornerWgt, 0, 100, "Enter corner weight");
       ReadLimitInt(in, out, &rules->innerWgt, 0, 100, "Enter inner weight");
    }

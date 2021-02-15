@@ -9,7 +9,7 @@
 using namespace std;
 
 void Dialog::ReadLimitInt(
-   istream &is, ostream &os, int *val, int lo, int hi, string prompt) {
+ istream &is, ostream &os, int *val, int lo, int hi, string prompt) {
    string inStr, ostr;
    istringstream inStrStm;
    bool valid = false;

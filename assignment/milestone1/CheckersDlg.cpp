@@ -28,11 +28,11 @@ bool CheckersDlg::Run(istream &in, ostream &out, void *data) {
    if (resp == 'y') {
       out << endl;
       ReadLimitInt(
-         in, out, &rules->kingWgt, KING_MIN, KING_MAX, "Enter king weight");
+       in, out, &rules->kingWgt, KING_MIN, KING_MAX, "Enter king weight");
       ReadLimitInt(
-         in, out, &rules->backWgt, BACK_MIN, BACK_MAX, "Enter back-row weight");
+       in, out, &rules->backWgt, BACK_MIN, BACK_MAX, "Enter back-row weight");
       ReadLimitInt(
-         in, out, &rules->moveWgt, MOVE_MIN, MOVE_MAX, "Enter move weight");
+       in, out, &rules->moveWgt, MOVE_MIN, MOVE_MAX, "Enter move weight");
    }
 
    return resp == 'y';

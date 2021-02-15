@@ -27,7 +27,7 @@ void *CheckersMove::operator new(size_t sz) {
 
 void CheckersMove::operator delete(void *p) {
    unique_ptr<CheckersMove, FreeListDeleter> ptr(
-      (CheckersMove *)p, FreeListDeleter());
+    (CheckersMove *)p, FreeListDeleter());
    mFreeList.push_back(move(ptr));
 
    mOutstanding--;
@@ -57,7 +57,7 @@ bool CheckersMove::operator<(const Board::Move &rhs) const {
         itr1++, itr2++)
       ;
    return (itr1 == mSeq.end() && itr2 != oRhs.mSeq.end())
-      || (itr1 != mSeq.end() && itr2 != oRhs.mSeq.end() && *itr1 < *itr2);
+    || (itr1 != mSeq.end() && itr2 != oRhs.mSeq.end() && *itr1 < *itr2);
 }
 
 CheckersMove::operator string() const {
@@ -76,7 +76,7 @@ CheckersMove::operator string() const {
 
 void CheckersMove::operator=(const string &src) {
    static regex wholeStrCheck(
-      R"(^\s*[A-Za-z]\s*[0-9]+(?:\s*->\s*[A-Za-z]\s*[0-9]+)+\s*$)");
+    R"(^\s*[A-Za-z]\s*[0-9]+(?:\s*->\s*[A-Za-z]\s*[0-9]+)+\s*$)");
    static regex parser(R"(([A-Za-z])\s*([0-9]+))");
    string curr;
    smatch matches;
@@ -95,14 +95,14 @@ void CheckersMove::operator=(const string &src) {
       short row = toupper(matches[1].str()[0]) - 'A';
       short col = stoi(matches[2]) - 1;
       if (!InRange(0, (int)row, CheckersBoard::DIM)
-         || !InRange(0, (int)col, CheckersBoard::DIM)) {
+       || !InRange(0, (int)col, CheckersBoard::DIM)) {
          throw BaseException("Out of bounds Checkers move: " + src);
       }
       seq.push_back(CheckersBoard::Loc(row, col));
    }
 
    assert(
-      seq.size() >= 2);  // Invalid moves should be caught by the wholeStrCheck
+    seq.size() >= 2);  // Invalid moves should be caught by the wholeStrCheck
 
    mSeq = seq;
 }

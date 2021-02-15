@@ -13,17 +13,17 @@
 using namespace std;
 
 BoardClass OthelloBoard::mClass("OthelloBoard", OthelloBoard::CreateBoard,
-   "Othello", &OthelloView::mClass, &OthelloDlg::mClass,
-   OthelloBoard::SetOptions, OthelloBoard::GetOptions);
+ "Othello", &OthelloView::mClass, &OthelloDlg::mClass, OthelloBoard::SetOptions,
+ OthelloBoard::GetOptions);
 
 short OthelloBoard::mWeights[dim][dim] = {{16, 0, 8, 8, 8, 8, 0, 16},
-   {0, 0, 0, 0, 0, 0, 0, 0}, {8, 0, 1, 1, 1, 1, 0, 8}, {8, 0, 1, 1, 1, 1, 0, 8},
-   {8, 0, 1, 1, 1, 1, 0, 8}, {8, 0, 1, 1, 1, 1, 0, 8}, {0, 0, 0, 0, 0, 0, 0, 0},
-   {16, 0, 8, 8, 8, 8, 0, 16}};
+ {0, 0, 0, 0, 0, 0, 0, 0}, {8, 0, 1, 1, 1, 1, 0, 8}, {8, 0, 1, 1, 1, 1, 0, 8},
+ {8, 0, 1, 1, 1, 1, 0, 8}, {8, 0, 1, 1, 1, 1, 0, 8}, {0, 0, 0, 0, 0, 0, 0, 0},
+ {16, 0, 8, 8, 8, 8, 0, 16}};
 
 // Directions are row, column
 OthelloBoard::Direction OthelloBoard::mDirs[numDirs]
-   = {{0, 1}, {-1, 1}, {-1, 0}, {-1, -1}, {0, -1}, {1, -1}, {1, 0}, {1, 1}};
+ = {{0, 1}, {-1, 1}, {-1, 0}, {-1, -1}, {0, -1}, {1, -1}, {1, 0}, {1, 1}};
 
 const Class *OthelloBoard::GetClass() const {
    return &mClass;
@@ -121,7 +121,7 @@ void OthelloBoard::ApplyMove(unique_ptr<Move> uMove) {
 void OthelloBoard::UndoLastMove() {
    assert(mMoveHist.size() > 0);
    shared_ptr<OthelloMove> om
-      = dynamic_pointer_cast<OthelloMove>(mMoveHist.back());
+    = dynamic_pointer_cast<OthelloMove>(mMoveHist.back());
    int baseRow = om->mRow, baseCol = om->mCol;
    int row, col, flip;
    OthelloMove::FlipSet flipSet;
@@ -175,10 +175,10 @@ void OthelloBoard::GetAllMoves(list<unique_ptr<Move>> *moves) const {
                testCol += dir->cDelta;
                steps++;
             } while (InBounds(testRow, testCol)
-               && mBoard[testRow][testCol] == -mNextMove);
+             && mBoard[testRow][testCol] == -mNextMove);
 
             if (InBounds(testRow, testCol)
-               && mBoard[testRow][testCol] == mNextMove && steps > 1) {
+             && mBoard[testRow][testCol] == mNextMove && steps > 1) {
                moves->push_back(unique_ptr<Move>{new OthelloMove(row, col)});
                break;
             }
@@ -237,7 +237,7 @@ istream &OthelloBoard::Read(istream &is) {
          mBoard[row][col] = rowBits & sqrMask;
          rowBits >>= sqrShift;
          if (mBoard[row][col]
-            == (mWPiece & sqrMask))  // If cell was -1 (mWPiece)
+          == (mWPiece & sqrMask))  // If cell was -1 (mWPiece)
             mBoard[row][col] = mWPiece;  // .. restore all bits
       }
    }
@@ -326,7 +326,7 @@ void OthelloBoard::SetOptions(const void *data) {
             mWeights[row][col] = rules->innerWgt;
    }
    mWeights[0][0] = mWeights[0][dim - 1] = mWeights[dim - 1][0]
-      = mWeights[dim - 1][dim - 1] = rules->cornerWgt;
+    = mWeights[dim - 1][dim - 1] = rules->cornerWgt;
 
    for (itr = mRoster.begin(); itr != mRoster.end(); itr++)
       (*itr)->RecalcWeight();

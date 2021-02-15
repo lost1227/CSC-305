@@ -19,15 +19,15 @@ set<CheckersBoard *> CheckersBoard::mRoster;
 CheckersBoard::Rules CheckersBoard::mRules;
 
 BoardClass CheckersBoard::mClass("CheckersBoard", CheckersBoard::CreateBoard,
-   "Checkers", &CheckersView::mClass, &CheckersDlg::mClass,
-   CheckersBoard::SetOptions, CheckersBoard::GetOptions);
+ "Checkers", &CheckersView::mClass, &CheckersDlg::mClass,
+ CheckersBoard::SetOptions, CheckersBoard::GetOptions);
 
 Object *CheckersBoard::CreateBoard() {
    return new CheckersBoard();
 }
 
 CheckersBoard::Direction CheckersBoard::mDirs[]
-   = {{1, -1}, {1, 1}, {-1, -1}, {-1, 1}};
+ = {{1, -1}, {1, 1}, {-1, -1}, {-1, 1}};
 
 CheckersBoard::CheckersBoard(void): mValue(0), mMoveFlg(0), mMovesValid(false) {
    int row, col;
@@ -86,7 +86,7 @@ void CheckersBoard::ApplyMove(unique_ptr<Move> uMove) {
          assert(InRange(there));
 
          jmpPiece
-            = mBoard[(here.row + there.row) / 2][(here.col + there.col) / 2];
+          = mBoard[(here.row + there.row) / 2][(here.col + there.col) / 2];
          mBoard[(here.row + there.row) / 2][(here.col + there.col) / 2] = 0;
          assert(jmpPiece != NONE && (jmpPiece & WHITE) != (piece & WHITE));
          mv->mWereKings.push_back((jmpPiece & KING));
@@ -100,8 +100,8 @@ void CheckersBoard::ApplyMove(unique_ptr<Move> uMove) {
 
    // King me
    if ((((piece & WHITE) && here.row == 0)
-          || (!(piece & WHITE) && here.row == DIM - 1))
-      && !(piece & KING)) {
+        || (!(piece & WHITE) && here.row == DIM - 1))
+    && !(piece & KING)) {
       mValue += sense * (mRules.kingWgt - PIECEWGT);
       piece |= KING;
       mv->mWasKinged = true;
@@ -126,7 +126,7 @@ void CheckersBoard::UndoLastMove() {
    vector<CheckersBoard::Loc>::iterator mvIter, prevMvIter;
    vector<bool>::iterator wereKingsIter;
    shared_ptr<CheckersMove> mv
-      = dynamic_pointer_cast<CheckersMove>(mMoveHist.back());
+    = dynamic_pointer_cast<CheckersMove>(mMoveHist.back());
    mMoveHist.pop_back();
    movEndPos = mv->mSeq.back();
    movStartPos = mv->mSeq.front();
@@ -269,7 +269,7 @@ istream &CheckersBoard::Read(istream &is) {
 
    for (int i = 0; i < mvCount; i++) {
       currMove = unique_ptr<CheckersMove>(
-         new CheckersMove(vector<CheckersBoard::Loc>()));
+       new CheckersMove(vector<CheckersBoard::Loc>()));
       currMove->Read(is);
       ApplyMove(move(currMove));
    }
@@ -301,9 +301,9 @@ void CheckersBoard::NewOptions() {
       for (int col = 0; col < DIM; col++)
          if ((piece = mBoard[row][col])) {
             mValue += (piece & WHITE ? -1 : 1)
-               * (piece & KING ? mRules.kingWgt : PIECEWGT);
+             * (piece & KING ? mRules.kingWgt : PIECEWGT);
             if ((row == 0 && !(piece & WHITE))
-               || (row == DIM - 1 && (piece & WHITE)))
+             || (row == DIM - 1 && (piece & WHITE)))
                mValue += (piece & WHITE ? -1 : 1) * mRules.backWgt;
          }
 }
@@ -344,9 +344,9 @@ void CheckersBoard::CalcMoves() const {
                   upStep = false;
                } else {
                   thisLoc = locs.back();
-                  toLoc = Loc(
-                     thisLoc.row + 2 * forward * mDirs[dirs.back()].rDelta,
-                     thisLoc.col + 2 * mDirs[dirs.back()].cDelta);
+                  toLoc
+                   = Loc(thisLoc.row + 2 * forward * mDirs[dirs.back()].rDelta,
+                    thisLoc.col + 2 * mDirs[dirs.back()].cDelta);
 
                   /*
                      The move is only valid if:
@@ -358,16 +358,16 @@ void CheckersBoard::CalcMoves() const {
                   */
                   isValidMove = true;
                   isValidMove = isValidMove && InRange(toLoc)
-                     && (!mBoard[toLoc.row][toLoc.col]);
-                  isValidMove = isValidMove
-                     || ((toLoc.row == row) && (toLoc.col == col));
+                   && (!mBoard[toLoc.row][toLoc.col]);
+                  isValidMove
+                   = isValidMove || ((toLoc.row == row) && (toLoc.col == col));
                   // These checks are relatively expensive, and only need to be
                   // done for king pieces
                   if (piece & KING) {
                      // The destination should not be the spot we just jumped
                      // from
                      isValidMove = isValidMove
-                        && !(locs.size() > 1 && *(locs.end() - 2) == toLoc);
+                      && !(locs.size() > 1 && *(locs.end() - 2) == toLoc);
                      // The jump has already occurred
                      for (auto itr = locs.begin(); itr != locs.end(); itr++) {
                         if (thisLoc == *itr) {
@@ -384,7 +384,7 @@ void CheckersBoard::CalcMoves() const {
                   }
                   if (isValidMove) {
                      jumpLoc = Loc((thisLoc.row + toLoc.row) / 2,
-                        (thisLoc.col + toLoc.col) / 2);
+                      (thisLoc.col + toLoc.col) / 2);
                      jumpPiece = mBoard[jumpLoc.row][jumpLoc.col];
                      if (jumpPiece && (jumpPiece & WHITE) != mMoveFlg) {
                         upStep = true;
@@ -420,7 +420,7 @@ void CheckersBoard::FindNormalMoves() const {
             locs[0] = Loc(row, col);
             for (ndx = 0; ndx < numDirs; ndx++) {
                toLoc = Loc(
-                  row + forward * mDirs[ndx].rDelta, col + mDirs[ndx].cDelta);
+                row + forward * mDirs[ndx].rDelta, col + mDirs[ndx].cDelta);
                if (InRange(toLoc) && mBoard[toLoc.row][toLoc.col] == 0) {
                   locs[1] = toLoc;
                   mMoves.insert(CheckersMove(locs));
