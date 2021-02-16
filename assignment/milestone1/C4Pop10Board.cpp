@@ -356,6 +356,7 @@ unique_ptr<const Board::Key> C4Pop10Board::GetKey() const {
    int count = 0;
    unsigned long *curr = key->vals;
    char piece, val;
+   *curr = 0;
    for (row = DIM_H - 1; row >= 0; row--) {
       for (col = 0; col < DIM_W; col++) {
          piece = mBoard[row][col];
@@ -370,6 +371,7 @@ unique_ptr<const Board::Key> C4Pop10Board::GetKey() const {
          if (count == MAX_CELLS_PER_KEY) {
             count = 0;
             curr++;
+            *curr = 0;
          }
       }
    }
