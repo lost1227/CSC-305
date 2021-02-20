@@ -7,19 +7,6 @@ using namespace std;
 
 const Class C4Pop10View::mClass("C4Pop10View", C4Pop10View::Create);
 
-/*
-
-. . . . . . .
-. . . . . . .
-. . . . . . .
-. . . . . . .
-. . . . . . .
-. . . . . . .
--------------
-A B C D E F G
-Y
-
-*/
 void C4Pop10View::Draw(ostream &out) {
    auto board = dynamic_pointer_cast<const C4Pop10Board>(mModel);
    int row, col;

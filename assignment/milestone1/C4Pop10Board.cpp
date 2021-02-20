@@ -244,10 +244,7 @@ void C4Pop10Board::UndoLastMove() {
 }
 
 bool C4Pop10Board::IsPartOf4(int parCol) const {
-   int ndir;
-
-   int row, col;
-   int currCount, maxCount = 0;
+   int ndir, row, col, currCount, maxCount = 0;
 
    assert(InRange(0, parCol, DIM_W));
 
@@ -375,6 +372,8 @@ unique_ptr<const Board::Key> C4Pop10Board::GetKey() const {
          }
       }
    }
+   assert(curr == key->vals + 2);
+   assert(count < MAX_CELLS_PER_KEY);
    *curr = (*curr << 1) | ((mMoveFlg & RED) ? 0 : 1);
 
    return unique_ptr<const Board::Key>(key);
@@ -389,7 +388,7 @@ void C4Pop10Board::Rules::EndSwap() {
 
 istream &C4Pop10Board::Read(istream &is) {
    int row, col;
-   unsigned char size;
+   int size;
    unsigned short rowBits;
    Rules rules;
    C4Pop10Move *move;
@@ -413,6 +412,9 @@ istream &C4Pop10Board::Read(istream &is) {
    is.read((char *)&mYellowScore, sizeof(mYellowScore));
 
    is.read((char *)&size, sizeof(size));
+   size = EndianXfer(size);
+
+   assert(size >= 0);
    mMoveHist.clear();
    while (is && size--) {
       move = new C4Pop10Move();
@@ -427,7 +429,7 @@ istream &C4Pop10Board::Read(istream &is) {
 
 ostream &C4Pop10Board::Write(ostream &os) const {
    int row, col;
-   unsigned char size = mMoveHist.size();
+   int size = mMoveHist.size();
    unsigned short rowBits;
    Rules *rules = reinterpret_cast<Rules *>(GetOptions());
 
@@ -446,6 +448,7 @@ ostream &C4Pop10Board::Write(ostream &os) const {
    os.write((char *)&mRedScore, sizeof(mRedScore));
    os.write((char *)&mYellowScore, sizeof(mYellowScore));
 
+   size = EndianXfer(size);
    os.write((char *)&size, sizeof(size));
    for (auto &mv : mMoveHist)
       mv->Write(os);

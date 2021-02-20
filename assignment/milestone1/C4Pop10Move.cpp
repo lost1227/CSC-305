@@ -69,7 +69,7 @@ C4Pop10Move::operator string() const {
 
 void C4Pop10Move::operator=(const string &src) {
    static regex moveMatcher(
-    R"(^\s*(?:(Pass)|(Place)\s+([A-G])|(Keep)\s+([A-G])|(Take)\s+([A-G])\s+place\s+([A-G]))\s*$)");
+    R"(^ *(?:(Pass)|(Place) +([A-G])|(Keep) +([A-G])|(Take) +([A-G]) +place +([A-G])) *$)");
    smatch matches;
 
    if (!regex_match(src, matches, moveMatcher)) {

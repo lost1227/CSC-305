@@ -25,21 +25,21 @@ void PrintMoves(const list<shared_ptr<const Board::Move>> &lst) {
    int numCols, col, maxLen = 1;
    const int maxCols = 80;
 
-   for (auto lstItr = lst.begin(); lstItr != lst.end(); lstItr++)
-      maxLen = max(maxLen, (int)((string)(**lstItr)).size());
+   for (auto listItem : lst)
+      maxLen = max(maxLen, (int)((string)(*listItem)).size());
 
    numCols = maxCols / (maxLen + 1);  // Figure number of columns
 
    // Left justify following output
    cout << setiosflags(ios::left) << resetiosflags(ios::right);
    col = 0;
-   for (auto lstItr = lst.begin(); lstItr != lst.end(); lstItr++) {
+   for (auto lstItem : lst) {
       if (!col)
          cout << endl;
       else
          cout << " ";
       col = (col + 1) % numCols;
-      cout << setw(maxLen) << (string) * *lstItr;
+      cout << setw(maxLen) << (string)*lstItem;
    }
    cout << endl;
 }
