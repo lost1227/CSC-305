@@ -98,3 +98,38 @@ _state
 doMove Keep C
 _state
 doMove Pass
+
+undoLastMove 1000
+testPlay 5 10
+_state
+testPlay 5 40
+_state
+testPlay 5 10
+_state
+testPlay 5 10
+_state
+testPlay 5 10
+_state
+testPlay 5 10
+_state
+testPlay 5 100
+_state
+
+undoLastMove 10000
+testPlay 10 10
+_state
+testPlay 10 40
+_state
+testPlay 10 10
+_state
+testPlay 10 10
+_state
+testPlay 10 10
+_state
+testPlay 10 10
+_state
+testPlay 10 10
+_state
+testPlay 10 100
+_state
+undoLastMove 1000

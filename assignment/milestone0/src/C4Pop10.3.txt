@@ -86,6 +86,36 @@ compareKeys after_take.board
 doMove Pass
 compareKeys before_take.board
 compareKeys after_take.board
+_state
+loadBoard before_take.board
+_state
+compareKeys before_take.board
+compareKeys after_take.board
+_state
+
+undoLastMove 1000
+saveBoard start.board
+_state
+loadBoard before_take.board
+_state
+loadBoard start.board
+_state
+compareKeys before_take.board
+testPlay 15 1000
+_state
+saveBoard end.board
+loadBoard start.board
+_state
+loadBoard end.board
+_state
+loadBoard start.board
+testPlay 42 1000
+_state
+saveBoard end2.board
+loadBoard end.board
+_state
+loadBoard end2.board
+_state
 
 _state
 setOptions
