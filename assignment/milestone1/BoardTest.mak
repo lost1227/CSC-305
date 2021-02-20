@@ -3,7 +3,9 @@ CPPFLAGS = -Wall -Werror -pedantic -g -std=c++11
 
 CPPFLAGS += -DLITTLE_ENDIAN
 CPPFLAGS += -Wno-error=char-subscripts -Wno-error=parentheses -Wno-error=delete-incomplete
-CPPFLAGS += -fsanitize=undefined -fsanitize=address
+# CPPFLAGS += -fsanitize=undefined -fsanitize=address
+
+LINKFLAGS = -static-libstdc++
 
 SRCS = $(shell find . -name "*.cpp")
 OBJS = $(SRCS:.cpp=.o)
@@ -20,7 +22,7 @@ COMPILE.cpp = $(CXX) $(DEPFLAGS) $(CFLAGS) $(CPPFLAGS) $(TARGET_ARCH) -c
 all: $(MAIN)
 
 $(MAIN) : $(OBJS)
-	$(CXX) $(CPPFLAGS) $(OBJS) -o $(MAIN)
+	$(CXX) $(LINKFLAGS) $(CPPFLAGS) $(OBJS) -o $(MAIN)
 
 $(DEPDIR): ; @mkdir -p $@
 

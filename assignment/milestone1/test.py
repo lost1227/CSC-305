@@ -10,6 +10,9 @@ import multiprocessing
 debug = []
 # debug=["C4Pop10.3"]
 
+comp=True
+valgrind=False
+
 script_dir = Path(__file__).resolve().parent
 
 makefile = script_dir / "BoardTest.mak"
@@ -29,14 +32,15 @@ assert genScript.exists()
 if not testDir.exists():
     testDir.mkdir()
 
-completion = subprocess.run(["python3", "./clean.py"])
-if completion.returncode > 0:
-    print("Clean error")
-    exit(1)
-completion = subprocess.run(["make", "-f", str(makefile), "-j", str(multiprocessing.cpu_count())])
-if completion.returncode > 0:
-    print("Compile error")
-    exit(1)
+if comp:
+    completion = subprocess.run(["python3", "./clean.py"])
+    if completion.returncode > 0:
+        print("Style error")
+        exit(1)
+    completion = subprocess.run(["make", "-f", str(makefile), "-j", str(multiprocessing.cpu_count())])
+    if completion.returncode > 0:
+        print("Compile error")
+        exit(1)
 
 def run_file(f, currDir, tmpDir):
     if currDir.is_dir():
@@ -66,6 +70,8 @@ def run_file(f, currDir, tmpDir):
         with actualPathOut.open("w") as ooF, actualPathErr.open("w") as oef:
             if currDir.name in debug:
                 subprocess.run(["python3", str(script_dir / "debug.py"), currDir.stem + "Board", "-b", myBoardTest], cwd=tmpDir, stdin=inF, stdout=ooF, stderr=oef)
+            elif valgrind:
+                subprocess.run(["valgrind", str(myBoardTest), currDir.stem + "Board"], cwd=tmpDir, stdin=inF, stdout=ooF, stderr=oef)
             else:
                 subprocess.run([str(myBoardTest), currDir.stem + "Board"], cwd=tmpDir, stdin=inF, stdout=ooF, stderr=oef)
     message = "\033[92mSUCCESS\033[0m"
@@ -75,7 +81,7 @@ def run_file(f, currDir, tmpDir):
         if res.returncode != 0:
             message = "\033[91mFAIL\033[0m"
     if not "FAIL" in message:
-        if actualPathErr.stat().st_size > 0:
+        if not valgrind and actualPathErr.stat().st_size > 0:
             message = "\033[93mWARN\033[0m"
     print("{:>12} {}".format(currDir.name, message))
 
