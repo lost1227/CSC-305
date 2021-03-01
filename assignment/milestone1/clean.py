@@ -6,6 +6,8 @@ from itertools import chain
 
 script_dir = Path(__file__).resolve().parent
 
+tidy = False
+
 limits = {
    "C4Pop10Board.h" : 78,
    "C4Pop10Board.cpp" : 340,
@@ -31,7 +33,8 @@ pat = re.compile("(\d+) countable lines")
 ec = 0
 
 for f in chain(script_dir.glob("*.h"), script_dir.glob("*.cpp")):
-   subprocess.run(["clang-format-12", "-Werror", "--style=file", "-i", f])
+   if tidy:
+      subprocess.run(["clang-format-12", "-Werror", "--style=file", "-i", f])
    completion = subprocess.run([script_dir / "smartcount" , f], stdout=subprocess.PIPE, text=True)
    match = pat.search(completion.stdout)
    if f.name in limits:

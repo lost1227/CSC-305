@@ -1,8 +1,6 @@
 #ifndef BASIC_KEY_H
 #define BASIC_KEY_H
 
-#include <typeinfo>
-
 #include "Board.h"
 #include "MyLib.h"
 
@@ -26,7 +24,9 @@ public:
 
 template<int size>
 bool BasicKey<size>::operator==(const Board::Key &other) const {
-   const BasicKey<size> *oPtr = dynamic_cast<const BasicKey<size> *>(&other);
+   const BasicKey<size> *oPtr;
+
+   oPtr = dynamic_cast<const BasicKey<size> *>(&other);
    assert(oPtr != nullptr);
    for (int i = 0; i < size; i++) {
       if (vals[i] != oPtr->vals[i])
@@ -37,7 +37,9 @@ bool BasicKey<size>::operator==(const Board::Key &other) const {
 
 template<int size>
 bool BasicKey<size>::operator<(const Board::Key &other) const {
-   const BasicKey<size> *oPtr = dynamic_cast<const BasicKey<size> *>(&other);
+   const BasicKey<size> *oPtr;
+
+   oPtr = dynamic_cast<const BasicKey<size> *>(&other);
    assert(oPtr != nullptr);
    for (int i = 0; i < size; i++) {
       if (vals[i] != oPtr->vals[i])
@@ -49,6 +51,7 @@ bool BasicKey<size>::operator<(const Board::Key &other) const {
 template<int size>
 std::istream &BasicKey<size>::Read(std::istream &stream) {
    ulong readVal;
+
    for (auto &val : vals) {
       stream.read((char *)&readVal, sizeof(readVal));
       readVal = EndianXfer((uint)readVal);
@@ -60,6 +63,7 @@ std::istream &BasicKey<size>::Read(std::istream &stream) {
 template<int size>
 std::ostream &BasicKey<size>::Write(std::ostream &stream) const {
    ulong writeVal;
+
    for (auto &val : vals) {
       writeVal = val;
       writeVal = EndianXfer((uint)writeVal);

@@ -22,7 +22,7 @@ const C4Pop10Board::Dir C4Pop10Board::mDirs[ALL_DIRS]
  = {{1, 1}, {1, -1}, {0, 1}, {1, 0}};
 
 C4Pop10Board::C4Pop10Board()
-    : mMoveFlg{0}, mFreeCols{DIM_W}, mValidScores{false} {
+ : mMoveFlg{0}, mFreeCols{DIM_W}, mValidScores{false} {
    memset(mBoard, 0, sizeof(mBoard));
 }
 
@@ -51,7 +51,7 @@ inline int C4Pop10Board::CountCol(int col) const {
    int lookAhead;
    char piece = mBoard[0][col];
    for (lookAhead = 0; lookAhead < DIM_H && mBoard[lookAhead][col] == piece;
-        lookAhead++)
+    lookAhead++)
       ;
    return lookAhead;
 }
@@ -64,6 +64,7 @@ void C4Pop10Board::RecalculateScores() const {
    int nDir;
    bool redHasSafeRow = false, yellowHasSafeRow = false;
    PlayerScore *currPlayerScore;
+
    for (auto &val : mBottomRowVal)
       val = C4Pop10Board::PieceVal::UNKNOWN;
 
@@ -81,13 +82,12 @@ void C4Pop10Board::RecalculateScores() const {
       }
       // Check for safe discs in a row along the bottom
       for (lookAhead = curr; lookAhead < DIM_W && mBoard[0][lookAhead] == piece;
-           lookAhead++)
+       lookAhead++)
          ;
       count = lookAhead - curr;
       if (count >= 4) {
-         for (i = 0; i < count; i++) {
+         for (i = 0; i < count; i++)
             mBottomRowVal[curr + i] = C4Pop10Board::PieceVal::SAFE_ROW;
-         }
          if (piece & RED)
             redHasSafeRow = true;
          else
@@ -102,16 +102,14 @@ void C4Pop10Board::RecalculateScores() const {
       }
       // Check for threat disks
       for (nDir = 0; nDir < DIAG_DIRS
-           && mBottomRowVal[curr] == C4Pop10Board::PieceVal::UNKNOWN;
-           nDir++) {
+       && mBottomRowVal[curr] == C4Pop10Board::PieceVal::UNKNOWN; nDir++) {
          count = 0;
          for (row = 0, col = curr; InRange(0, row, DIM_H)
-              && InRange(0, col, DIM_W) && mBoard[row][col] == piece;
-              row += mDirs[nDir].dRow, col += mDirs[nDir].dCol)
+          && InRange(0, col, DIM_W) && mBoard[row][col] == piece;
+          row += mDirs[nDir].dRow, col += mDirs[nDir].dCol)
             count++;
-         if (count >= 4) {
+         if (count >= 4)
             mBottomRowVal[curr] = C4Pop10Board::PieceVal::THREAT;
-         }
       }
       // If all checks fail, the piece has no value
       if (mBottomRowVal[curr] == C4Pop10Board::PieceVal::UNKNOWN)
@@ -198,8 +196,9 @@ void C4Pop10Board::ApplyMove(unique_ptr<Move> move) {
 
 void C4Pop10Board::UndoLastMove() {
    int row, col;
-   // char piece;
-   shared_ptr<const C4Pop10Move> move = mMoveHist.back();
+   shared_ptr<const C4Pop10Move> move;
+
+   move = mMoveHist.back();
    mMoveHist.pop_back();
 
    mMoveFlg = (mMoveFlg == RED) ? 0 : RED;
@@ -251,14 +250,14 @@ bool C4Pop10Board::IsPartOf4(int parCol) const {
    for (ndir = 0; ndir < ALL_DIRS; ndir++) {
       currCount = 0;
       for (row = 0, col = parCol;
-           InRange(0, row, DIM_H) && InRange(0, col, DIM_W) && mBoard[row][col]
-           && ((mBoard[row][col] & RED) == mMoveFlg);
-           row += mDirs[ndir].dRow, col += mDirs[ndir].dCol)
+       InRange(0, row, DIM_H) && InRange(0, col, DIM_W) && mBoard[row][col]
+       && ((mBoard[row][col] & RED) == mMoveFlg);
+       row += mDirs[ndir].dRow, col += mDirs[ndir].dCol)
          ;
       for (row -= mDirs[ndir].dRow, col -= mDirs[ndir].dCol;
-           InRange(0, row, DIM_H) && InRange(0, col, DIM_W) && mBoard[row][col]
-           && ((mBoard[row][col] & RED) == mMoveFlg);
-           row -= mDirs[ndir].dRow, col -= mDirs[ndir].dCol)
+       InRange(0, row, DIM_H) && InRange(0, col, DIM_W) && mBoard[row][col]
+       && ((mBoard[row][col] & RED) == mMoveFlg);
+       row -= mDirs[ndir].dRow, col -= mDirs[ndir].dCol)
          currCount++;
       maxCount = max(maxCount, currCount);
    }
@@ -269,9 +268,9 @@ void C4Pop10Board::GetAllMoves(list<unique_ptr<Move>> *moves) const {
    int col;
    char piece;
    bool kept[DIM_W];
-   assert(moves->size() == 0);
-
    vector<int> openCols;
+
+   assert(moves->size() == 0);
 
    if (mRedScore.keptDisks == WIN_DISC_COUNT
     || mYellowScore.keptDisks == WIN_DISC_COUNT) {
@@ -353,6 +352,7 @@ unique_ptr<const Board::Key> C4Pop10Board::GetKey() const {
    int count = 0;
    unsigned long *curr = key->vals;
    char piece, val;
+
    *curr = 0;
    for (row = DIM_H - 1; row >= 0; row--) {
       for (col = 0; col < DIM_W; col++) {

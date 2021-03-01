@@ -29,7 +29,8 @@ Object *CheckersBoard::CreateBoard() {
 CheckersBoard::Direction CheckersBoard::mDirs[]
  = {{1, -1}, {1, 1}, {-1, -1}, {-1, 1}};
 
-CheckersBoard::CheckersBoard(void): mValue(0), mMoveFlg(0), mMovesValid(false) {
+CheckersBoard::CheckersBoard(void)
+ : mValue(0), mMoveFlg(0), mMovesValid(false) {
    int row, col;
 
    for (row = 0; row < DIM; row++)
@@ -100,7 +101,7 @@ void CheckersBoard::ApplyMove(unique_ptr<Move> uMove) {
 
    // King me
    if ((((piece & WHITE) && here.row == 0)
-        || (!(piece & WHITE) && here.row == DIM - 1))
+    || (!(piece & WHITE) && here.row == DIM - 1))
     && !(piece & KING)) {
       mValue += sense * (mRules.kingWgt - PIECEWGT);
       piece |= KING;
@@ -133,7 +134,6 @@ void CheckersBoard::UndoLastMove() {
 
    assert(mv->mSeq.size() >= 2);
 
-   // Invalidate move options
    mMovesValid = false;
 
    // Set who's turn it is
@@ -196,9 +196,8 @@ void CheckersBoard::GetAllMoves(list<unique_ptr<Move>> *moves) const {
    if (!mMovesValid)
       CalcMoves();
    assert(moves->empty());
-   for (auto &m : mMoves) {
+   for (auto &m : mMoves)
       moves->push_back(move(m.Clone()));
-   }
 }
 
 unique_ptr<Board::Move> CheckersBoard::CreateMove() const {
@@ -216,9 +215,11 @@ unique_ptr<const Board::Key> CheckersBoard::GetKey() const {
    ulong *dataptr = key->vals;
    char piece;
    int saved = 0;
+   int row, col;
+
    *dataptr = (mMoveFlg == WHITE) ? 1 : 0;
-   for (int row = DIM - 1; row >= 0; row--) {
-      for (int col = 0; col < DIM / 2; col++) {
+   for (row = DIM - 1; row >= 0; row--) {
+      for (col = 0; col < DIM / 2; col++) {
          piece = mBoard[row][(col * 2) + (row % 2)];
          if (saved == 10) {
             saved = 0;
@@ -238,6 +239,7 @@ void *CheckersBoard::GetOptions() {
 
 void CheckersBoard::SetOptions(const void *opts) {
    const Rules *rOpts = reinterpret_cast<const Rules *>(opts);
+
    mRules = *rOpts;
    for (auto &board : mRoster) {
       board->NewOptions();
@@ -294,11 +296,12 @@ ostream &CheckersBoard::Write(ostream &os) const {
 void CheckersBoard::NewOptions() {
    list<Move *>::iterator itr;
    char piece;
+   int row, col;
 
    mValue = mMoveFlg == WHITE ? -mRules.moveWgt : mRules.moveWgt;
 
-   for (int row = 0; row < DIM; row++)
-      for (int col = 0; col < DIM; col++)
+   for (row = 0; row < DIM; row++)
+      for (col = 0; col < DIM; col++)
          if ((piece = mBoard[row][col])) {
             mValue += (piece & WHITE ? -1 : 1)
              * (piece & KING ? mRules.kingWgt : PIECEWGT);
@@ -308,8 +311,13 @@ void CheckersBoard::NewOptions() {
          }
 }
 
-// Precompute all possible moves.  Do not alter any existing code here!!  All
-// provided code is correct.  Fill in the move-forward section only.
+/*
+A Checkers jump is valid if and only if:
+   - The destination is valid (in range && not on top of another piece)
+   - The destination is not the spot we just jumped from
+   - The piece we jumped over is the opposite color
+   - The same jump is not already in the move history
+*/
 void CheckersBoard::CalcMoves() const {
    int row, col, forward = mMoveFlg == WHITE ? -1 : 1, numDirs;
    char piece, jumpPiece;
@@ -346,16 +354,8 @@ void CheckersBoard::CalcMoves() const {
                   thisLoc = locs.back();
                   toLoc
                    = Loc(thisLoc.row + 2 * forward * mDirs[dirs.back()].rDelta,
-                    thisLoc.col + 2 * mDirs[dirs.back()].cDelta);
+                   thisLoc.col + 2 * mDirs[dirs.back()].cDelta);
 
-                  /*
-                     The move is only valid if:
-                        - The destination is valid (in range && not on top of
-                     another piece)
-                        - The destination is not the spot we just jumped from
-                        - The piece we jumped over is the opposite color
-                        - The same jump is not already in the move history
-                  */
                   isValidMove = true;
                   isValidMove = isValidMove && InRange(toLoc)
                    && (!mBoard[toLoc.row][toLoc.col]);
@@ -363,9 +363,8 @@ void CheckersBoard::CalcMoves() const {
                    = isValidMove || ((toLoc.row == row) && (toLoc.col == col));
                   // These checks are relatively expensive, and only need to be
                   // done for king pieces
-                  if (piece & KING) {
-                     // The destination should not be the spot we just jumped
-                     // from
+                  if (piece & KING) { 
+                     // The destination can't be the spot we just jumped from
                      isValidMove = isValidMove
                       && !(locs.size() > 1 && *(locs.end() - 2) == toLoc);
                      // The jump has already occurred

@@ -26,15 +26,14 @@ void *CheckersMove::operator new(size_t sz) {
 }
 
 void CheckersMove::operator delete(void *p) {
-   unique_ptr<CheckersMove, FreeListDeleter> ptr(
-    (CheckersMove *)p, FreeListDeleter());
-   mFreeList.push_back(move(ptr));
+   unique_ptr<CheckersMove, FreeListDeleter> ptr((CheckersMove *)p);
 
+   mFreeList.push_back(move(ptr));
    mOutstanding--;
 }
 
 CheckersMove::CheckersMove(const vector<CheckersBoard::Loc> &seq)
-    : mSeq(seq), mWasKinged(false) {
+ : mSeq(seq), mWasKinged(false) {
 }
 
 bool CheckersMove::operator==(const Board::Move &rhs) const {
@@ -42,8 +41,8 @@ bool CheckersMove::operator==(const Board::Move &rhs) const {
    vector<CheckersBoard::Loc>::const_iterator itr1, itr2;
 
    for (itr1 = mSeq.begin(), itr2 = oRhs.mSeq.begin();
-        itr1 != mSeq.end() && itr2 != oRhs.mSeq.end() && *itr1 == *itr2;
-        itr1++, itr2++)
+    itr1 != mSeq.end() && itr2 != oRhs.mSeq.end() && *itr1 == *itr2;
+    itr1++, itr2++)
       ;
 
    return itr1 == mSeq.end() && itr2 == oRhs.mSeq.end();
@@ -52,9 +51,10 @@ bool CheckersMove::operator==(const Board::Move &rhs) const {
 bool CheckersMove::operator<(const Board::Move &rhs) const {
    const CheckersMove &oRhs = dynamic_cast<const CheckersMove &>(rhs);
    vector<CheckersBoard::Loc>::const_iterator itr1, itr2;
+
    for (itr1 = mSeq.begin(), itr2 = oRhs.mSeq.begin();
-        itr1 != mSeq.end() && itr2 != oRhs.mSeq.end() && *itr1 == *itr2;
-        itr1++, itr2++)
+    itr1 != mSeq.end() && itr2 != oRhs.mSeq.end() && *itr1 == *itr2;
+    itr1++, itr2++)
       ;
    return (itr1 == mSeq.end() && itr2 != oRhs.mSeq.end())
     || (itr1 != mSeq.end() && itr2 != oRhs.mSeq.end() && *itr1 < *itr2);
@@ -113,10 +113,12 @@ unique_ptr<Board::Move> CheckersMove::Clone() const {
 
 istream &CheckersMove::Read(istream &is) {
    char numSteps, row, col;
+
    mSeq.clear();
    is.read((char *)&numSteps, sizeof(numSteps));
    assert(numSteps >= 0);
    mSeq.reserve(numSteps);
+
    for (int i = 0; i < numSteps; i++) {
       is.read((char *)&row, sizeof(row));
       is.read((char *)&col, sizeof(col));

@@ -39,6 +39,7 @@ BreakBeforeBinaryOperators: All
 BreakBeforeTernaryOperators: true
 BreakConstructorInitializers: BeforeComma
 BreakStringLiterals: false
+ConstructorInitializerIndentWidth: 1
 ContinuationIndentWidth: 1
 Cpp11BracedListStyle: true
 DeriveLineEnding: false
@@ -47,6 +48,7 @@ IncludeBlocks: Regroup
 IndentCaseLabels: true
 IndentWrappedFunctionNames: true
 KeepEmptyLinesAtTheStartOfBlocks: false
+MaxEmptyLinesToKeep: 1
 NamespaceIndentation: Inner
 PointerAlignment: Right
 SortIncludes: true

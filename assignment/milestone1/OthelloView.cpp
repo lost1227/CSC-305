@@ -18,8 +18,8 @@ void OthelloView::Draw(ostream &out) {
          sqr = ob->GetSquare(row, col);
          rtn = rtn
           + ((sqr == OthelloBoard::mWPiece)
-            ? "W"
-            : ((sqr == OthelloBoard::mBPiece) ? "B" : "."));
+          ? "W"
+          : ((sqr == OthelloBoard::mBPiece) ? "B" : "."));
       }
       rtn += "\n";
    }

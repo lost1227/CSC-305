@@ -13,7 +13,7 @@ public:
    static constexpr char NONE = 0, PIECE = 1, RED = 2;
    static constexpr int WIN_DISC_COUNT = 10;
    static constexpr int SHIFT_COUNT = 2, SHIFT_MASK = 3;
-   static constexpr int MAX_CELLS_PER_KEY = 32 / 2;
+   static constexpr int MAX_CELLS_PER_KEY = 32 / SHIFT_COUNT;
 
    struct Rules {
       int safeWgt;
@@ -55,14 +55,13 @@ public:
 
    const char GetLoc(int row, int col) const;
 
+private:
    struct PlayerScore {
-      char safeDisks, threatDisks, keptDisks;
-      PlayerScore(): safeDisks{0}, threatDisks{0}, keptDisks{0} {}
+      char safeDisks = 0, threatDisks = 0, keptDisks = 0;
    };
 
    mutable PlayerScore mRedScore, mYellowScore;
 
-private:
    char mBoard[DIM_H][DIM_W];
    char mMoveFlg;
 
@@ -91,6 +90,7 @@ private:
    mutable PieceVal mBottomRowVal[DIM_W];
 
    static Rules mRules;
+
    static constexpr int DIAG_DIRS = 2, ALL_DIRS = 4;
    static const Dir mDirs[ALL_DIRS];
 };

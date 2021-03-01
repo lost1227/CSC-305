@@ -11,7 +11,7 @@ debug = []
 # debug=["C4Pop10.3"]
 
 comp=True
-valgrind=False
+valgrind=True
 
 script_dir = Path(__file__).resolve().parent
 
@@ -33,7 +33,7 @@ if not testDir.exists():
     testDir.mkdir()
 
 if comp:
-    completion = subprocess.run(["python3", "./clean.py"])
+    completion = subprocess.run(["python3", script_dir / "clean.py"])
     if completion.returncode > 0:
         print("Style error")
         exit(1)

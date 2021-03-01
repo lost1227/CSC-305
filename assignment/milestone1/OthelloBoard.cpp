@@ -16,9 +16,14 @@ BoardClass OthelloBoard::mClass("OthelloBoard", OthelloBoard::CreateBoard,
  "Othello", &OthelloView::mClass, &OthelloDlg::mClass, OthelloBoard::SetOptions,
  OthelloBoard::GetOptions);
 
-short OthelloBoard::mWeights[dim][dim] = {{16, 0, 8, 8, 8, 8, 0, 16},
- {0, 0, 0, 0, 0, 0, 0, 0}, {8, 0, 1, 1, 1, 1, 0, 8}, {8, 0, 1, 1, 1, 1, 0, 8},
- {8, 0, 1, 1, 1, 1, 0, 8}, {8, 0, 1, 1, 1, 1, 0, 8}, {0, 0, 0, 0, 0, 0, 0, 0},
+short OthelloBoard::mWeights[dim][dim] = {
+ {16, 0, 8, 8, 8, 8, 0, 16},
+ {0, 0, 0, 0, 0, 0, 0, 0},
+ {8, 0, 1, 1, 1, 1, 0, 8},
+ {8, 0, 1, 1, 1, 1, 0, 8},
+ {8, 0, 1, 1, 1, 1, 0, 8},
+ {8, 0, 1, 1, 1, 1, 0, 8},
+ {0, 0, 0, 0, 0, 0, 0, 0},
  {16, 0, 8, 8, 8, 8, 0, 16}};
 
 // Directions are row, column
@@ -29,8 +34,6 @@ const Class *OthelloBoard::GetClass() const {
    return &mClass;
 }
 
-// This is a definition. It doesn't look like it, but this is calling the
-// default constructor
 set<OthelloBoard *> OthelloBoard::mRoster{};
 
 Object *OthelloBoard::CreateBoard() {

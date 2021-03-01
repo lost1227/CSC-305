@@ -21,7 +21,7 @@ void CheckersView::Draw(ostream &out) {
          piece = ob->getPiece(loc);
          symbol = piece ? (piece & CheckersBoard::WHITE) ? 'w' : 'b' : '.';
          out << (char)((piece & CheckersBoard::KING) ? toupper(symbol) : symbol)
-             << "  ";
+          << "  ";
       }
       out << endl;
    }
@@ -29,7 +29,7 @@ void CheckersView::Draw(ostream &out) {
    out << endl << "           Black" << endl;
 
    out << endl
-       << (ob->GetWhoseMove() ? "White's move" : "Black's move") << endl;
+    << (ob->GetWhoseMove() ? "White's move" : "Black's move") << endl;
 }
 
 const Class *CheckersView::GetClass() const {

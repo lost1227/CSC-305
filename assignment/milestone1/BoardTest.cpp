@@ -22,13 +22,13 @@
 using namespace std;
 
 void PrintMoves(const list<shared_ptr<const Board::Move>> &lst) {
-   int numCols, col, maxLen = 1;
    const int maxCols = 80;
+   int numCols, col, maxLen = 1;
 
    for (auto listItem : lst)
       maxLen = max(maxLen, (int)((string)(*listItem)).size());
 
-   numCols = maxCols / (maxLen + 1);  // Figure number of columns
+   numCols = maxCols / (maxLen + 1);
 
    // Left justify following output
    cout << setiosflags(ios::left) << resetiosflags(ios::right);
@@ -45,23 +45,20 @@ void PrintMoves(const list<shared_ptr<const Board::Move>> &lst) {
 }
 
 int main(int argc, char **argv) {
-   const int argLen = 200, maxCols = 80, minArgs = 2, maxArgs = 3;
+   const int minArgs = 2, maxArgs = 3;
    const BoardClass *boardClass;
    shared_ptr<Board> board;
    unique_ptr<View> brdView;
    unique_ptr<Dialog> brdDlg;
    shared_ptr<Board::Move> move, cmpMove;
    string command, arg, commandLine;
-   char cArg[argLen];
    int count, seed, ndx, runLimit, commentStart;
    list<unique_ptr<Board::Move>> lst;
    list<shared_ptr<const Board::Move>> cLst;
    bool testRun, controlledTest;
+   void *rules = nullptr;
 
    vector<const BoardClass *> boards = BoardClass::GetAllClasses();
-
-   (void)maxCols;
-   (void)cArg;
 
    if (argc < minArgs || argc > maxArgs) {
       cout << "Usage: BoardTest BoardClass [runLimit]" << endl;
@@ -71,8 +68,8 @@ int main(int argc, char **argv) {
    for (auto &bc : boards) {
       if (bc->GetName() == argv[1]) {
          boardClass = bc;
-         board
-          = shared_ptr<Board>(dynamic_cast<Board *>(boardClass->NewInstance()));
+         board = shared_ptr<Board>(
+          dynamic_cast<Board *>(boardClass->NewInstance()));
          brdView = unique_ptr<View>(
           dynamic_cast<View *>(boardClass->GetViewClass()->NewInstance()));
          brdDlg = unique_ptr<Dialog>(
@@ -213,7 +210,7 @@ int main(int argc, char **argv) {
          }
          // ************************ setOptions ************************
          else if (command.compare("setOptions") == 0) {
-            void *rules = nullptr;
+            assert(rules == nullptr);
             try {
                rules = boardClass->GetOptions();
                if (brdDlg->Run(cin, cout, rules))
@@ -269,7 +266,6 @@ int main(int argc, char **argv) {
             cout << endl << "All Moves: ";
             PrintMoves(cLst);
          }
-
          // ************************ testPlay ************************
          // ************************ testRun  ************************
          else if (command.compare("testPlay") == 0

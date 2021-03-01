@@ -8,17 +8,17 @@ using namespace std;
 
 const Class C4Pop10Dlg::mClass("C4Pop10Dlg", C4Pop10Dlg::Create);
 
-static constexpr int SAFE_MIN = 1, SAFE_MAX = 500, KEPT_MIN = 1,
-                     KEPT_MAX = 1000, THREAT_MIN = 1, THREAT_MAX = 200,
-                     MOVE_MIN = 1, MOVE_MAX = 200;
+static constexpr int SAFE_MIN = 1, SAFE_MAX = 500, KEPT_MIN = 1;
+static constexpr int KEPT_MAX = 1000, THREAT_MIN = 1, THREAT_MAX = 200;
+static constexpr int MOVE_MIN = 1, MOVE_MAX = 200;
 
 bool C4Pop10Dlg::Run(istream &in, ostream &out, void *data) {
    C4Pop10Board::Rules *rules = reinterpret_cast<C4Pop10Board::Rules *>(data);
    char resp;
    out << "Safe disc weight: " << rules->safeWgt << endl
-       << "Kept disc weight: " << rules->keptWgt << endl
-       << "Threat weight: " << rules->threatWgt << endl
-       << "Move weight: " << rules->moveWght << endl;
+    << "Kept disc weight: " << rules->keptWgt << endl
+    << "Threat weight: " << rules->threatWgt << endl
+    << "Move weight: " << rules->moveWght << endl;
 
    out << endl << "Modify? [y/n] ";
    if ((in >> resp).eof())

@@ -29,7 +29,7 @@ void Dialog::ReadLimitInt(
             os << "Unexpected garbage after value." << endl;
          else if (*val < lo || *val > hi)
             os << "Please enter a value between " << lo << " and " << hi
-               << endl;
+             << endl;
          else
             valid = true;
       }

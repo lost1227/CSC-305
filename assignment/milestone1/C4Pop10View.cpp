@@ -15,11 +15,10 @@ void C4Pop10View::Draw(ostream &out) {
    for (row = C4Pop10Board::DIM_H - 1; row >= 0; row--) {
       for (col = 0; col < C4Pop10Board::DIM_W; col++) {
          piece = board->GetLoc(row, col);
-         if (piece & C4Pop10Board::PIECE) {
+         if (piece & C4Pop10Board::PIECE)
             out << ((piece & C4Pop10Board::RED) ? "R" : "Y");
-         } else {
+         else
             out << ".";
-         }
          if (col < C4Pop10Board::DIM_W - 1)
             out << " ";
       }

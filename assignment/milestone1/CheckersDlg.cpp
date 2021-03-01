@@ -9,15 +9,15 @@ using namespace std;
 Class CheckersDlg::mClass("CheckersDlg", CheckersDlg::Create);
 
 static constexpr int KING_MIN = 0, KING_MAX = 1000, BACK_MIN = 0,
-                     BACK_MAX = 1000, MOVE_MIN = 0, MOVE_MAX = 100;
+ BACK_MAX = 1000, MOVE_MIN = 0, MOVE_MAX = 100;
 
 bool CheckersDlg::Run(istream &in, ostream &out, void *data) {
    CheckersBoard::Rules *rules = reinterpret_cast<CheckersBoard::Rules *>(data);
    char resp;
    out << "(Piece weight is always " << CheckersBoard::PIECEWGT << ")" << endl
-       << "King weight: " << rules->kingWgt << endl
-       << "Back row weight: " << rules->backWgt << endl
-       << "Move weight: " << rules->moveWgt << endl;
+    << "King weight: " << rules->kingWgt << endl
+    << "Back row weight: " << rules->backWgt << endl
+    << "Move weight: " << rules->moveWgt << endl;
 
    out << endl << "Modify? [y/n] ";
    if ((in >> resp).eof())

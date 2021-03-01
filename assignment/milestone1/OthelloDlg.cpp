@@ -13,9 +13,9 @@ bool OthelloDlg::Run(istream &in, ostream &out, void *data) {
    char resp;
 
    out << "Side weight: " << rules->sideWgt << endl
-       << "Near side weight: " << rules->nearSideWgt << endl
-       << "Corner weight: " << rules->cornerWgt << endl
-       << "Inner weight: " << rules->innerWgt << endl;
+    << "Near side weight: " << rules->nearSideWgt << endl
+    << "Corner weight: " << rules->cornerWgt << endl
+    << "Inner weight: " << rules->innerWgt << endl;
 
    out << endl << "Modify? [y/n] ";
    if ((in >> resp).eof())

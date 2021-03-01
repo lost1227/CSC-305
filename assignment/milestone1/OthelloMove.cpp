@@ -24,10 +24,9 @@ void *OthelloMove::operator new(size_t sz) {
 }
 
 void OthelloMove::operator delete(void *p) {
-   unique_ptr<OthelloMove, FreeListDeleter> ptr(
-    (OthelloMove *)p, FreeListDeleter());
-   mFreeList.push_back(move(ptr));
+   unique_ptr<OthelloMove, FreeListDeleter> ptr((OthelloMove *)p);
 
+   mFreeList.push_back(move(ptr));
    mOutstanding--;
 }
 
