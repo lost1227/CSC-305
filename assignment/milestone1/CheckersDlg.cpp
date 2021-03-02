@@ -14,6 +14,7 @@ static constexpr int KING_MIN = 0, KING_MAX = 1000, BACK_MIN = 0,
 bool CheckersDlg::Run(istream &in, ostream &out, void *data) {
    CheckersBoard::Rules *rules = reinterpret_cast<CheckersBoard::Rules *>(data);
    char resp;
+
    out << "(Piece weight is always " << CheckersBoard::PIECEWGT << ")" << endl
     << "King weight: " << rules->kingWgt << endl
     << "Back row weight: " << rules->backWgt << endl

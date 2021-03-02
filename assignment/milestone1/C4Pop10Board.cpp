@@ -31,6 +31,7 @@ C4Pop10Board::~C4Pop10Board() {
 
 int C4Pop10Board::GetValue() const {
    int val;
+
    if (mRedScore.keptDisks == WIN_DISC_COUNT)
       return -kWinVal;
    if (mYellowScore.keptDisks == WIN_DISC_COUNT)
@@ -50,6 +51,7 @@ int C4Pop10Board::GetValue() const {
 inline int C4Pop10Board::CountCol(int col) const {
    int lookAhead;
    char piece = mBoard[0][col];
+
    for (lookAhead = 0; lookAhead < DIM_H && mBoard[lookAhead][col] == piece;
     lookAhead++)
       ;
@@ -141,7 +143,6 @@ void C4Pop10Board::RecalculateScores() const {
 void C4Pop10Board::ApplyMove(unique_ptr<Move> move) {
    shared_ptr<Move> ourMove{::move(move)};
    shared_ptr<C4Pop10Move> uMove = dynamic_pointer_cast<C4Pop10Move>(ourMove);
-
    char piece;
    int row, col;
 

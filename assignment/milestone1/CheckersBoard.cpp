@@ -128,6 +128,7 @@ void CheckersBoard::UndoLastMove() {
    vector<bool>::iterator wereKingsIter;
    shared_ptr<CheckersMove> mv
     = dynamic_pointer_cast<CheckersMove>(mMoveHist.back());
+
    mMoveHist.pop_back();
    movEndPos = mv->mSeq.back();
    movStartPos = mv->mSeq.front();

@@ -49,6 +49,7 @@ inline int C4Pop10Move::colStrToInt(const string &str) const {
 
 C4Pop10Move::operator string() const {
    ostringstream out;
+
    switch (mType) {
       case MoveType::PASS:
          out << "Pass";

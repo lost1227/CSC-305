@@ -15,6 +15,7 @@ static constexpr int MOVE_MIN = 1, MOVE_MAX = 200;
 bool C4Pop10Dlg::Run(istream &in, ostream &out, void *data) {
    C4Pop10Board::Rules *rules = reinterpret_cast<C4Pop10Board::Rules *>(data);
    char resp;
+
    out << "Safe disc weight: " << rules->safeWgt << endl
     << "Kept disc weight: " << rules->keptWgt << endl
     << "Threat weight: " << rules->threatWgt << endl
