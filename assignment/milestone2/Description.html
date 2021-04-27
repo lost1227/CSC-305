@@ -1,0 +1,265 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=windows-1252"/>
+	<title>Minimax Game System</title>
+	<meta name="generator" content="LibreOffice 6.3.5.2 (Windows)"/>
+	<meta name="created" content="00:00:00"/>
+	<meta name="changed" content="2021-03-10T00:37:30.784000000"/>
+	<meta name="created" content="00:00:00">
+	<meta name="created" content="00:00:00">
+	<meta name="created" content="00:00:00">
+	<style type="text/css">
+		p { color: #000000 }
+		p.msonormal { margin-bottom: 0in }
+	</style>
+</head>
+<body lang="en-US" text="#000000" dir="ltr"><p class="msonormal" align="center" style="margin-bottom: 0.2in">
+<font size="4" style="font-size: 14pt"><b>Minimax and Book</b></font></p>
+<p class="msonormal" align="center" style="margin-bottom: 0.2in"><font size="3" style="font-size: 12pt"><b>C++
+Milestone 2</b></font></p>
+<p class="msonormal" style="margin-bottom: 0.2in"><font size="3" style="font-size: 12pt"><b>Overview</b></font></p>
+<p class="msonormal" style="margin-bottom: 0.2in"><font size="2" style="font-size: 11pt">For
+this milestone, there are 4 steps, listed here in recommended order,
+though you may do them in any order you please. Most of the steps are
+described in greater detail below.</font></p>
+<p class="msonormal" style="margin-bottom: 0.2in"><font size="3" style="font-size: 12pt"><b>Requirements
+</b></font>
+</p>
+<p class="msonormal" style="margin-bottom: 0.2in"><font size="2" style="font-size: 11pt">A.
+Study carefully the code I provided in SimpleAIPlayer::Minimax, and
+be prepared to answer test questions on it. After you understand it
+well, fill in the missing statements to make your own
+SimpleAIPlayer::Minimax method. </font>
+</p>
+<p class="msonormal" style="margin-bottom: 0.2in"><font size="2" style="font-size: 11pt">B.
+Complete the Book class, filling in the base class in Book.h and
+completing the implementations of the Book methods. </font>
+</p>
+<p class="msonormal" style="margin-bottom: 0.2in"><font size="2" style="font-size: 11pt">C.
+Write the MakeBook.cpp file to generate a Book object of a given
+depth and level, thus testing your use of my minimax implementation.</font></p>
+<p class="msonormal" style="margin-bottom: 0.2in"><font size="2" style="font-size: 11pt">D.
+Augment the BestMove class to include a bestReply member as shown,
+and augment AIPlayer::Minimax to supply this value.</font></p>
+<p class="msonormal" style="margin-bottom: 0.2in"><font face="Courier New"><font size="1" style="font-size: 8pt">shared_ptr&lt;Board::Move&gt;</font></font>
+<font face="Courier New"><font size="1" style="font-size: 8pt">bestReply;
+</font></font><font color="#008000"><font face="Courier New"><font size="1" style="font-size: 8pt">//
+The best answering move to make (or 0 if game ends)</font></font></font></p>
+<p class="msonormal" style="margin-bottom: 0.2in"><font size="3" style="font-size: 12pt"><b>Requirements
+Details</b></font></p>
+<p class="msonormal" style="margin-bottom: 0.2in"><font size="2" style="font-size: 11pt"><b>Task
+A Fill in Blank Spots</b></font></p>
+<p class="msonormal" style="margin-bottom: 0.2in"><font size="2" style="font-size: 11pt">In-class
+discussion covers the minimax algorithm. Here are some details on the
+transposition table. For all Board types that can benefit from
+transposition tables as indicated by the UseTransposition method of
+BoardClass, we create a new empty transposition table at the top of
+each minimax exploration and use it for that exploration, passing it
+recursively to each subcall of Minimax, to be checked and possibly
+added to in each subcall. In this milestone, the Checkers, and
+C4Pop10 classes benefit from transposition, but Othello doesn&rsquo;t.
+</font>
+</p>
+<p class="msonormal" style="margin-bottom: 0.2in"><font size="2" style="font-size: 11pt">On
+each minimax call, we consult the transposition table for any
+lookahead level above 0 (which is always done by directly calling
+GetValue, as in the code skeleton I supplied). If the table has a
+precomputed best move with level at least as deep as the one you
+need, then use it. Likewise, save the result of any minimax
+computations of level 1 or greater in the transposition table (level
+0 computations aren&rsquo;t worth it since a call of GetValue is
+usually quicker than a table lookup). And, very importantly, we
+update the table even if it already has a key for the board you&rsquo;re
+computing, if your new computation is for a deeper lookahead level
+than the one in the transposition table.</font></p>
+<p class="msonormal" style="margin-bottom: 0.2in"><font size="2" style="font-size: 11pt"><b>Task
+B Implement the Book class.</b></font></p>
+<p class="msonormal" style="margin-bottom: 0.2in"><font size="2" style="font-size: 11pt">Book
+works just like an STL map (think derivation), mapping const Key
+pointers (like those you get back from GetKey) to BestMoves.&nbsp;
+You&rsquo;ll find the third template parameter of map useful here.
+You use a Book by obtaining a Key for a given board, and looking it
+up in the Book.&nbsp; If a suitable BestMove for that Key is already
+in the Book, you use it.&nbsp; &ldquo;Suitable&rdquo; means that the
+BestMove has depth at least as great as the depth needed.&nbsp; </font>
+</p>
+<p class="msonormal" style="margin-bottom: 0.2in"><font size="2" style="font-size: 11pt">There
+are two contexts in which we use a Book.&nbsp; First, as a
+transposition table (see above)&nbsp; Second, for any type of Board,
+we may pre-create a set of known BestMoves for certain board
+configurations and save this into a &ldquo;book file&rdquo;, which
+file we load at the start of a game and use when possible, avoiding
+minimax calculations altogether.&nbsp; The book becomes a permanent
+member datum and is referenced first when computing a move, with
+minimax calculation following as a &ldquo;last resort&rdquo;.&nbsp;
+MakeBook generates all&nbsp; possible board configurations resulting
+from the first X moves (the book's &quot;depth&quot;), does a minimax
+calculation for each, and places the result into a Book object.&nbsp;
+When the computations are done, MakeBook writes out the Book.&nbsp;
+Those who have played games like Chess or Othello know that a good
+player has &ldquo;stock&rdquo; responses for the initial few moves.
+The book file lets the computer do the same.</font></p>
+<p class="msonormal" style="margin-bottom: 0.2in"><font size="2" style="font-size: 11pt"><b>Task
+C Implement MakeBook</b></font></p>
+<p class="msonormal" style="margin-bottom: 0.2in"><font size="2" style="font-size: 11pt">Write
+a program &ldquo;MakeBook&rdquo; that works like the sample
+executable provided.&nbsp; MakeBook prompts for and accepts a single
+line of input of the form:</font></p>
+<p class="msonormal" style="margin-bottom: 0.2in"><font size="2" style="font-size: 11pt">BoardClass
+minimaxLevel bookDepth fileName</font></p>
+<p class="msonormal" style="margin-bottom: 0.2in"><font size="2" style="font-size: 11pt">MinimaxLevel
+is the minimax lookahead to use when determining a best move for each
+board key.&nbsp; BookDepth indicates how many boards to generate.&nbsp;
+Specifically, it tells how many halfmoves from the starting board
+should be covered by the book file.&nbsp; A minimaxLevel of 5 and a
+bookDepth of 2 indicate that you should generate a best move for the
+initial board and all boards reachable from it in two halfmoves, and
+that for each such board you should do a lookahead-5 minimax
+exploration to determine the best move.&nbsp; </font>
+</p>
+<p class="msonormal" style="margin-bottom: 0.2in"><font size="2" style="font-size: 11pt">I
+generated the boards using recursion, and you'll almost certainly
+have to as well.&nbsp; The optimal move for each board is determined
+by calling Minimax with the lookahead specified, so in fact MakeBook
+uses double-recursion.&nbsp; </font>
+</p>
+<p class="msonormal" style="margin-bottom: 0.2in"><font size="2" style="font-size: 11pt">When
+the book is complete, write it to a binary &quot;book file&quot;
+having the specified fileName.&nbsp; In milestone 3&nbsp; you&rsquo;ll
+use this book file to avoid minimax computations for common board
+positions early in the game as described above.&nbsp; </font>
+</p>
+<p class="msonormal" style="margin-bottom: 0.2in"><font size="2" style="font-size: 11pt">My
+MakeBook executable accepts a single commandline argument giving a
+&ldquo;debugging log level&rdquo;.&nbsp; (Yours need not do so.)&nbsp;
+The only allowed value presently is 1.&nbsp; If you run MakeZZ with
+no argument, you get the output that you must match.&nbsp; However,
+if you run it thus: </font>
+</p>
+<p class="msonormal" style="margin-bottom: 0.2in"><font size="2" style="font-size: 11pt">MakeBook
+1</font></p>
+<p class="msonormal" style="margin-bottom: 0.2in"><font size="2" style="font-size: 11pt">then
+you get a blow-by-blow description of the minimax run, with each
+subcall indented according to its level.&nbsp; The leaf calls are the
+leftmost, the root calls the rightmost.&nbsp; Each call gets one line
+of output showing the move it evaluated, and the results it arrived
+at for that move.</font></p>
+<p class="msonormal" style="margin-bottom: 0.2in"><font size="2" style="font-size: 11pt">You
+can differentiate between testing your MakeBook and your
+transposition table by using a non-transposition board type like
+MancalaBoard to test just the MakeBook and non-transposition minimax,</font></p>
+<p class="msonormal" style="margin-bottom: 0.2in"><font size="2" style="font-size: 11pt">You
+will find it necessary to track all the Keys you've generated thus
+far as you fill in the book, so as to avoid entering the same Key
+twice in the book (two different sequences of moves might generate
+the same board).&nbsp; Note the &quot;</font><font color="#800000"><font face="Courier New"><font size="2" style="font-size: 9pt">Duplicate.
+No book entry.</font></font></font><font size="2" style="font-size: 11pt">&quot;
+announcements in my output.&nbsp; You must have these in yours as
+well. </font>
+</p>
+<p class="msonormal" style="margin-bottom: 0.2in"><font size="2" style="font-size: 11pt">A
+hint on how to duplicate my key count:</font>&nbsp; When I analyze a
+board, I first get a key for it.&nbsp; Then I output the current
+move/key count, and then I analyze the board using the key.</p>
+<p class="msonormal" style="margin-bottom: 0.2in"><font size="2" style="font-size: 11pt"><b>Task
+D Add a reply move</b></font></p>
+<p class="msonormal" style="margin-bottom: 0.2in"><font size="2" style="font-size: 11pt">For
+each case where BestMove supplies a move, there will be some reply
+move indicated by the minimax computation (assuming level is &gt;=2
+and the best move doesn&rsquo;t result in end of game).&nbsp; You can
+collect this reply move as part of the minimax computation, and save
+it in the BestMove and thus in the Book file too.&nbsp; We&rsquo;ll
+use the anticipated reply move in the third stage of the project.</font></p>
+<p class="msonormal" style="margin-bottom: 0.2in"><font size="3" style="font-size: 12pt"><b>Format
+of book file</b></font></p>
+<p class="msonormal" style="margin-bottom: 0.2in"><font size="2" style="font-size: 11pt">The
+book file binary format is as follows, with all values BigEndian:</font></p>
+<p class="msonormal" style="margin-bottom: 0.2in"><font size="2" style="font-size: 11pt">Minimax
+level at which book was calculated &ndash; 1 byte</font></p>
+<p class="msonormal" style="margin-bottom: 0.2in"><font size="2" style="font-size: 11pt">For
+each Key/BestMove pair:</font></p>
+<p class="msonormal" style="margin-bottom: 0.2in"><font size="2" style="font-size: 11pt">Key
+(BigEndian binary write of all the BasicKey ulongs)</font></p>
+<p class="msonormal" style="margin-bottom: 0.2in"><font size="2" style="font-size: 11pt">BestMove</font></p>
+<p class="msonormal" style="margin-bottom: 0.2in"><font size="2" style="font-size: 11pt">ReplyMove
+exists flag 1 if there&rsquo;s a Reply, 0 if not &ndash; 1 byte</font></p>
+<p class="msonormal" style="margin-bottom: 0.2in"><font size="2" style="font-size: 11pt">ReplyMove
+if one exists</font></p>
+<p class="msonormal" style="margin-bottom: 0.2in"><font size="2" style="font-size: 11pt">Computed
+minimax value &ndash; 4 bytes</font></p>
+<p class="msonormal" style="margin-bottom: 0.2in"><font size="2" style="font-size: 11pt">Do
+not write out depth of the BestMove, nor the number of boards
+explored.&nbsp; When you read the book, assume&nbsp; these two values
+are the &ldquo;level&rdquo; of the book file, and 0, respectively.</font></p>
+<p class="msonormal" style="margin-bottom: 0.2in"><font size="2" style="font-size: 11pt">I
+will require an exact match with my binary file only for Othello, not
+for the other games.&nbsp; Exact match of my text output is required
+for all games.</font></p>
+<p class="msonormal" style="margin-bottom: 0.2in"><font size="3" style="font-size: 12pt"><b>Testing
+and submission</b></font></p>
+<p class="msonormal" style="margin-bottom: 0.2in"><font size="2" style="font-size: 11pt">Check
+your MakeBook against the test cases supplied in the tests
+directory</font><font size="2" style="font-size: 11pt"><i>.&nbsp;
+These are the only cases the robot will use</i></font><font size="2" style="font-size: 11pt">.&nbsp;
+Pass them via diff &ndash;w on the Unix servers, meet the
+restrictions below, and conform to style, and you should be all
+clear.&nbsp; No hidden test cases this time.</font></p>
+<p class="msonormal" style="margin-bottom: 0.2in"><font size="2" style="font-size: 11pt">When
+you are done, and have checked your program against the C++ style
+sheet, submit these files via the turnin program to the directory
+shown.&nbsp; </font>
+</p>
+<p class="msonormal" style="margin-bottom: 0.2in"><font size="2" style="font-size: 11pt">CheckersBoard.h/cpp</font></p>
+<p class="msonormal" style="margin-bottom: 0.2in"><font size="2" style="font-size: 11pt">CheckersMove.h/cpp</font></p>
+<p class="msonormal" style="margin-bottom: 0.2in"><font size="2" style="font-size: 11pt">CheckersView.h/cpp</font></p>
+<p class="msonormal" style="margin-bottom: 0.2in"><font size="2" style="font-size: 11pt">CheckersDlg.h/cpp</font></p>
+<p class="msonormal" style="margin-bottom: 0.2in"><font size="2" style="font-size: 11pt">OthelloBoard.h/cpp</font></p>
+<p class="msonormal" style="margin-bottom: 0.2in"><font size="2" style="font-size: 11pt">OthelloMove.h/cpp</font></p>
+<p class="msonormal" style="margin-bottom: 0.2in"><font size="2" style="font-size: 11pt">OthelloView.h/cpp</font></p>
+<p class="msonormal" style="margin-bottom: 0.2in"><font size="2" style="font-size: 11pt">OthelloDlg.h/cpp</font></p>
+<p class="msonormal" style="margin-bottom: 0.2in"><font size="2" style="font-size: 11pt">C4Pop10Board.h/cpp</font></p>
+<p class="msonormal" style="margin-bottom: 0.2in"><font size="2" style="font-size: 11pt">C4Pop10Move.h/cpp</font></p>
+<p class="msonormal" style="margin-bottom: 0.2in"><font size="2" style="font-size: 11pt">C4Pop10View.h/cpp</font></p>
+<p class="msonormal" style="margin-bottom: 0.2in"><font size="2" style="font-size: 11pt">C4Pop10Dlg.h/cpp</font></p>
+<p class="msonormal" style="margin-bottom: 0.2in"><font size="2" style="font-size: 11pt">Class.h/cpp</font></p>
+<p class="msonormal" style="margin-bottom: 0.2in"><font size="2" style="font-size: 11pt">BasicKey.h</font></p>
+<p class="msonormal" style="margin-bottom: 0.2in"><font size="2" style="font-size: 11pt">Board.cpp</font></p>
+<p class="msonormal" style="margin-bottom: 0.2in"><font size="2" style="font-size: 11pt">Dialog.cpp</font></p>
+<p class="msonormal" style="margin-bottom: 0.2in"><font size="2" style="font-size: 11pt">BoardTest.cpp</font></p>
+<p class="msonormal" style="margin-bottom: 0.2in"><font size="2" style="font-size: 11pt">Book.h/cpp</font></p>
+<p class="msonormal" style="margin-bottom: 0.2in"><font size="2" style="font-size: 11pt">MakeBook.cpp</font></p>
+<p class="msonormal" style="margin-bottom: 0.2in"><font size="2" style="font-size: 11pt">SimpleAIPlayer.h/cpp</font></p>
+<p class="msonormal" style="margin-bottom: 0.2in"><font size="2" style="font-size: 11pt">BestMove.h</font></p>
+<p class="msonormal" style="margin-bottom: 0.2in"><font size="2" style="font-size: 11pt">MyLib.h</font></p>
+<p class="msonormal" style="margin-bottom: 0.2in"><font size="2" style="font-size: 11pt">Turnin
+dir:&nbsp; ~grade-cstaley/305/milestone2/turnin</font></p>
+<p class="msonormal" style="margin-bottom: 0.2in"><font size="2" style="font-size: 11pt"><b>Hints</b></font></p>
+<p class="msonormal" style="margin-bottom: 0.2in"><font size="2" style="font-size: 11pt">1.
+Note that od &ndash;x, or any other multibyte flag for od, silently
+reverses the bytes for each short, long, or whatever </font><font size="2" style="font-size: 11pt"><i>if
+od is run on a LittleEndian machine. </i></font>&nbsp;&nbsp;<font size="2" style="font-size: 11pt">This
+may lead you to believe that your output files (and mine) are failing
+to write in BigEndian order even if they are.</font></p>
+<p class="msonormal" style="margin-bottom: 0.2in"><font size="2" style="font-size: 11pt"><b>Restrictions</b></font></p>
+<p class="msonormal" style="margin-bottom: 0.2in"><font size="2" style="font-size: 11pt">Your
+code must obey the following restrictions.</font></p>
+<p class="msonormal" style="margin-bottom: 0.2in"><font size="2" style="font-size: 11pt">1.
+Line count limits, as determined by smartcount.</font></p>
+<p class="msonormal" style="margin-bottom: 0.2in"><font size="2" style="font-size: 11pt">Entire
+MakeBook.cpp&nbsp;&nbsp; 90 lines&nbsp; (mine is 75)</font></p>
+<p class="msonormal" style="margin-bottom: 0.2in"><font size="2" style="font-size: 11pt">2.
+No game name may appear in any of your source except for files with
+that game in their name.</font></p>
+<p class="msonormal" style="margin-bottom: 0.2in"><font size="2" style="font-size: 11pt">3.
+Your MakeBook must work correctly with my Othello classes, object
+files for which are supplied.</font></p>
+<p class="msonormal" style="margin-bottom: 0.2in"><font size="2" style="font-size: 11pt">4.
+MakeBook.cpp may only use &quot;new&quot; for creating a Book
+object.&nbsp; Boards, Views, etc. are created using Class and
+BoardClass.</font></p>
+<p class="msonormal" style="margin-bottom: 0.2in"><font size="2" style="font-size: 11pt">5.
+Your MakeBook executable must run in at most twice the time mine
+takes for a given book generation.</font></p>
+</body>
+</html>
