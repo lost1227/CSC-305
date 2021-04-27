@@ -1,0 +1,285 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+	<title>Minimax Game System</title>
+	<meta name="generator" content="LibreOffice 6.0.7.3 (Linux)"/>
+	<meta name="created" content="00:00:00"/>
+	<meta name="changed" content="2020-03-19T02:19:04.318174714"/>
+	<meta name="created" content="00:00:00">
+	<style type="text/css">
+		p { color: #000000 }
+		p.msonormal { margin-bottom: 0in }
+	</style>
+</head>
+<body lang="en-US" text="#000000" dir="ltr">
+<p class="msonormal" align="center" style="margin-bottom: 0.2in"><font face="Arial, sans-serif"><font size="5" style="font-size: 18pt"><b>Minimax
+Game System</b></font></font></p>
+<p class="msonormal" align="center" style="margin-bottom: 0.2in">&nbsp;</p>
+<p class="msonormal" align="center" style="margin-bottom: 0.2in"><font face="Arial, sans-serif"><font size="3" style="font-size: 12pt"><b>Milestone
+3</b></font></font></p>
+<p class="msonormal" align="center" style="margin-bottom: 0.2in"><font face="Arial, sans-serif"><font size="3" style="font-size: 12pt"><b>Due
+3/22</b></font></font></p>
+<p class="msonormal" style="margin-bottom: 0.2in">&nbsp;</p>
+<p class="msonormal" style="margin-bottom: 0.2in"><font face="Arial, sans-serif"><font size="3" style="font-size: 12pt"><b>Overview</b></font></font></p>
+<p class="msonormal" style="margin-bottom: 0.2in"><font face="Arial, sans-serif"><font size="2" style="font-size: 11pt">For
+this milestone:</font></font></p>
+<ol type="A">
+	<li/>
+<p><font face="Arial, sans-serif"><font size="2" style="font-size: 11pt">Create
+	a GameModel class that tracks current game state, game observers,
+	and players.</font></font> 
+	</p>
+	<li/>
+<p><font face="Arial, sans-serif"><font size="2" style="font-size: 11pt">Create
+	a GameView class that observes the GameModel and displays current
+	game status as the game is updated by the players.</font></font> 
+	</p>
+	<li/>
+<p><font face="Arial, sans-serif"><font size="2" style="font-size: 11pt">Fill
+	in the HumanPlayer and AIPlayer classes so that they act as players
+	in a full Minimax game.</font></font> 
+	</p>
+	<li/>
+<p><font face="Arial, sans-serif"><font size="2" style="font-size: 11pt">Fill
+	in the missing parts from the supplied MinimaxApp.cpp to start up
+	the game.</font></font> 
+	</p>
+</ol>
+<p class="msonormal" style="margin-bottom: 0.2in"><font face="Arial, sans-serif"><font size="2" style="font-size: 11pt">Check
+your MinimaxApp executable against the test cases supplied in the
+tests directory</font></font><font face="Arial, sans-serif"><font size="2" style="font-size: 11pt"><i>.&nbsp;
+These are the only cases the robot will use</i></font></font><font face="Arial, sans-serif"><font size="2" style="font-size: 11pt">.&nbsp;
+Pass them via diff –w on Hornet, meet the restrictions below, and
+conform to style, and you should be all clear.&nbsp; There will be no
+hidden test cases in this milestone.</font></font></p>
+<p class="msonormal" style="margin-bottom: 0.2in"><font face="Arial, sans-serif"><font size="2" style="font-size: 11pt">The
+test cases make use of book file Checkers8_3.gbk. You must submit
+this book file for Bender to use.</font></font></p>
+<p class="msonormal" style="margin-bottom: 0.2in"><font face="Arial, sans-serif"><font size="2" style="font-size: 11pt"><b>Design
+of the MinimaxApp, GameModel, GameView, Steppable and XXPlayer
+classes</b></font></font></p>
+<p class="msonormal" style="margin-bottom: 0.2in"><font face="Arial, sans-serif"><font size="2" style="font-size: 11pt"><i>As
+discussed in review session(s) during class</i></font></font></p>
+<p class="msonormal" style="margin-bottom: 0.2in"><font face="Arial, sans-serif"><font size="2" style="font-size: 11pt"><b>Human
+Player Command Set</b></font></font></p>
+<p class="msonormal" style="margin-bottom: 0.2in"><font face="Arial, sans-serif"><font size="2" style="font-size: 11pt">The
+commands interpreted by HumanPlayer (and implemented by appropriate
+methods </font></font>
+</p>
+<p class="msonormal" style="margin-bottom: 0.2in"><font face="Arial, sans-serif"><font size="2" style="font-size: 11pt">of
+GameModel called from HumanPlayer) are:</font></font></p>
+<p class="msonormal" style="margin-bottom: 0.2in"><font face="Arial, sans-serif"><font size="2" style="font-size: 11pt">writeGame
+filename</font></font></p>
+<p class="msonormal" style="margin-bottom: 0.2in"><font face="Arial, sans-serif"><font size="2" style="font-size: 11pt">Write
+the current Game out to the specified file in binary format.&nbsp;
+This includes the board class name, the current level of play, and
+the current board (which includes the board options).&nbsp; Note that
+it must be possible to read in a Pylos game while playing an Othello
+game, and seamlessly switch the one GameModel object from playing
+Othello to playing Pylos.</font></font></p>
+<p class="msonormal" style="margin-bottom: 0.2in"><font face="Arial, sans-serif"><font size="2" style="font-size: 11pt">readGame
+filename</font></font></p>
+<p class="msonormal" style="margin-bottom: 0.2in"><font face="Arial, sans-serif"><font size="2" style="font-size: 11pt">Read
+in the current Game from the specified file in binary format,
+restoring game class, board content, options as they were saved in
+writeGame.&nbsp; (Note that the AIPlayer(s) may also need to refresh
+the book.) </font></font>
+</p>
+<p class="msonormal" style="margin-bottom: 0.2in"><font face="Arial, sans-serif"><font size="2" style="font-size: 11pt">If
+the current game is dirty (changed since the last save) then prompt:</font></font></p>
+<p class="msonormal" style="margin-bottom: 0.2in; font-variant: normal; font-style: normal">
+<font face="Arial, sans-serif"><font size="2" style="font-size: 11pt">Current
+game is unsaved.&nbsp; [S]ave/[C]ancel/[P]roceed?</font></font></p>
+<p class="msonormal" style="margin-bottom: 0.2in"><font face="Arial, sans-serif"><font size="2" style="font-size: 11pt">If
+the user chooses S, prompt for a filename and save the current game
+first.&nbsp; If the user chooses P, proceed without saving.</font></font></p>
+<p class="msonormal" style="margin-bottom: 0.2in"><font face="Arial, sans-serif"><font size="2" style="font-size: 11pt">newGame
+gameType gameLevel player1 player2</font></font></p>
+<p class="msonormal" style="margin-bottom: 0.2in"><font face="Arial, sans-serif"><font size="2" style="font-size: 11pt">Start
+a new game of type gameType (Othello, Pylos or whatever is linked are
+allowed).&nbsp; Play initially at level gameLevel, though this may be
+adjusted via setOptions (see below).&nbsp; BookFile is assumed to be
+&lt;gamename&gt;.gbk (e.g. Pylos.gbk), in the starting directory of
+the app.&nbsp;&nbsp; Any AIPlayers use this book if it is present and
+of a level equal to or greater than the current play level.&nbsp; If
+player1 or player2 are &quot;ai&quot; then set up an AIPlayer with
+name &quot;AI 0&quot;, or &quot;AI 1&quot; for a second AIPlayer,
+otherwise set up a HumanPlayer with the given name.</font></font></p>
+<p class="msonormal" style="margin-bottom: 0.2in"><font face="Arial, sans-serif"><font size="2" style="font-size: 11pt">Do
+the same game-saving check as for readGame.</font></font></p>
+<p class="msonormal" style="margin-bottom: 0.2in"><font face="Arial, sans-serif"><font size="2" style="font-size: 11pt">doMove&nbsp;
+move</font></font></p>
+<p class="msonormal" style="margin-bottom: 0.2in"><font face="Arial, sans-serif"><font size="2" style="font-size: 11pt">Input
+a move and apply it to the GameModel.&nbsp; The GameModel will throw
+a BaseException saying &quot;Invalid Move&quot; if the move is not
+one of those returned from GetAllMoves.&nbsp; If the move is valid,
+the GameModel performs it and then notifies all observers and players
+of the change.</font></font></p>
+<p class="msonormal" style="margin-bottom: 0.2in"><font face="Arial, sans-serif"><font size="2" style="font-size: 11pt"><br/>
+printHelp</font></font></p>
+<p class="msonormal" style="margin-bottom: 0.2in"><font face="Arial, sans-serif"><font size="2" style="font-size: 11pt">Print
+a help screen like my example executable.</font></font></p>
+<p class="msonormal" style="margin-bottom: 0.2in"><font face="Arial, sans-serif"><font size="2" style="font-size: 11pt">showMoves</font></font></p>
+<p class="msonormal" style="margin-bottom: 0.2in"><font face="Arial, sans-serif"><font size="2" style="font-size: 11pt">Show
+all moves currently allowed, displaying moves in row-major order
+using as many columns as will fit in an 80-character width with one
+space between columns, and with each column large enough to display
+the largest move in the currently allowed set.&nbsp; If the largest
+move exceeds 80 characters length, then use one over-80-char column.</font></font></p>
+<p class="msonormal" style="margin-bottom: 0.2in"><font face="Arial, sans-serif"><font size="2" style="font-size: 11pt">undoMove</font></font></p>
+<p class="msonormal" style="margin-bottom: 0.2in"><font face="Arial, sans-serif"><font size="2" style="font-size: 11pt">Undo
+last full move if all players approve.&nbsp; </font></font>
+</p>
+<p class="msonormal" style="margin-bottom: 0.2in"><font face="Arial, sans-serif"><font size="2" style="font-size: 11pt">autoPlay
+numFullMoves</font></font></p>
+<p class="msonormal" style="margin-bottom: 0.2in"><font face="Arial, sans-serif"><font size="2" style="font-size: 11pt">Play
+the Game automatically for the next &quot;numFullMoves&quot; full
+moves or until the game is done if that comes first.&nbsp; (A &quot;full
+move&quot; is one move by each player.)&nbsp; This command is very
+useful for testing.&nbsp; The HumanPlayer sets up a slave AIPlayer to
+perform the moves for it.</font></font></p>
+<p class="msonormal" style="margin-bottom: 0.2in"><font face="Arial, sans-serif"><font size="2" style="font-size: 11pt">setOptions</font></font></p>
+<p class="msonormal" style="margin-bottom: 0.2in"><font face="Arial, sans-serif"><font size="2" style="font-size: 11pt">Set
+the current GameModel::Rules content.&nbsp;&nbsp; This is done by
+querying the user to see if he wants a new level of play, followed by
+running the appropriate Dialog-derived object to set the board
+parameters, as we did for BoardTest.&nbsp; Setting options
+automatically invalidates the book, since books are created using the
+default options.&nbsp; Bookfile should be none, and there should be
+no book after any setting of options.&nbsp; A changed level of play
+automatically applies to all current AIPlayers.</font></font></p>
+<p class="msonormal" style="margin-bottom: 0.2in"><font face="Arial, sans-serif"><font size="2" style="font-size: 11pt">switchSides</font></font></p>
+<p class="msonormal" style="margin-bottom: 0.2in"><font face="Arial, sans-serif"><font size="2" style="font-size: 11pt">Switch
+sides between the two players if both players agree.</font></font></p>
+<p class="msonormal" style="margin-bottom: 0.2in"><font face="Arial, sans-serif"><font size="2" style="font-size: 11pt">quit</font></font></p>
+<p class="msonormal" style="margin-bottom: 0.2in"><font face="Arial, sans-serif"><font size="2" style="font-size: 11pt">End
+the game.</font></font></p>
+<p class="msonormal" style="margin-bottom: 0.2in"><font face="Arial, sans-serif"><font size="2" style="font-size: 11pt">If
+any of these commands result in an exception, HumanPlayer prints
+“Error: &lt;exception description&gt;”.</font></font></p>
+<p class="msonormal" style="margin-bottom: 0.2in"><font face="Arial, sans-serif"><font size="2" style="font-size: 11pt"><b>GameView</b></font></font></p>
+<p class="msonormal" style="margin-bottom: 0.2in"><font face="Arial, sans-serif"><font size="2" style="font-size: 11pt">The
+GameView object shows current game status, including a nicely
+laid-out move history and the current board.&nbsp; For the history,
+arrange three columns, one for the move number, plus one for each of
+the two players.&nbsp; The columns are separated by two spaces each.&nbsp;
+The first column is 4 spaces wide.&nbsp; The second and third are as
+wide as the widest string representation for a move in the current
+history (for either side) so that the second and third columns are
+always the same width.</font></font></p>
+<p class="msonormal" style="margin-bottom: 0.2in"><font face="Arial, sans-serif"><font size="2" style="font-size: 11pt"><b>HumanPlayer</b></font></font></p>
+<p class="msonormal" style="margin-bottom: 0.2in"><font face="Arial, sans-serif"><font size="2" style="font-size: 11pt">Each
+HumanPlayer object (there may be two) has a </font></font><font face="Arial, sans-serif"><font size="2" style="font-size: 11pt"><i>represented
+player</i></font></font> – <font face="Arial, sans-serif"><font size="2" style="font-size: 11pt">the
+one for whom it performs commands.&nbsp; When it is the represented
+player’s turn, the HumanPlayer prompts as shown, including the name
+of the represented player (so that two HumanPlayers may share the
+same monitor without undue confusion).</font></font></p>
+<p class="msonormal" style="margin-bottom: 0.2in"><font face="Arial, sans-serif"><font size="2" style="font-size: 11pt"><i>Enter
+command (for clint):</i></font></font></p>
+<p class="msonormal" style="margin-bottom: 0.2in"><font face="Arial, sans-serif"><font size="2" style="font-size: 11pt">When
+a command made by another player requires approval from the
+represented player, the HumanPlayer prompts with one of:</font></font></p>
+<p class="msonormal" style="margin-bottom: 0.2in"><font face="Arial, sans-serif"><font size="2" style="font-size: 11pt"><i>clint,
+will you trade places [y/n]? </i></font></font>
+</p>
+<p class="msonormal" style="margin-bottom: 0.2in"><font face="Arial, sans-serif"><font size="2" style="font-size: 11pt"><i>clint,
+is it OK to take back the last move [y/n]?</i></font></font></p>
+<p class="msonormal" style="margin-bottom: 0.2in"><font face="Arial, sans-serif"><font size="2" style="font-size: 11pt"><i>clint,
+is it OK to replace the game? </i></font></font>
+</p>
+<p class="msonormal" style="margin-bottom: 0.2in"><font face="Arial, sans-serif"><font size="2" style="font-size: 11pt">and
+takes a y/n response.&nbsp; </font></font>
+</p>
+<p class="msonormal" style="margin-bottom: 0.2in"><font face="Arial, sans-serif"><font size="2" style="font-size: 11pt">If
+the represented player performs a command requiring approval of the
+other players, then if the players agree, the HumanPlayer responds
+with one of:</font></font></p>
+<p class="msonormal" style="margin-bottom: 0.2in"><font face="Arial, sans-serif"><font size="2" style="font-size: 11pt"><i>Move
+undone.</i></font></font></p>
+<p class="msonormal" style="margin-bottom: 0.2in"><font face="Arial, sans-serif"><font size="2" style="font-size: 11pt"><i>Sides
+swapped.</i></font></font></p>
+<p class="msonormal" style="margin-bottom: 0.2in"><font face="Arial, sans-serif"><font size="2" style="font-size: 11pt">or
+with the game-saving check as described in ReadGame</font></font></p>
+<p class="msonormal" style="margin-bottom: 0.2in"><font face="Arial, sans-serif"><font size="2" style="font-size: 11pt">But
+if any other player disagrees, the HumanPlayer responds with one of:</font></font></p>
+<p class="msonormal" style="margin-bottom: 0.2in"><font face="Arial, sans-serif"><font size="2" style="font-size: 11pt"><i>Opposing
+player(s) disagree; no undo.</i></font></font></p>
+<p class="msonormal" style="margin-bottom: 0.2in"><font face="Arial, sans-serif"><font size="2" style="font-size: 11pt"><i>Opposing
+player(s) disagree; no swap.</i></font></font></p>
+<p class="msonormal" style="margin-bottom: 0.2in"><font face="Arial, sans-serif"><font size="2" style="font-size: 11pt"><i>Not
+all other players agree. Sorry.</i></font></font></p>
+<p class="msonormal" style="margin-bottom: 0.2in"><font face="Arial, sans-serif"><font size="2" style="font-size: 11pt"><b>AIPlayer</b></font></font></p>
+<p class="msonormal" style="margin-bottom: 0.2in"><font face="Arial, sans-serif"><font size="2" style="font-size: 11pt">AIPlayer
+prompts for no commands, but simply responds with its best move on
+its turn to play.&nbsp; If there is a book of sufficiently deep level
+that covers the current board, then AIPlayer uses the book move,
+otherwise it runs a minimax computation at whatever minimax level is
+currently in force.</font></font></p>
+<p class="msonormal" style="margin-bottom: 0.2in"><font face="Arial, sans-serif"><font size="2" style="font-size: 11pt">AIPlayer
+</font></font><font face="Arial, sans-serif"><font size="2" style="font-size: 11pt"><i>does</i></font></font><font face="Arial, sans-serif"><font size="2" style="font-size: 11pt">,
+however, “kibitz” about the game.&nbsp; When an opposing player
+makes a move, each AIPlayer prints one of:</font></font></p>
+<p class="msonormal" style="margin-bottom: 0.2in"><font face="Arial, sans-serif"><font size="2" style="font-size: 11pt"><i>Yeah,
+that's what I'd have done.</i></font></font></p>
+<p class="msonormal" style="margin-bottom: 0.2in"><font face="Arial, sans-serif"><font size="2" style="font-size: 11pt"><i>Hmm.&nbsp;
+I'd have done &lt;bestReply&gt;</i></font></font></p>
+<p class="msonormal" style="margin-bottom: 0.2in"><font face="Arial, sans-serif"><font size="2" style="font-size: 11pt">depending
+on whether the move made was the bestReply from the prior move
+computation.&nbsp; If no best reply was available, AIPlayer remains
+silent.</font></font></p>
+<p class="msonormal" style="margin-bottom: 0.2in"><font face="Arial, sans-serif"><font size="2" style="font-size: 11pt">When
+asked to undo a move or change the game, AIPlayer always approves,
+but when asked to switch sides, it approves only if it thinks it’s
+losing on the game is a tie.&nbsp; It makes one of these two
+responses:</font></font></p>
+<p class="msonormal" style="margin-bottom: 0.2in"><font face="Arial, sans-serif"><font size="2" style="font-size: 11pt"><i>I
+think that's a good deal.</i></font></font></p>
+<p class="msonormal" style="margin-bottom: 0.2in"><font face="Arial, sans-serif"><font size="2" style="font-size: 11pt"><i>No
+thanks, I'm winning</i></font></font></p>
+<p class="msonormal" style="margin-bottom: 0.2in"><font face="Arial, sans-serif"><font size="2" style="font-size: 11pt"><b>Testing
+and submission</b></font></font></p>
+<p class="msonormal" style="margin-bottom: 0.2in"><font face="Arial, sans-serif"><font size="2" style="font-size: 11pt">When
+you are done, and have checked your program against the C++ style
+sheet, submit these files via the turnin program to the directory
+shown.&nbsp;&nbsp; Board.h, View.h, and Dialog.h will be provided by
+Bender.</font></font></p>
+<p class="msonormal" style="margin-bottom: 0.2in"><font face="Arial, sans-serif"><font size="2" style="font-size: 11pt">CheckersBoard.h/cpp</font></font></p>
+<p class="msonormal" style="margin-bottom: 0.2in"><font face="Arial, sans-serif"><font size="2" style="font-size: 11pt">CheckersMove.h/cpp</font></font></p>
+<p class="msonormal" style="margin-bottom: 0.2in"><font face="Arial, sans-serif"><font size="2" style="font-size: 11pt">CheckersView.h/cpp</font></font></p>
+<p class="msonormal" style="margin-bottom: 0.2in"><font face="Arial, sans-serif"><font size="2" style="font-size: 11pt">CheckersDlg.h/cpp</font></font></p>
+<p class="msonormal" style="margin-bottom: 0.2in"><font face="Arial, sans-serif"><font size="2" style="font-size: 11pt">OthelloBoard.h/cpp</font></font></p>
+<p class="msonormal" style="margin-bottom: 0.2in"><font face="Arial, sans-serif"><font size="2" style="font-size: 11pt">OthelloMove.h/cpp</font></font></p>
+<p class="msonormal" style="margin-bottom: 0.2in"><font face="Arial, sans-serif"><font size="2" style="font-size: 11pt">OthelloView.h/cpp</font></font></p>
+<p class="msonormal" style="margin-bottom: 0.2in"><font face="Arial, sans-serif"><font size="2" style="font-size: 11pt">OthelloDlg.h/cpp</font></font></p>
+<p class="msonormal" style="margin-bottom: 0.2in"><font face="Arial, sans-serif"><font size="2" style="font-size: 11pt">PylosBoard.h/cpp</font></font></p>
+<p class="msonormal" style="margin-bottom: 0.2in"><font face="Arial, sans-serif"><font size="2" style="font-size: 11pt">PylosMove.h/cpp</font></font></p>
+<p class="msonormal" style="margin-bottom: 0.2in"><font face="Arial, sans-serif"><font size="2" style="font-size: 11pt">PylosView.h/cpp</font></font></p>
+<p class="msonormal" style="margin-bottom: 0.2in"><font face="Arial, sans-serif"><font size="2" style="font-size: 11pt">PylosDlg.h/cpp</font></font></p>
+<p class="msonormal" style="margin-bottom: 0.2in"><font face="Arial, sans-serif"><font size="2" style="font-size: 11pt">AIPlayer.h/cpp</font></font></p>
+<p class="msonormal" style="margin-bottom: 0.2in"><font face="Arial, sans-serif"><font size="2" style="font-size: 11pt">BasicKey.h</font></font></p>
+<p class="msonormal" style="margin-bottom: 0.2in"><font face="Arial, sans-serif"><font size="2" style="font-size: 11pt">BestMove.h</font></font></p>
+<p class="msonormal" style="margin-bottom: 0.2in"><font face="Arial, sans-serif"><font size="2" style="font-size: 11pt">Board.cpp</font></font></p>
+<p class="msonormal" style="margin-bottom: 0.2in"><font face="Arial, sans-serif"><font size="2" style="font-size: 11pt">Book.h/cpp</font></font></p>
+<p class="msonormal" style="margin-bottom: 0.2in"><font face="Arial, sans-serif"><font size="2" style="font-size: 11pt">Class.h/cpp</font></font></p>
+<p class="msonormal" style="margin-bottom: 0.2in"><font face="Arial, sans-serif"><font size="2" style="font-size: 11pt">Dialog.cpp</font></font></p>
+<p class="msonormal" style="margin-bottom: 0.2in"><font face="Arial, sans-serif"><font size="2" style="font-size: 11pt">GameModel.h/cpp</font></font></p>
+<p class="msonormal" style="margin-bottom: 0.2in"><font face="Arial, sans-serif"><font size="2" style="font-size: 11pt">GameView.h/cpp</font></font></p>
+<p class="msonormal" style="margin-bottom: 0.2in"><font face="Arial, sans-serif"><font size="2" style="font-size: 11pt">HumanPlayer.h/cpp</font></font></p>
+<p class="msonormal" style="margin-bottom: 0.2in"><font face="Arial, sans-serif"><font size="2" style="font-size: 11pt">MinimaxApp.h/cpp</font></font></p>
+<p class="msonormal" style="margin-bottom: 0.2in"><font face="Arial, sans-serif"><font size="2" style="font-size: 11pt">MyLib.h</font></font></p>
+<p class="msonormal" style="margin-bottom: 0.2in"><font face="Arial, sans-serif"><font size="2" style="font-size: 11pt">Steppable.h/cpp</font></font></p>
+<p class="msonormal" style="margin-bottom: 0.2in"><font face="Arial, sans-serif"><font size="2" style="font-size: 11pt">Turnin
+dir:&nbsp; ~grade-cstaley/305/milestone3/turnin</font></font></p>
+<p class="msonormal" style="margin-bottom: 0.2in"><font face="Arial, sans-serif"><font size="2" style="font-size: 11pt"><b>Restrictions</b></font></font></p>
+<p class="msonormal" style="margin-bottom: 0.2in"><font face="Arial, sans-serif"><font size="2" style="font-size: 11pt">Your
+code must obey the following restrictions, in addition to all
+restrictions listed for prj2.</font></font></p>
+<p class="msonormal" style="margin-bottom: 0.2in"><font face="Arial, sans-serif"><font size="2" style="font-size: 11pt">A.
+Line count limits, as determined by smartcount. </font></font>
+</p>
+<p class="msonormal" style="margin-bottom: 0.2in"><font face="Arial, sans-serif"><font size="2" style="font-size: 11pt">None
+for this assignment aside from the existing ones for project 2.</font></font></p>
+</body>
+</html>
