@@ -1,0 +1,8 @@
+bolt .01
+nut .001
+flange .1
+bracket 1.0
+whatsit bolt bolt nut nut flange
+thingy bolt nut flange bracket
+gadget whatsit whatsit bolt bolt nut nut thingy flange
+whatsitGadget gadget nut bolt whatsit
