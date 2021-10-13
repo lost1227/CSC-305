@@ -3,35 +3,32 @@
 
 #include <stddef.h>
 
-const BoardClass *boardClass;
-
 extern "C" {
 
 typedef struct RawData {
-   size_t size;
    void *data;
+   size_t size;
 } RawData;
 
 int boardtest_init(char *boardType);
 
-int boardtest_entermove(char *);
-char *boardtest_showmove();
-int boardtest_applymove();
-
-int boardtest_getval();
+void boardtest_entermove(char *);
+RawData boardtest_showmove();
+void boardtest_applymove();
 
 RawData boardtest_saveboard();
 RawData boardtest_savemove();
 
-int boardtest_loadboard(RawData);
-int boardtest_loadmove(RawData);
+void boardtest_loadboard(RawData);
+void boardtest_loadmove(RawData);
 
-int boardtest_comparekeys(RawData);
-int boardtest_comparemove(char *);
+void boardtest_undoMoves(int moveCount);
 
-int boardtest_undoMoves(int moveCount);
+RawData boardtest_showboard();
 
-char *boardtest_showboard();
+RawData boardtest_getValidMoves();
+
+void boardtest_free_rawdata(RawData);
 }
 
 #endif

@@ -1,5 +1,5 @@
 CXX = g++
-CPPFLAGS = -Wall -Werror -pedantic -g -std=c++11
+CPPFLAGS = -Wall -Werror -pedantic -g -std=c++2a -fPIC
 
 CPPFLAGS += -DLITTLE_ENDIAN
 CPPFLAGS += -Wno-error=char-subscripts -Wno-error=parentheses -Wno-error=delete-incomplete
@@ -9,7 +9,7 @@ LINKFLAGS = -static-libstdc++
 
 SRCS = $(shell find . -name "*.cpp")
 OBJS = $(SRCS:.cpp=.o)
-MAIN = BoardTest
+MAIN = boardtest.so
 
 DEPDIR := .deps
 DEPFLAGS = -MT $@ -MMD -MP -MF $(DEPDIR)/$*.d
@@ -22,7 +22,7 @@ COMPILE.cpp = $(CXX) $(DEPFLAGS) $(CFLAGS) $(CPPFLAGS) $(TARGET_ARCH) -c
 all: $(MAIN)
 
 $(MAIN) : $(OBJS)
-	$(CXX) $(LINKFLAGS) $(CPPFLAGS) $(OBJS) -o $(MAIN)
+	$(CXX) $(LINKFLAGS) $(CPPFLAGS) $(OBJS) -shared -o $(MAIN)
 
 $(DEPDIR): ; @mkdir -p $@
 
