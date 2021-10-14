@@ -8,6 +8,7 @@
 #include <memory>
 #include <sstream>
 #include <cassert>
+#include <string_view>
 
 using namespace std;
 
@@ -148,6 +149,25 @@ RawData boardtest_getValidMoves() {
       .data = malloc(strdata.size()),
       .size = strdata.size()
    };
+   strdata.copy((char*)data.data, data.size);
+
+   return data;
+}
+
+RawData boardtest_getMoveHist() {
+   ostringstream strm;
+   assert(!strm.fail());
+   auto moves = board->GetMoveHist();
+   for(auto& move : moves) {
+      strm << (string)*move << '\0';
+   }
+   // string_view strdata = strm.view();
+   string strdata = strm.str();
+   RawData data {
+      .data = malloc(strdata.size()),
+      .size = strdata.size()
+   };
+
    strdata.copy((char*)data.data, data.size);
 
    return data;

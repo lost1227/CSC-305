@@ -28,6 +28,8 @@ RawData boardtest_showboard();
 
 RawData boardtest_getValidMoves();
 
+RawData boardtest_getMoveHist();
+
 void boardtest_free_rawdata(RawData);
 }
 

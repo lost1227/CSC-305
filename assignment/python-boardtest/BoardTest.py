@@ -29,6 +29,8 @@ _boardtest.boardtest_showboard.restype = _RawData
 
 _boardtest.boardtest_getValidMoves.restype = _RawData
 
+_boardtest.boardtest_getMoveHist.restype = _RawData
+
 _boardtest.boardtest_free_rawdata.argtypes = [_RawData]
 
 def init(boardtype : str):
@@ -85,13 +87,43 @@ def showBoard():
 
 def getValidMoves():
    validMoves = _boardtest.boardtest_getValidMoves()
+   if(validMoves.size == 0):
+      return []
    moveBuff = ctypes.cast(validMoves.data, ctypes.POINTER(ctypes.c_char))[:validMoves.size-1]
    moveStrs = [buff.decode('ascii') for buff in moveBuff.split(b'\x00')]
    _boardtest.boardtest_free_rawdata(validMoves)
    return moveStrs
 
-if __name__ == "__main__":
-   init("C4Pop10Board")
-   print(showBoard())
 
-   print(getValidMoves())
+def getMoveHist():
+   moveHist = _boardtest.boardtest_getMoveHist()
+   if(moveHist.size == 0):
+      return []
+   moveBuff = ctypes.cast(moveHist.data, ctypes.POINTER(ctypes.c_char))[:moveHist.size-1]
+   moveStrs = [buff.decode('ascii') for buff in moveBuff.split(b'\x00')]
+   _boardtest.boardtest_free_rawdata(moveHist)
+   return moveStrs
+
+if __name__ == "__main__":
+
+   import random
+   import time
+
+   init("CheckersBoard")
+
+   random.seed(10)
+   
+   for i in range(100):
+      moves = getValidMoves()
+      if len(moves) == 0:
+         undoMoves(random.randint(1, 10))
+         continue
+      move = random.choice(getValidMoves())
+      enterMove(move)
+      print(move)
+
+      time.sleep(0.1)
+      print(i)
+      applyMove()
+
+      print(showBoard())
