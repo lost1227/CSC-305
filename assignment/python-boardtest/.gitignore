@@ -4,3 +4,4 @@ BoardTest
 test/
 smartcount
 boardtest.so
+__pycache__
