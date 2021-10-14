@@ -16,7 +16,7 @@ void CheckersView::Draw(ostream &out) {
 
    out << "           White" << endl << endl;
    for (loc.row = CheckersBoard::DIM - 1; loc.row >= 0; loc.row--) {
-      cout << (char)('A' + loc.row) << "  ";
+      out << (char)('A' + loc.row) << "  ";
       for (loc.col = 0; loc.col < CheckersBoard::DIM; loc.col++) {
          piece = ob->getPiece(loc);
          symbol = piece ? (piece & CheckersBoard::WHITE) ? 'w' : 'b' : '.';
