@@ -173,6 +173,10 @@ RawData boardtest_getMoveHist() {
    return data;
 }
 
+int boardtest_getBoardVal() {
+   return board->GetValue();
+}
+
 void boardtest_free_rawdata(RawData data) {
    free(data.data);
 }

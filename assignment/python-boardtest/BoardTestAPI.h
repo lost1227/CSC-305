@@ -30,6 +30,8 @@ RawData boardtest_getValidMoves();
 
 RawData boardtest_getMoveHist();
 
+int boardtest_getBoardVal();
+
 void boardtest_free_rawdata(RawData);
 }
 

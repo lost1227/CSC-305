@@ -31,6 +31,8 @@ _boardtest.boardtest_getValidMoves.restype = _RawData
 
 _boardtest.boardtest_getMoveHist.restype = _RawData
 
+_boardtest.boardtest_getBoardVal.restype = ctypes.c_int
+
 _boardtest.boardtest_free_rawdata.argtypes = [_RawData]
 
 def init(boardtype : str):
@@ -64,7 +66,7 @@ def saveRawMove():
    _boardtest.boardtest_free_rawdata(moveData)
    return moveDataByteBuff
 
-def loadBoardState(boardState : bytes):
+def loadBoardState(boardState: bytes):
    encodedData = _RawData()
    encodedData.size = len(boardState)
    encodedData.data = ctypes.cast(ctypes.c_char_p(boardState), ctypes.c_void_p)
@@ -104,26 +106,60 @@ def getMoveHist():
    _boardtest.boardtest_free_rawdata(moveHist)
    return moveStrs
 
+def getBoardValue():
+   return _boardtest.boardtest_getBoardVal()
+
+
 if __name__ == "__main__":
 
    import random
    import time
 
-   init("CheckersBoard")
+   def interactiveplay():
+      while True:
+         print(showBoard())
+         moves = getValidMoves()
+         if len(moves) == 0:
+            break
+         for i, move in enumerate(moves):
+            print("{}. {}".format(i + 1, move))
+         
+         move = moves[int(input(">")) - 1]
+         enterMove(move)
+         applyMove()
 
-   random.seed(10)
-   
-   for i in range(100):
-      moves = getValidMoves()
-      if len(moves) == 0:
-         undoMoves(random.randint(1, 10))
-         continue
-      move = random.choice(getValidMoves())
-      enterMove(move)
-      print(move)
+         print(showBoard())
 
-      time.sleep(0.1)
-      print(i)
-      applyMove()
+         time.sleep(0.5)
+
+         moves = getValidMoves()
+         if len(moves) == 0:
+            break
+
+         move = random.choice(moves)
+         enterMove(move)
+         applyMove()
 
       print(showBoard())
+      print(getBoardValue())
+      print(getMoveHist())
+
+   def selfplay():
+      while True:
+         print(showBoard())
+         moves = getValidMoves()
+         if len(moves) == 0:
+            break
+         move = random.choice(moves)
+         print(move)
+         enterMove(move)
+         applyMove()
+
+         time.sleep(0.2)
+      print(getBoardValue())
+      print(getMoveHist())
+
+   init("CheckersBoard")
+   
+   selfplay()
+   
