@@ -16,6 +16,7 @@ const BoardClass *boardClass;
 
 shared_ptr<Board> board;
 unique_ptr<View> brdView;
+unique_ptr<View> brdPyView;
 unique_ptr<Dialog> brdDlg;
 
 shared_ptr<Board::Move> currMove;
@@ -29,6 +30,8 @@ int boardtest_init(char *boardType) {
           dynamic_cast<Board *>(boardClass->NewInstance()));
          brdView = unique_ptr<View>(
           dynamic_cast<View *>(boardClass->GetViewClass()->NewInstance()));
+         brdPyView = unique_ptr<View>(
+            dynamic_cast<View *>(boardClass->GetPyViewClass()->NewInstance()));
          brdDlg = unique_ptr<Dialog>(
           dynamic_cast<Dialog *>(boardClass->GetDlgClass()->NewInstance()));
          break;
@@ -40,6 +43,7 @@ int boardtest_init(char *boardType) {
    }
 
    brdView->SetModel(board);
+   brdPyView->SetModel(board);
 
    currMove = board->CreateMove();
    
@@ -125,6 +129,20 @@ RawData boardtest_showboard() {
    ostringstream strm;
    assert(!strm.fail());
    brdView->Draw(strm);
+   string strdata = strm.str();
+   RawData data {
+      .data = malloc(strdata.size()),
+      .size = strdata.size()
+   };
+
+   strdata.copy((char*)data.data, data.size);
+
+   return data;
+}
+
+RawData boardtest_getBinaryBoard() {
+   ostringstream strm;
+   brdPyView->Draw(strm);
    string strdata = strm.str();
    RawData data {
       .data = malloc(strdata.size()),

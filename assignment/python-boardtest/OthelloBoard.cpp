@@ -8,13 +8,14 @@
 #include "OthelloDlg.h"
 #include "OthelloMove.h"
 #include "OthelloView.h"
+#include "OthelloPyView.h"
 
 ////////////////////////////////////////////////////////////////////////////////
 using namespace std;
 
 BoardClass OthelloBoard::mClass("OthelloBoard", OthelloBoard::CreateBoard,
- "Othello", &OthelloView::mClass, &OthelloDlg::mClass, OthelloBoard::SetOptions,
- OthelloBoard::GetOptions);
+ "Othello", &OthelloView::mClass, &OthelloPyView::mClass, &OthelloDlg::mClass,
+  OthelloBoard::SetOptions, OthelloBoard::GetOptions);
 
 short OthelloBoard::mWeights[dim][dim] = {
  {16, 0, 8, 8, 8, 8, 0, 16},

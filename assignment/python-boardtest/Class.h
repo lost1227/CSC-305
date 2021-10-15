@@ -72,12 +72,13 @@ protected:
 class BoardClass : public Class {
 public:
    BoardClass(const std::string &n, Object *(*c)(), const std::string &fn,
-    const Class *viewClass, const Class *dlgClass,
+    const Class *viewClass, const Class *pyViewClass, const Class *dlgClass,
     void (*setOptions)(const void *), void *(*getOptions)(),
     bool useXPos = false, int minPlayers = 2);
 
    virtual std::string GetFriendlyName() const { return mFriendlyName; }
    virtual const Class *GetViewClass() const { return mViewClass; }
+   virtual const Class *GetPyViewClass() const { return mPyViewClass; }
    virtual const Class *GetDlgClass() const { return mDlgClass; }
    virtual void *GetOptions() const;  // NOTE: These go in the .cpp file!
    virtual void SetOptions(void *) const;
@@ -89,6 +90,7 @@ public:
 protected:
    std::string mFriendlyName;
    const Class *mViewClass;
+   const Class *mPyViewClass;
    const Class *mDlgClass;
    void (*mSetOptions)(const void *);
    void *(*mGetOptions)();

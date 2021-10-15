@@ -29,18 +29,19 @@ const Class *Class::ForName(const std::string &name) {
 BoardClass *BoardClass::mBrdClsHead{nullptr};
 
 BoardClass::BoardClass(const std::string &n, Object *(*c)(),
- const std::string &fn, const Class *viewClass, const Class *dlgClass,
- void (*setOptions)(const void *), void *(*getOptions)(), bool useXPos,
- int minPlayers)
- : Class(n, c),
- mFriendlyName(fn),
- mViewClass{viewClass},
- mDlgClass{dlgClass},
- mSetOptions{setOptions},
- mGetOptions{getOptions},
- mUseXPos{useXPos},
- mMinPlayers{minPlayers},
- mNext{mBrdClsHead} {
+ const std::string &fn, const Class *viewClass, const Class *pyViewClass,
+ const Class *dlgClass, void (*setOptions)(const void *), void *(*getOptions)(),
+ bool useXPos, int minPlayers)
+ : Class(n, c)
+ , mFriendlyName(fn)
+ , mViewClass{viewClass}
+ , mPyViewClass{pyViewClass}
+ , mDlgClass{dlgClass}
+ , mSetOptions{setOptions}
+ , mGetOptions{getOptions}
+ , mUseXPos{useXPos}
+ , mMinPlayers{minPlayers}
+ , mNext{mBrdClsHead} {
    mBrdClsHead = this;
 }
 

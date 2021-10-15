@@ -25,6 +25,7 @@ void boardtest_loadmove(RawData);
 void boardtest_undoMoves(int moveCount);
 
 RawData boardtest_showboard();
+RawData boardtest_getBinaryBoard();
 
 RawData boardtest_getValidMoves();
 

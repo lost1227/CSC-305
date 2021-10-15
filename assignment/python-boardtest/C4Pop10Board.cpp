@@ -8,13 +8,14 @@
 #include "BasicKey.h"
 #include "C4Pop10Dlg.h"
 #include "C4Pop10View.h"
+#include "C4Pop10PyView.h"
 #include "MyLib.h"
 
 using namespace std;
 
 const BoardClass C4Pop10Board::mClass("C4Pop10Board", C4Pop10Board::CreateBoard,
- "C4Pop10", &C4Pop10View::mClass, &C4Pop10Dlg::mClass, C4Pop10Board::SetOptions,
- C4Pop10Board::GetOptions);
+ "C4Pop10", &C4Pop10View::mClass, &C4Pop10PyView::mClass, &C4Pop10Dlg::mClass,
+  C4Pop10Board::SetOptions, C4Pop10Board::GetOptions);
 
 C4Pop10Board::Rules C4Pop10Board::mRules;
 

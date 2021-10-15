@@ -27,6 +27,8 @@ _boardtest.boardtest_undoMoves.argtypes = [ctypes.c_int]
 
 _boardtest.boardtest_showboard.restype = _RawData
 
+_boardtest.boardtest_getBinaryBoard.restype = _RawData
+
 _boardtest.boardtest_getValidMoves.restype = _RawData
 
 _boardtest.boardtest_getMoveHist.restype = _RawData
@@ -86,6 +88,12 @@ def showBoard():
    boardString = ctypes.cast(boardState.data, ctypes.POINTER(ctypes.c_char))[:boardState.size].decode('ascii')
    _boardtest.boardtest_free_rawdata(boardState)
    return boardString
+
+def getBinaryBoard():
+   binBoard = _boardtest.boardtest_getBinaryBoard()
+   boardBytes = ctypes.cast(binBoard.data, ctypes.POINTER(ctypes.c_char))[:binBoard.size]
+   _boardtest.boardtest_free_rawdata(binBoard)
+   return boardBytes
 
 def getValidMoves():
    validMoves = _boardtest.boardtest_getValidMoves()
@@ -159,7 +167,9 @@ if __name__ == "__main__":
       print(getBoardValue())
       print(getMoveHist())
 
-   init("CheckersBoard")
+   init("OthelloBoard")
    
-   selfplay()
+   print(showBoard())
+
+   print(getBinaryBoard())
    

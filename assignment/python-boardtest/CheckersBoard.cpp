@@ -11,6 +11,7 @@
 #include "CheckersDlg.h"
 #include "CheckersMove.h"
 #include "CheckersView.h"
+#include "CheckersPyView.h"
 #include "MyLib.h"
 
 using namespace std;
@@ -19,8 +20,8 @@ set<CheckersBoard *> CheckersBoard::mRoster;
 CheckersBoard::Rules CheckersBoard::mRules;
 
 BoardClass CheckersBoard::mClass("CheckersBoard", CheckersBoard::CreateBoard,
- "Checkers", &CheckersView::mClass, &CheckersDlg::mClass,
- CheckersBoard::SetOptions, CheckersBoard::GetOptions);
+ "Checkers", &CheckersView::mClass, &CheckersPyView::mClass,
+ &CheckersDlg::mClass, CheckersBoard::SetOptions, CheckersBoard::GetOptions);
 
 Object *CheckersBoard::CreateBoard() {
    return new CheckersBoard();
