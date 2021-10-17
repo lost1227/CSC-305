@@ -5,11 +5,11 @@ import io
 
 class Game(ABC):
    _initialized = False
-   _boardStateSynched = False
    def __init__(self, gamestr):
-      if self._initialized:
+      if Game._initialized:
          raise Exception("Only one game at a time is supported")
-      self._initialized = True
+      self._boardStateSynched = False
+      Game._initialized = True
       BoardTest.init(gamestr)
 
    def enterMove(move: str):
@@ -49,10 +49,6 @@ class Game(ABC):
 
 
 class CheckersGame(Game):
-   _dim = -1
-   _board = []
-   _move = "??"
-
    def __init__(self):
       super().__init__("CheckersBoard")
 
@@ -109,10 +105,6 @@ class CheckersGame(Game):
       return pieceStr
 
 class OthelloGame(Game):
-   _dim = -1
-   _board = []
-   _move = "??"
-
    def __init__(self):
       super().__init__("OthelloBoard")
 
@@ -163,17 +155,11 @@ class OthelloGame(Game):
 
 class C4Pop10Game(Game):
    class C4Pop10GameScore:
-      safeDisks = 0
-      threatDisks = 0
-      keptDisks = 0
-   
-   _width = -1
-   _height = -1
-   _board = []
-   _move = -1
-   _redScore = C4Pop10GameScore()
-   _yellowScore = C4Pop10GameScore()
-   
+      def __init__(self):
+         self.safeDisks = 0
+         self.threatDisks = 0
+         self.keptDisks = 0
+
    def __init__(self):
       super().__init__("C4Pop10Board")
 
@@ -192,6 +178,9 @@ class C4Pop10Game(Game):
       assert len(self._board) == self._height
       assert len(self._board[0]) == self._width
       self._move = next(byte)
+
+      self._redScore = C4Pop10Game.C4Pop10GameScore()
+      self._yellowScore = C4Pop10Game.C4Pop10GameScore()
 
       self._redScore.safeDisks = next(byte)
       self._redScore.threatDisks = next(byte)
