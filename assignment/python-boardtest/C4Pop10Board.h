@@ -15,6 +15,10 @@ public:
    static constexpr int SHIFT_COUNT = 2, SHIFT_MASK = 3;
    static constexpr int MAX_CELLS_PER_KEY = 32 / SHIFT_COUNT;
 
+   struct PlayerScore {
+      char safeDisks = 0, threatDisks = 0, keptDisks = 0;
+   };
+
    struct Rules {
       int safeWgt;
       int threatWgt;
@@ -55,10 +59,10 @@ public:
 
    const char GetLoc(int row, int col) const;
 
+   inline const PlayerScore& GetRedScore() const;
+   inline const PlayerScore& GetYellowScore() const;
+
 private:
-   struct PlayerScore {
-      char safeDisks = 0, threatDisks = 0, keptDisks = 0;
-   };
 
    mutable PlayerScore mRedScore, mYellowScore;
 
@@ -94,5 +98,16 @@ private:
    static constexpr int DIAG_DIRS = 2, ALL_DIRS = 4;
    static const Dir mDirs[ALL_DIRS];
 };
+
+inline const C4Pop10Board::PlayerScore& C4Pop10Board::GetRedScore() const {
+   if (!mValidScores)
+      RecalculateScores();
+   return mRedScore;
+}
+inline const C4Pop10Board::PlayerScore& C4Pop10Board::GetYellowScore() const {
+   if (!mValidScores)
+      RecalculateScores();
+   return mYellowScore;
+}
 
 #endif
