@@ -229,37 +229,3 @@ class C4Pop10Game(Game):
       self._verifyStateSync()
       return self._yellowScore
 
-if __name__ == "__main__":
-   import random
-   import time
-
-   game = C4Pop10Game()
-
-   while True:
-      dim = game.getBoardDimensions()
-      for i in range(0, dim[1]):
-         row = ""
-         for j in range(0, dim[0]):
-            row += game.getPieceAtPos(i, j)
-         print(row)
-      print(game.getWhoseMove())
-      redScore = game.getRedScore()
-      yellowScore = game.getYellowScore()
-      print("Red", redScore.safeDisks, redScore.threatDisks, redScore.keptDisks)
-      print("Yellow", yellowScore.safeDisks, yellowScore.threatDisks, yellowScore.keptDisks)
-      #print()
-      #print(game.showBoard())
-      print("\n\n")
-
-      moves = game.getValidMoves()
-      if len(moves) == 0:
-         break
-      move = random.choice(moves)
-      print(move)
-      game.doMove(move)
-
-      time.sleep(0.1)
-
-   
-
-   print(game.getMoveHist())
