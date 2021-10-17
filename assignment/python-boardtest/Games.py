@@ -15,6 +15,9 @@ class Game(ABC):
    def enterMove(move: str):
       BoardTest.enterMove(move)
 
+   def applyMove():
+      BoardTest.applyMove()
+
    def getCurrMove(self):
       return BoardTest.getCurrMove()
 
