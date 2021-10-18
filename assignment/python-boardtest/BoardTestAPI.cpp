@@ -21,6 +21,22 @@ unique_ptr<Dialog> brdDlg;
 
 shared_ptr<Board::Move> currMove;
 
+RawData makeRawData(string src) {
+   if (src.size() == 0)
+      return RawData {
+         .data = nullptr,
+         .size = 0
+      };
+   else {
+      RawData data {
+         .data = malloc(src.size()),
+         .size = src.size()
+      };
+      src.copy((char*)data.data, data.size);
+      return data;
+   }
+}
+
 int boardtest_init(char *boardType) {
    auto boards = BoardClass::GetAllClasses();
    for (auto &bc : boards) {
@@ -56,12 +72,7 @@ void boardtest_entermove(char *moveStr) {
 
 RawData boardtest_showmove() {
    string currMoveStr = *currMove;
-   RawData ret {
-      .data = malloc(currMoveStr.size()),
-      .size = currMoveStr.size()
-   };
-   currMoveStr.copy((char *)ret.data, ret.size);
-   return ret;
+   return makeRawData(move(currMoveStr));
 }
 
 void boardtest_applymove() {
@@ -82,28 +93,14 @@ RawData boardtest_saveboard() {
    assert(!strm.fail());
    board->Write(strm);
    string strdata = strm.str();
-   RawData data {
-      .data = malloc(strdata.size()),
-      .size = strdata.size()
-   };
-
-   strdata.copy((char*)data.data, data.size);
-
-   return data;
+   return makeRawData(move(strdata));
 }
 RawData boardtest_savemove() {
    ostringstream strm;
    assert(!strm.fail());
    currMove->Write(strm);
    string strdata = strm.str();
-   RawData data {
-      .data = malloc(strdata.size()),
-      .size = strdata.size()
-   };
-
-   strdata.copy((char*)data.data, data.size);
-
-   return data;
+   return makeRawData(move(strdata));
 }
 
 void boardtest_loadboard(RawData data) {
@@ -130,28 +127,14 @@ RawData boardtest_showboard() {
    assert(!strm.fail());
    brdView->Draw(strm);
    string strdata = strm.str();
-   RawData data {
-      .data = malloc(strdata.size()),
-      .size = strdata.size()
-   };
-
-   strdata.copy((char*)data.data, data.size);
-
-   return data;
+   return makeRawData(move(strdata));
 }
 
 RawData boardtest_getBinaryBoard() {
    ostringstream strm;
    brdPyView->Draw(strm);
    string strdata = strm.str();
-   RawData data {
-      .data = malloc(strdata.size()),
-      .size = strdata.size()
-   };
-
-   strdata.copy((char*)data.data, data.size);
-
-   return data;
+   return makeRawData(move(strdata));
 }
 
 RawData boardtest_getValidMoves() {
@@ -163,13 +146,7 @@ RawData boardtest_getValidMoves() {
       strm << (string)*move << '\0';
    }
    string strdata = strm.str();
-   RawData data {
-      .data = malloc(strdata.size()),
-      .size = strdata.size()
-   };
-   strdata.copy((char*)data.data, data.size);
-
-   return data;
+   return makeRawData(move(strdata));
 }
 
 RawData boardtest_getMoveHist() {
@@ -181,14 +158,7 @@ RawData boardtest_getMoveHist() {
    }
    // string_view strdata = strm.view();
    string strdata = strm.str();
-   RawData data {
-      .data = malloc(strdata.size()),
-      .size = strdata.size()
-   };
-
-   strdata.copy((char*)data.data, data.size);
-
-   return data;
+   return makeRawData(move(strdata));
 }
 
 int boardtest_getBoardVal() {
@@ -196,5 +166,6 @@ int boardtest_getBoardVal() {
 }
 
 void boardtest_free_rawdata(RawData data) {
-   free(data.data);
+   if(data.size > 0 && data.data != nullptr)
+      free(data.data);
 }
