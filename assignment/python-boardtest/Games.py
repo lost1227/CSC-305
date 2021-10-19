@@ -35,7 +35,7 @@ class Game(ABC):
 
    def undoMoves(self, moveCount: int):
       self._boardStateSynched = False
-      BoardTest.undMoves(moveCount)
+      BoardTest.undoMoves(moveCount)
 
    def showBoard(self):
       return BoardTest.showBoard()
