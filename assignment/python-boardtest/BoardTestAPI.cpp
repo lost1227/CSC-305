@@ -118,7 +118,7 @@ void boardtest_undoMoves(int moveCount) {
    assert(moveCount >= 0);
    if(moveCount > (int)board->GetMoveHist().size())
       moveCount = board->GetMoveHist().size();
-   while(--moveCount > 0)
+   while(moveCount-- > 0)
       board->UndoLastMove();
 }
 
