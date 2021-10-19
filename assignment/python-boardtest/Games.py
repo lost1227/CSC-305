@@ -175,13 +175,13 @@ class OthelloGame(Game):
          raise ValueError("Unknown Othello board value (0x{:0X})".format(piece))
 
 class C4Pop10Game(Game):
-   """An object representing a player's score in C4Pop10. The score contains
-   three values: safe disks, threat disks, and kept disks. A safe disc is one
-   that can be removed and kept on this or a later move, with no opportunity for
-   the opponent to interfere. A threat disk is a disc that the opponent can
-   remove and keep unless the player does something to interfere. A kept disk is
-   a disc the player has already removed and kept."""
    class C4Pop10GameScore:
+      """An object representing a player's score in C4Pop10. The score contains
+      three values: safe disks, threat disks, and kept disks. A safe disc is one
+      that can be removed and kept on this or a later move, with no opportunity
+      for the opponent to interfere. A threat disk is a disc that the opponent
+      can remove and keep unless the player does something to interfere. A kept
+      disk is a disc the player has already removed and kept."""
       def __init__(self):
          self.safeDisks = 0
          self.threatDisks = 0
