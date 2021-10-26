@@ -8,7 +8,6 @@
 #include <memory>
 #include <sstream>
 #include <cassert>
-#include <string_view>
 
 using namespace std;
 
@@ -21,20 +20,16 @@ unique_ptr<Dialog> brdDlg;
 
 shared_ptr<Board::Move> currMove;
 
-RawData makeRawData(string src) {
-   if (src.size() == 0)
-      return RawData {
-         .data = nullptr,
-         .size = 0
-      };
-   else {
-      RawData data {
-         .data = malloc(src.size()),
-         .size = src.size()
-      };
-      src.copy((char*)data.data, data.size);
-      return data;
-   }
+
+list<unique_ptr<Board::Move>> allowedMoves;
+ostringstream myoutstrm;
+string currstr;
+
+RawData getCurrStrData() {
+   return RawData {
+      .data = (void *) currstr.c_str(),
+      .size = currstr.size()
+   };
 }
 
 int boardtest_init(char *boardType) {
@@ -71,12 +66,12 @@ void boardtest_entermove(char *moveStr) {
 }
 
 RawData boardtest_showmove() {
-   string currMoveStr = *currMove;
-   return makeRawData(move(currMoveStr));
+   currstr = *currMove;
+   return getCurrStrData();
 }
 
 void boardtest_applymove() {
-   list<unique_ptr<Board::Move>> allowedMoves;
+   allowedMoves.clear();
 
    board->GetAllMoves(&allowedMoves);
 
@@ -89,18 +84,16 @@ void boardtest_applymove() {
 }
 
 RawData boardtest_saveboard() {
-   ostringstream strm;
-   assert(!strm.fail());
-   board->Write(strm);
-   string strdata = strm.str();
-   return makeRawData(move(strdata));
+   myoutstrm.str("");
+   board->Write(myoutstrm);
+   currstr = move(myoutstrm.str());
+   return getCurrStrData();
 }
 RawData boardtest_savemove() {
-   ostringstream strm;
-   assert(!strm.fail());
-   currMove->Write(strm);
-   string strdata = strm.str();
-   return makeRawData(move(strdata));
+   myoutstrm.str("");
+   currMove->Write(myoutstrm);
+   currstr = move(myoutstrm.str());
+   return getCurrStrData();
 }
 
 void boardtest_loadboard(RawData data) {
@@ -123,42 +116,38 @@ void boardtest_undoMoves(int moveCount) {
 }
 
 RawData boardtest_showboard() {
-   ostringstream strm;
-   assert(!strm.fail());
-   brdView->Draw(strm);
-   string strdata = strm.str();
-   return makeRawData(move(strdata));
+   myoutstrm.str("");
+   brdView->Draw(myoutstrm);
+   currstr = move(myoutstrm.str());
+   return getCurrStrData();
 }
 
 RawData boardtest_getBinaryBoard() {
-   ostringstream strm;
-   brdPyView->Draw(strm);
-   string strdata = strm.str();
-   return makeRawData(move(strdata));
+   myoutstrm.str("");
+   brdPyView->Draw(myoutstrm);
+   currstr = move(myoutstrm.str());
+   return getCurrStrData();
 }
 
 RawData boardtest_getValidMoves() {
-   ostringstream strm;
-   assert(!strm.fail());
-   list<unique_ptr<Board::Move>> allowedMoves;
+   myoutstrm.str("");
+   allowedMoves.clear();
    board->GetAllMoves(&allowedMoves);
    for(auto& move : allowedMoves) {
-      strm << (string)*move << '\0';
+      myoutstrm << (string)*move << '\0';
    }
-   string strdata = strm.str();
-   return makeRawData(move(strdata));
+   currstr = move(myoutstrm.str());
+   return getCurrStrData();
 }
 
 RawData boardtest_getMoveHist() {
-   ostringstream strm;
-   assert(!strm.fail());
+   myoutstrm.str("");
    auto moves = board->GetMoveHist();
    for(auto& move : moves) {
-      strm << (string)*move << '\0';
+      myoutstrm << (string)*move << '\0';
    }
-   // string_view strdata = strm.view();
-   string strdata = strm.str();
-   return makeRawData(move(strdata));
+   currstr = move(myoutstrm.str());
+   return getCurrStrData();
 }
 
 int boardtest_getBoardVal() {
@@ -166,6 +155,5 @@ int boardtest_getBoardVal() {
 }
 
 void boardtest_free_rawdata(RawData data) {
-   if(data.size > 0 && data.data != nullptr)
-      free(data.data);
+   currstr = string();
 }
