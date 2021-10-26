@@ -18,7 +18,7 @@ BOARDTESTAPI typedef struct RawData {
 
 BOARDTESTAPI int boardtest_init(char *boardType);
 
-BOARDTESTAPI void boardtest_entermove(char *);
+BOARDTESTAPI int boardtest_entermove(char *);
 BOARDTESTAPI RawData boardtest_showmove();
 BOARDTESTAPI void boardtest_applymove();
 

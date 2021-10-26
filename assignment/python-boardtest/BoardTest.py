@@ -12,6 +12,7 @@ _boardtest.boardtest_init.argtypes = [ctypes.c_char_p]
 _boardtest.boardtest_init.restype = ctypes.c_int
 
 _boardtest.boardtest_entermove.argtypes = [ctypes.c_char_p]
+_boardtest.boardtest_entermove.restype = ctypes.c_int
 
 _boardtest.boardtest_showmove.restype = _RawData
 
@@ -53,7 +54,9 @@ def init(boardtype : str):
       exit(1)
 
 def enterMove(move : str):
-   _boardtest.boardtest_entermove(move.encode('ascii'))
+   res = _boardtest.boardtest_entermove(move.encode('ascii'))
+   if res < 0:
+      raise ValueError("Invalid move")
 
 def getCurrMove():
    move = _boardtest.boardtest_showmove()

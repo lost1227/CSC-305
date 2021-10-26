@@ -3,6 +3,7 @@
 #include "Board.h"
 #include "View.h"
 #include "Dialog.h"
+#include "MyLib.h"
 
 #include <string>
 #include <memory>
@@ -61,8 +62,14 @@ int boardtest_init(char *boardType) {
    return 0;
 }
 
-void boardtest_entermove(char *moveStr) {
-   *currMove = moveStr;
+int boardtest_entermove(char *moveStr) {
+    try {
+      *currMove = moveStr;
+   } catch (BaseException &err) {
+      cerr << "Error: " << err.what() << endl;
+      return -1;
+   }
+   return 0;
 }
 
 RawData boardtest_showmove() {
