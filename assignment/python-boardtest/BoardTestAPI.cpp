@@ -96,6 +96,13 @@ RawData boardtest_savemove() {
    return getCurrStrData();
 }
 
+RawData boardtest_getBoardKey() {
+   myoutstrm.str("");
+   board->GetKey()->Write(myoutstrm);
+   currstr = move(myoutstrm.str());
+   return getCurrStrData();
+}
+
 void boardtest_loadboard(RawData data) {
    istringstream strm(string((char*)data.data, data.size));
    assert(!strm.fail());

@@ -3,6 +3,7 @@
 
 #include "Board.h"
 #include "MyLib.h"
+#include "stdint.h"
 
 template<int size>
 class BasicKey : public Board::Key {
@@ -50,7 +51,7 @@ bool BasicKey<size>::operator<(const Board::Key &other) const {
 
 template<int size>
 std::istream &BasicKey<size>::Read(std::istream &stream) {
-   ulong readVal;
+   uint32_t readVal;
 
    for (auto &val : vals) {
       stream.read((char *)&readVal, sizeof(readVal));
@@ -62,7 +63,7 @@ std::istream &BasicKey<size>::Read(std::istream &stream) {
 
 template<int size>
 std::ostream &BasicKey<size>::Write(std::ostream &stream) const {
-   ulong writeVal;
+   uint32_t writeVal;
 
    for (auto &val : vals) {
       writeVal = val;

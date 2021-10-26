@@ -19,6 +19,8 @@ _boardtest.boardtest_saveboard.restype = _RawData
 
 _boardtest.boardtest_savemove.restype = _RawData
 
+_boardtest.boardtest_getBoardKey.restype = _RawData
+
 _boardtest.boardtest_loadboard.restype = _RawData
 
 _boardtest.boardtest_loadmove.restype = _RawData
@@ -36,6 +38,13 @@ _boardtest.boardtest_getMoveHist.restype = _RawData
 _boardtest.boardtest_getBoardVal.restype = ctypes.c_int
 
 _boardtest.boardtest_free_rawdata.argtypes = [_RawData]
+
+def _rawdataToBytes(data: _RawData):
+   if data.size == 0:
+      return bytes()
+   dataBytes = ctypes.cast(data.data, ctypes.POINTER(ctypes.c_char))[:data.size]
+   _boardtest.boardtest_free_rawdata(data)
+   return dataBytes
 
 def init(boardtype : str):
    result = _boardtest.boardtest_init(boardtype.encode('ascii'))
@@ -67,6 +76,9 @@ def saveRawMove():
    moveDataByteBuff = ctypes.cast(moveData.data, ctypes.POINTER(ctypes.c_char))[:moveData.size]
    _boardtest.boardtest_free_rawdata(moveData)
    return moveDataByteBuff
+
+def getBoardKey():
+   return _rawdataToBytes(_boardtest.boardtest_getBoardKey())
 
 def loadBoardState(boardState: bytes):
    encodedData = _RawData()

@@ -19,6 +19,8 @@ void boardtest_applymove();
 RawData boardtest_saveboard();
 RawData boardtest_savemove();
 
+RawData boardtest_getBoardKey();
+
 void boardtest_loadboard(RawData);
 void boardtest_loadmove(RawData);
 

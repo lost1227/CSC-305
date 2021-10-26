@@ -48,6 +48,9 @@ class Game(ABC):
       self._boardStateSynched = False
       BoardTest.undoMoves(moveCount)
 
+   def getBoardKey(self):
+      return BoardTest.getBoardKey()
+
    def showBoard(self):
       return BoardTest.showBoard()
 
