@@ -1,8 +1,12 @@
 CXX = g++
-CPPFLAGS = -Wall -Werror -pedantic -g -std=c++2a -fPIC
+CPPFLAGS = -Wall -Werror -pedantic -std=c++2a -fPIC
+
+#CPPFLAGS += -g -O0
+
+CPPFLAGS += -O3
 
 CPPFLAGS += -DLITTLE_ENDIAN
-CPPFLAGS += -Wno-error=char-subscripts -Wno-error=parentheses -Wno-error=delete-incomplete
+CPPFLAGS += -Wno-error=char-subscripts -Wno-error=parentheses -Wno-error=delete-incomplete -Wno-error=strict-aliasing
 # CPPFLAGS += -fsanitize=undefined -fsanitize=address
 
 LINKFLAGS = -static-libstdc++
