@@ -23,6 +23,7 @@ shared_ptr<Board::Move> currMove;
 
 
 list<unique_ptr<Board::Move>> allowedMoves;
+map<string, shared_ptr<Board::Move>> moveCache;
 ostringstream myoutstrm;
 string currstr;
 
@@ -63,11 +64,15 @@ int boardtest_init(char *boardType) {
 }
 
 int boardtest_entermove(char *moveStr) {
-    try {
-      *currMove = moveStr;
-   } catch (BaseException &err) {
-      cerr << "Error: " << err.what() << endl;
-      return -1;
+   if(moveCache.count(moveStr)) {
+      currMove = moveCache[moveStr];
+   } else {
+      try {
+         *currMove = moveStr;
+      } catch(BaseException &err) {
+         cerr << "Error: " << err.what() << endl;
+         return -1;
+      }
    }
    return 0;
 }
@@ -144,13 +149,18 @@ RawData boardtest_getBinaryBoard() {
 }
 
 RawData boardtest_getValidMoves() {
+   string currMoveStr;
    myoutstrm.str("");
    allowedMoves.clear();
+   moveCache.clear();
    board->GetAllMoves(&allowedMoves);
    for(auto& move : allowedMoves) {
-      myoutstrm << (string)*move << '\0';
+      currMoveStr = (string)*move;
+      myoutstrm << currMoveStr << '\0';
+      moveCache[std::move(currMoveStr)] = std::move(move);
    }
-   currstr = move(myoutstrm.str());
+   moveCache.clear();
+   currstr = std::move(myoutstrm.str());
    return getCurrStrData();
 }
 
