@@ -9,7 +9,7 @@ Class OthelloView::mClass("OthelloView", OthelloView::Create);
 void OthelloView::Draw(ostream &out) {
    string rtn;
    int row, col;
-   char sqr;
+   signed char sqr;
    shared_ptr<const OthelloBoard> ob
     = dynamic_pointer_cast<const OthelloBoard>(mModel);
 

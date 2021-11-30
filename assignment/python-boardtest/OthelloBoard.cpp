@@ -248,7 +248,7 @@ istream &OthelloBoard::Read(istream &is) {
 
    SetOptions(&temp);
 
-   is.read(&mNextMove, sizeof(mNextMove));
+   is.read((char *)&mNextMove, sizeof(mNextMove));
    is.read(&mPassCount, sizeof(mPassCount));
 
    is.read((char *)&size, sizeof(size));
@@ -282,7 +282,7 @@ ostream &OthelloBoard::Write(ostream &os) const {
       os.write((char *)&rowBits, sizeof(rowBits));
    }
 
-   os.write(&mNextMove, sizeof(mNextMove));
+   os.write((char *)&mNextMove, sizeof(mNextMove));
    os.write(&mPassCount, sizeof(mPassCount));
 
    os.write((char *)&sz, sizeof(sz));

@@ -79,8 +79,8 @@ istream &OthelloMove::Read(istream &is) {
    char size, count, dirNum;
 
    mFlipSets.clear();
-   is.read(&mRow, sizeof(mRow));
-   is.read(&mCol, sizeof(mCol));
+   is.read((char *)&mRow, sizeof(mRow));
+   is.read((char *)&mCol, sizeof(mCol));
    is.read(&size, sizeof(size));
    while (size--) {
       is.read(&count, sizeof(count)).read(&dirNum, sizeof(dirNum));
@@ -94,8 +94,8 @@ ostream &OthelloMove::Write(ostream &os) const {
    char count, dirNum, size = mFlipSets.size();
    FlipList::const_iterator itr;
 
-   os.write(&mRow, sizeof(mRow));
-   os.write(&mCol, sizeof(mCol));
+   os.write((char *)&mRow, sizeof(mRow));
+   os.write((char *)&mCol, sizeof(mCol));
    os.write(&size, sizeof(size));
 
    for (itr = mFlipSets.begin(); itr != mFlipSets.end(); itr++) {

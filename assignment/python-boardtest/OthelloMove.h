@@ -22,7 +22,7 @@ public:
    friend class OthelloBoard;
    typedef std::list<FlipSet> FlipList;
 
-   OthelloMove(char row = 0, char col = 0): mRow(row), mCol(col) {}
+   OthelloMove(signed char row = 0, signed char col = 0): mRow(row), mCol(col) {}
    virtual ~OthelloMove() {}
 
    void AddFlipSet(const FlipSet &fs) { mFlipSets.push_back(fs); }
@@ -51,8 +51,8 @@ protected:
    static constexpr int bitShift = 4;
    static constexpr int bitMask = 0xF;
 
-   char mRow;
-   char mCol;
+   signed char mRow;
+   signed char mCol;
    FlipList mFlipSets;
 
    static std::vector<std::unique_ptr<OthelloMove, FreeListDeleter>> mFreeList;
